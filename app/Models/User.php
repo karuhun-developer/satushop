@@ -30,6 +30,7 @@ class User extends Authenticatable implements HasMedia
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
     ];
 
@@ -80,5 +81,23 @@ class User extends Authenticatable implements HasMedia
     public function isUser()
     {
         return $this->hasRole('user');
+    }
+
+    /**
+     * Phone verification methods
+     */
+    public function hasVerifiedPhone(): bool
+    {
+        return ! is_null($this->phone_verified_at);
+    }
+
+    /**
+     * Mark the given user's phone as verified.
+     */
+    public function markPhoneAsVerified(): bool
+    {
+        return $this->forceFill([
+            'phone_verified_at' => $this->freshTimestamp(),
+        ])->save();
     }
 }

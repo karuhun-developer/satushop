@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'rajaongkir' => [
+        'shipping_cost_api_key' => env('RAJAONGKIR_SHIPPING_COST_API_KEY', null),
+        'shipping_delivery_api_key' => env('RAJAONGKIR_SHIPPING_DELIVERY_API_KEY', null),
+    ],
+
 ];

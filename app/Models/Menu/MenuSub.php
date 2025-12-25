@@ -23,7 +23,7 @@ class MenuSub extends Model
     ];
 
     protected $casts = [
-        'status' => \App\Enums\CommonStatusEnum::class,
+        'status' => 'boolean',
     ];
 
     public static function booted()
