@@ -1,0 +1,151 @@
+<script setup lang="ts">
+import {
+    create,
+    destroy,
+    edit,
+} from '@/actions/App/Http/Controllers/Cms/Core/LocaleController';
+import Heading from '@/components/Heading.vue';
+import ResourceTable from '@/components/ResourceTable.vue';
+import { Button } from '@/components/ui/button';
+import { useConfirm } from '@/composables/useConfirm';
+import { usePermission } from '@/composables/usePermission';
+import { useToast } from '@/composables/useToast';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { PaginationItem, type BreadcrumbItem } from '@/types';
+import { LocaleDataItem } from '@/types/cms/core/locale';
+import { Head, router } from '@inertiajs/vue3';
+import { ModalLink } from '@inertiaui/modal-vue';
+import dayjs from 'dayjs';
+import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
+
+defineProps<{
+    data: PaginationItem<LocaleDataItem>;
+    orderBy?: string;
+    order?: 'asc' | 'desc';
+    search?: string;
+    paginate?: number;
+    resource: string;
+}>();
+
+const { confirm } = useConfirm();
+const { toast } = useToast();
+const { hasPermission } = usePermission();
+
+const title = 'Locales';
+const description =
+    'Manage the locales available in the application, including their codes, names, directions, and default settings.';
+
+const columns = [
+    { label: 'Code', key: 'code', sortable: true },
+    { label: 'Name', key: 'name', sortable: true },
+    { label: 'Direction', key: 'direction', sortable: true },
+    { label: 'Is Default', key: 'is_default', sortable: true },
+    { label: 'Created At', key: 'created_at', sortable: true },
+    {
+        label: 'Actions',
+        key: 'actions',
+        sortable: false,
+        class: 'w-24 text-center',
+    },
+];
+
+// Breadcrumbs
+const breadcrumbItems: BreadcrumbItem[] = [
+    {
+        title: 'Settings',
+        href: '#',
+    },
+    {
+        title: title,
+        href: '#',
+    },
+];
+</script>
+
+<template>
+    <AppLayout :breadcrumbs="breadcrumbItems">
+        <Head :title="title" />
+        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            <div class="flex items-center justify-between">
+                <Heading :title="title" :description="description" />
+                <ModalLink
+                    :href="create().url"
+                    slideover
+                    v-if="hasPermission('create' + resource)"
+                >
+                    <Button>
+                        <Plus class="h-4 w-4" />
+                        Create
+                    </Button>
+                </ModalLink>
+            </div>
+            <ResourceTable
+                :data="data"
+                :columns="columns"
+                :order-by="orderBy"
+                :order="order"
+                :search="search"
+                :paginate="paginate"
+            >
+                <template #is_default="{ row }">
+                    <span
+                        :class="{
+                            'rounded-full px-2 py-1 text-sm font-medium': true,
+                            'bg-green-100 text-green-800': row.is_default,
+                            'bg-red-100 text-red-800': !row.is_default,
+                        }"
+                    >
+                        {{ row.is_default ? 'Yes' : 'No' }}
+                    </span>
+                </template>
+                <template #created_at="{ row }">
+                    {{ dayjs(row.created_at).format('DD MMMM YYYY H:m:s') }}
+                </template>
+                <template #actions="{ row }">
+                    <div class="flex items-center justify-center gap-2">
+                        <ModalLink
+                            :href="edit({ locale: row.id }).url"
+                            slideover
+                            v-if="hasPermission('update' + resource)"
+                        >
+                            <Button variant="ghost" size="icon">
+                                <Pencil class="h-4 w-4" />
+                            </Button>
+                        </ModalLink>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            v-if="hasPermission('delete' + resource)"
+                            @click="
+                                confirm({
+                                    title: 'Delete Locale?',
+                                    text: 'This action cannot be undone.',
+                                    icon: 'warning',
+                                    confirmButtonText: 'Yes, delete it!',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        router.delete(
+                                            destroy({ locale: row.id }).url,
+                                            {
+                                                preserveScroll: true,
+                                                preserveState: true,
+                                                onSuccess: () => {
+                                                    toast.fire({
+                                                        icon: 'success',
+                                                        title: 'Locale deleted successfully.',
+                                                    });
+                                                },
+                                            },
+                                        );
+                                    }
+                                })
+                            "
+                        >
+                            <Trash2 class="h-4 w-4 text-destructive" />
+                        </Button>
+                    </div>
+                </template>
+            </ResourceTable>
+        </div>
+    </AppLayout>
+</template>

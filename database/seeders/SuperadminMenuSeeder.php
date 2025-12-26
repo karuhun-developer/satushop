@@ -24,6 +24,8 @@ class SuperadminMenuSeeder extends Seeder
 
         // Create menu
         $this->dashboardMenu();
+        $this->attributeMenu();
+        $this->coreMenu();
         $this->managementMenu();
     }
 
@@ -36,6 +38,64 @@ class SuperadminMenuSeeder extends Seeder
             'icon' => 'LayoutGrid',
             'order' => 1,
             'active_pattern' => '/cms/dashboard',
+            'status' => 1,
+        ]);
+    }
+
+    public function attributeMenu()
+    {
+        $catalog = Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'Attributes',
+            'url' => '#',
+            'icon' => 'Tag',
+            'order' => 997,
+            'active_pattern' => '/cms/attribute',
+            'status' => 1,
+        ]);
+        $catalog->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Attribute Families',
+            'url' => '/cms/attribute/attribute-families',
+            'order' => 1,
+            'active_pattern' => '/cms/attribute/attribute-families',
+            'status' => 1,
+        ]);
+    }
+
+    public function coreMenu()
+    {
+        $core = Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'Settings',
+            'url' => '#',
+            'icon' => 'Settings',
+            'order' => 998,
+            'active_pattern' => '/cms/core',
+            'status' => 1,
+        ]);
+        $core->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Locales',
+            'url' => '/cms/core/locales',
+            'order' => 1,
+            'active_pattern' => '/cms/core/locales',
+            'status' => 1,
+        ]);
+        $core->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Currencies',
+            'url' => '/cms/core/currencies',
+            'order' => 2,
+            'active_pattern' => '/cms/core/currencies',
+            'status' => 1,
+        ]);
+        $core->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Exchange Rates',
+            'url' => '/cms/core/currency-rates',
+            'order' => 3,
+            'active_pattern' => '/cms/core/currency-rates',
             'status' => 1,
         ]);
     }

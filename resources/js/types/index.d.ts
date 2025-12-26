@@ -47,7 +47,20 @@ export type AppPageProps<
     quote: { message: string; author: string };
     auth: Auth;
     sidebarOpen: boolean;
+    defaultLocale: DefaultLocale;
+    defaultCurrency: DefaultCurrency;
 };
+
+export interface DefaultLocale {
+    code: string;
+    name: string;
+    direction: 'ltr' | 'rtl';
+}
+
+export interface DefaultCurrency {
+    code: string;
+    name: string;
+}
 
 export interface User {
     id: number;

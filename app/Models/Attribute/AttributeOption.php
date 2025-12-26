@@ -18,6 +18,11 @@ class AttributeOption extends Model
         'status' => 'boolean',
     ];
 
+    public function translations()
+    {
+        return $this->hasMany(AttributeOptionTranslation::class);
+    }
+
     public function attribute()
     {
         return $this->belongsTo(Attribute::class, 'attribute_id');

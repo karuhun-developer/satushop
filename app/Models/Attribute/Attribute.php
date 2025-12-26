@@ -8,6 +8,7 @@ class Attribute extends Model
 {
     protected $fillable = [
         'attribute_family_id',
+        'code',
         'name',
         'order',
         'status',
@@ -17,6 +18,11 @@ class Attribute extends Model
         'order' => 'integer',
         'status' => 'boolean',
     ];
+
+    public function translations()
+    {
+        return $this->hasMany(AttributeTranslation::class);
+    }
 
     public function family()
     {

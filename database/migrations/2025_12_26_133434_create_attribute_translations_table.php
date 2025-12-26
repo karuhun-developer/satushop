@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('attribute_translations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Attribute\AttributeFamily::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(App\Models\Attribute\Attribute::class)->constrained()->cascadeOnDelete();
+            $table->string('locale')->index();
             $table->string('name');
-            $table->integer('order')->default(0);
-            $table->boolean('status')->default(true);
+            $table->unique(['attribute_id', 'locale'], 'attribute_locale_unique');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attributes');
+        Schema::dropIfExists('attribute_translations');
     }
 };

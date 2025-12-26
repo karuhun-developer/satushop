@@ -12,6 +12,12 @@ Route::group([
         return inertia('Dashboard');
     })->name('dashboard');
 
+    // Attribute Routes
+    require 'cms/attribute.php';
+
     // Management Routes
     require 'cms/management.php';
+
+    // Core Routes
+    require 'cms/core.php';
 });

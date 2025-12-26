@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Shop\Shop;
+use App\Models\Shop\ShopTranslation;
 use App\Models\Shop\ShopUser;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -18,7 +19,7 @@ class DefaultShopSeeder extends Seeder
         $superadmin = User::where('email', 'superadmin@superadmin.com')->first();
 
         if ($superadmin) {
-            Shop::firstOrCreate(
+            $shop = Shop::firstOrCreate(
                 [
                     'name' => 'Default Shop',
                 ],
@@ -26,7 +27,6 @@ class DefaultShopSeeder extends Seeder
                     'phone' => '+621234567890',
                     'email' => 'default@shop.com',
                     'address' => '123 Default St, Default City, Default Country',
-                    'description' => 'This is the default shop created by DefaultShopSeeder.',
                     'latitude' => '-6.914744',
                     'longitude' => '107.609810',
                     'rajaongkir_province_id' => 5,
@@ -36,10 +36,21 @@ class DefaultShopSeeder extends Seeder
                 ]
             );
             ShopUser::firstOrCreate([
-                'shop_id' => 1,
+                'shop_id' => $shop->id,
                 'user_id' => $superadmin->id,
                 'is_owner' => true,
             ]);
+
+            // Add translation for default shop
+            foreach (getLocales() as $locale) {
+                ShopTranslation::firstOrCreate([
+                    'shop_id' => $shop->id,
+                    'locale' => $locale->code,
+                ], [
+                    'name' => $locale->code === 'en' ? 'Default Shop' : 'Toko Default',
+                    'description' => $locale->code === 'en' ? 'This is the default shop.' : 'Ini adalah toko default.',
+                ]);
+            }
         }
     }
 }
