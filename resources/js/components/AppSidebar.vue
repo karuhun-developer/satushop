@@ -25,14 +25,19 @@ const mainNavItems: NavItem[] = page.props.auth.menus;
 
 const footerNavItems: NavItem[] = [
     {
+        name: 'Activity Logs',
+        url: '/cms/logs',
+        icon: 'FileDigit',
+    },
+    {
         name: 'Github Repo',
-        url: 'https://github.com/laravel/vue-starter-kit',
+        url: 'https://github.com/karuhun-developer/e-commerce',
         icon: 'Folder',
     },
     {
-        name: 'Documentation',
-        url: 'https://laravel.com/docs/starter-kits#vue',
-        icon: 'BookOpen',
+        name: 'Official Website',
+        url: 'https://karuhundeveloper.com',
+        icon: 'Globe',
     },
 ];
 </script>
