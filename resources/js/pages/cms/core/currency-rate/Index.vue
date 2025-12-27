@@ -15,7 +15,8 @@ import { CurrencyRateDataItem } from '@/types/cms/core';
 import { Head, router, usePage } from '@inertiajs/vue3';
 import { ModalLink } from '@inertiaui/modal-vue';
 import dayjs from 'dayjs';
-import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
+import { Badge } from '@/components/ui/badge';
+
 
 defineProps<{
     data: PaginationItem<CurrencyRateDataItem>;
@@ -77,11 +78,13 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     </Button>
                 </ModalLink>
             </div>
-            <div class="space-y-1">
-                <p class="text-lg font-semibold tracking-tight">
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-muted-foreground">
                     Default Currency:
+                </span>
+                <Badge variant="secondary" class="text-sm">
                     {{ page.props.defaultCurrency.code }}
-                </p>
+                </Badge>
             </div>
             <ResourceTable
                 :data="data"
