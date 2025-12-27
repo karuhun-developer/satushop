@@ -7,12 +7,11 @@ import {
 import Heading from '@/components/Heading.vue';
 import ResourceTable from '@/components/ResourceTable.vue';
 import { Button } from '@/components/ui/button';
-import { useConfirm } from '@/composables/useConfirm';
 import { usePermission } from '@/composables/usePermission';
-import { useToast } from '@/composables/useToast';
+import { useSwal } from '@/composables/useSwal';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { PaginationItem, type BreadcrumbItem } from '@/types';
-import { PermissionDataItem } from '@/types/cms/management/permission';
+import { PermissionDataItem } from '@/types/cms/management';
 import { Head, router } from '@inertiajs/vue3';
 import { ModalLink } from '@inertiaui/modal-vue';
 import dayjs from 'dayjs';
@@ -27,8 +26,7 @@ defineProps<{
     resource: string;
 }>();
 
-const { confirm } = useConfirm();
-const { toast } = useToast();
+const { confirm, toast } = useSwal();
 const { hasPermission } = usePermission();
 
 const title = 'Permission Management';

@@ -44,7 +44,7 @@ class SuperadminMenuSeeder extends Seeder
 
     public function attributeMenu()
     {
-        $catalog = Menu::create([
+        $attribute = Menu::create([
             'role_id' => $this->role->id,
             'name' => 'Attributes',
             'url' => '#',
@@ -53,12 +53,20 @@ class SuperadminMenuSeeder extends Seeder
             'active_pattern' => '/cms/attribute',
             'status' => 1,
         ]);
-        $catalog->subMenu()->create([
+        $attribute->subMenu()->create([
             'role_id' => $this->role->id,
             'name' => 'Attribute Families',
             'url' => '/cms/attribute/attribute-families',
             'order' => 1,
             'active_pattern' => '/cms/attribute/attribute-families',
+            'status' => 1,
+        ]);
+        $attribute->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Attributes',
+            'url' => '/cms/attribute/attributes',
+            'order' => 2,
+            'active_pattern' => '/cms/attribute/attributes',
             'status' => 1,
         ]);
     }

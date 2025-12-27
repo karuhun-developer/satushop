@@ -5,8 +5,8 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/composables/useToast';
-import { UserDataItem } from '@/types/cms/management/user';
+import { useSwal } from '@/composables/useSwal';
+import { UserDataItem } from '@/types/cms/management';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
 import { Save } from 'lucide-vue-next';
@@ -15,7 +15,7 @@ defineProps<{
     user: UserDataItem;
 }>();
 
-const { toast } = useToast();
+const { toast } = useSwal();
 </script>
 
 <template>

@@ -3,22 +3,31 @@ import {
     create,
     destroy,
     edit,
-} from '@/actions/App/Http/Controllers/Cms/Attribute/AttributeFamilyController';
+} from '@/actions/App/Http/Controllers/Cms/Attribute/AttributeController';
 import Heading from '@/components/Heading.vue';
 import ResourceTable from '@/components/ResourceTable.vue';
 import { Button } from '@/components/ui/button';
+import Select from '@/components/ui/select/Select.vue';
+import SelectContent from '@/components/ui/select/SelectContent.vue';
+import SelectItem from '@/components/ui/select/SelectItem.vue';
+import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
+import SelectValue from '@/components/ui/select/SelectValue.vue';
+import { useFilter } from '@/composables/useFilter';
 import { usePermission } from '@/composables/usePermission';
 import { useSwal } from '@/composables/useSwal';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { PaginationItem, type BreadcrumbItem } from '@/types';
-import { AttributeFamilyDataItem } from '@/types/cms/attribute';
-import { Head, router } from '@inertiajs/vue3';
-import { ModalLink } from '@inertiaui/modal-vue';
+import {
+    AttributeDataItem,
+    AttributeFamilyDataItem,
+} from '@/types/cms/attribute';
+import { Head, Link, router } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
 import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 
 defineProps<{
-    data: PaginationItem<AttributeFamilyDataItem>;
+    data: PaginationItem<AttributeDataItem>;
+    attributeFamily: AttributeFamilyDataItem[];
     orderBy?: string;
     order?: 'asc' | 'desc';
     search?: string;
@@ -28,16 +37,36 @@ defineProps<{
 
 const { confirm, toast } = useSwal();
 const { hasPermission } = usePermission();
+const { updateParams } = useFilter();
 
-const title = 'Attribute Families';
+const title = 'Attributes';
 const description =
-    'Manage the attribute families for your products and categories.';
+    'Manage the attributes used to define product characteristics.';
 
 const columns = [
-    { label: 'Code', key: 'code', sortable: true },
-    { label: 'Name', key: 'name', sortable: true },
-    { label: 'Status', key: 'status', sortable: true },
-    { label: 'Created At', key: 'created_at', sortable: true },
+    {
+        label: 'Attribute Family',
+        key: 'attribute_families.name',
+        sortable: true,
+    },
+    { label: 'Code', key: 'attributes.code', sortable: true },
+    { label: 'Name', key: 'attributes.name', sortable: true },
+    {
+        label: 'Order',
+        key: 'attributes.order',
+        sortable: true,
+    },
+    {
+        label: 'Status',
+        key: 'attributes.status',
+        sortable: true,
+        class: 'text-center',
+    },
+    {
+        label: 'Created At',
+        key: 'attributes.created_at',
+        sortable: true,
+    },
     {
         label: 'Actions',
         key: 'actions',
@@ -65,7 +94,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="flex items-center justify-between">
                 <Heading :title="title" :description="description" />
-                <ModalLink
+                <Link
                     :href="create().url"
                     slideover
                     v-if="hasPermission('create' + resource)"
@@ -74,7 +103,40 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <Plus class="h-4 w-4" />
                         Create
                     </Button>
-                </ModalLink>
+                </Link>
+            </div>
+            <div class="flex flex-col gap-4">
+                <!-- Filter attributes by family -->
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm font-medium">Filter by Family:</span>
+                    <Select
+                        @update:model-value="
+                            (v) =>
+                                updateParams({
+                                    attribute_family_id: v || null,
+                                })
+                        "
+                    >
+                        <SelectTrigger id="family-filter" class="w-56">
+                            <SelectValue
+                                placeholder="Select attribute family"
+                            />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem :value="null">
+                                -- All Families --
+                            </SelectItem>
+                            <template
+                                v-for="family in attributeFamily"
+                                :key="family.id"
+                            >
+                                <SelectItem :value="family.id">
+                                    {{ family.name }} ({{ family.code }})
+                                </SelectItem>
+                            </template>
+                        </SelectContent>
+                    </Select>
+                </div>
             </div>
             <ResourceTable
                 :data="data"
@@ -84,7 +146,21 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 :search="search"
                 :paginate="paginate"
             >
-                <template #status="{ row }">
+                <template #attribute_families.name="{ row }">
+                    {{ row.attribute_family_name }} ({{
+                        row.attribute_family_code
+                    }})
+                </template>
+                <template #attributes.code="{ row }">
+                    {{ row.code }}
+                </template>
+                <template #attributes.name="{ row }">
+                    {{ row.name }}
+                </template>
+                <template #attributes.order="{ row }">
+                    {{ row.order }}
+                </template>
+                <template #attributes.status="{ row }">
                     <span
                         :class="{
                             'rounded-full px-2 py-1 text-sm font-medium': true,
@@ -95,27 +171,27 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         {{ row.status ? 'Active' : 'Inactive' }}
                     </span>
                 </template>
-                <template #created_at="{ row }">
+                <template #attributes.created_at="{ row }">
                     {{ dayjs(row.created_at).format('DD MMMM YYYY H:m:s') }}
                 </template>
                 <template #actions="{ row }">
                     <div class="flex items-center justify-center gap-2">
-                        <ModalLink
-                            :href="edit({ attribute_family: row.id }).url"
+                        <Link
+                            :href="edit({ attribute: row.id }).url"
                             slideover
                             v-if="hasPermission('update' + resource)"
                         >
                             <Button variant="ghost" size="icon">
                                 <Pencil class="h-4 w-4" />
                             </Button>
-                        </ModalLink>
+                        </Link>
                         <Button
                             variant="ghost"
                             size="icon"
                             v-if="hasPermission('delete' + resource)"
                             @click="
                                 confirm({
-                                    title: 'Delete Attribute Family?',
+                                    title: 'Delete Attribute ?',
                                     text: 'This action cannot be undone.',
                                     icon: 'warning',
                                     confirmButtonText: 'Yes, delete it!',
@@ -123,7 +199,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     if (result.isConfirmed) {
                                         router.delete(
                                             destroy({
-                                                attribute_family: row.id,
+                                                attribute: row.id,
                                             }).url,
                                             {
                                                 preserveScroll: true,
@@ -131,7 +207,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                                 onSuccess: () => {
                                                     toast.fire({
                                                         icon: 'success',
-                                                        title: 'Attribute Family deleted successfully.',
+                                                        title: 'Attribute deleted successfully.',
                                                     });
                                                 },
                                             },

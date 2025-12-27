@@ -14,14 +14,17 @@ class AttributeSeeder extends Seeder
     {
         // Create attributes family and attributes with translations and options
         $electronicsFamily = AttributeFamily::firstOrCreate([
+            'code' => 'electronics',
             'name' => 'Electronics',
         ]);
         $clothingFamily = AttributeFamily::firstOrCreate([
+            'code' => 'clothing',
             'name' => 'Clothing',
         ]);
 
         // Attribute: Color for Electronics
         $colorAttribute = $electronicsFamily->attributes()->firstOrCreate([
+            'code' => 'electronics-color',
             'name' => 'Color',
             'order' => 1,
             'status' => true,
@@ -37,6 +40,7 @@ class AttributeSeeder extends Seeder
 
         // Attribute: Size for Electronics
         $sizeAttribute = $electronicsFamily->attributes()->firstOrCreate([
+            'code' => 'electronics-size',
             'name' => 'Size',
             'order' => 2,
             'status' => true,
@@ -52,6 +56,7 @@ class AttributeSeeder extends Seeder
 
         // Attribute: Color for Clothing
         $clothingColorAttribute = $clothingFamily->attributes()->firstOrCreate([
+            'code' => 'color-clothing',
             'name' => 'Color',
             'order' => 1,
             'status' => true,

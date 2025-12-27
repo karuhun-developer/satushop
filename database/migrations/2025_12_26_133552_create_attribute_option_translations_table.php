@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(App\Models\Attribute\AttributeOption::class)->constrained()->cascadeOnDelete();
             $table->string('locale')->index();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->unique(['attribute_option_id', 'locale'], 'attribute_option_locale_unique');
             $table->timestamps();
         });

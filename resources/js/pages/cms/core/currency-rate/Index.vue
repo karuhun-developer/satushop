@@ -7,12 +7,11 @@ import {
 import Heading from '@/components/Heading.vue';
 import ResourceTable from '@/components/ResourceTable.vue';
 import { Button } from '@/components/ui/button';
-import { useConfirm } from '@/composables/useConfirm';
 import { usePermission } from '@/composables/usePermission';
-import { useToast } from '@/composables/useToast';
+import { useSwal } from '@/composables/useSwal';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { PaginationItem, type BreadcrumbItem } from '@/types';
-import { CurrencyRateDataItem } from '@/types/cms/core/currency-rate';
+import { CurrencyRateDataItem } from '@/types/cms/core';
 import { Head, router, usePage } from '@inertiajs/vue3';
 import { ModalLink } from '@inertiaui/modal-vue';
 import dayjs from 'dayjs';
@@ -28,8 +27,7 @@ defineProps<{
 }>();
 
 const page = usePage();
-const { confirm } = useConfirm();
-const { toast } = useToast();
+const { confirm, toast } = useSwal();
 const { hasPermission } = usePermission();
 
 const title = 'Currency Rates';

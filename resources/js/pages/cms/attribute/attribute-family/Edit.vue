@@ -10,9 +10,9 @@ import SelectContent from '@/components/ui/select/SelectContent.vue';
 import SelectItem from '@/components/ui/select/SelectItem.vue';
 import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
-import { useToast } from '@/composables/useToast';
+import { useSwal } from '@/composables/useSwal';
 import { CommonStatusEnum } from '@/enums/global.enum';
-import { AttributeFamilyDataItem } from '@/types/cms/attribute/attribute-family';
+import { AttributeFamilyDataItem } from '@/types/cms/attribute';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
 import { Save } from 'lucide-vue-next';
@@ -21,7 +21,7 @@ defineProps<{
     attributeFamily: AttributeFamilyDataItem;
 }>();
 
-const { toast } = useToast();
+const { toast } = useSwal();
 </script>
 
 <template>

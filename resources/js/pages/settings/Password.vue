@@ -10,7 +10,7 @@ import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/composables/useToast';
+import { useSwal } from '@/composables/useSwal';
 import { type BreadcrumbItem } from '@/types';
 
 const breadcrumbItems: BreadcrumbItem[] = [
@@ -20,7 +20,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
     },
 ];
 
-const { toast } = useToast();
+const { toast } = useSwal();
 </script>
 
 <template>

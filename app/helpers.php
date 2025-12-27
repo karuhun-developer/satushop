@@ -27,7 +27,7 @@ function defaultLocale($refresh = false)
 
 function getLocales()
 {
-    return Locale::all();
+    return Locale::orderBy('is_default', 'desc')->get();
 }
 
 function defaultCurrency($refresh = false)
@@ -43,7 +43,7 @@ function defaultCurrency($refresh = false)
 
 function getCurrencies()
 {
-    return Currency::all();
+    return Currency::orderBy('is_default', 'desc')->get();
 }
 
 function getRate(Currency $currency)

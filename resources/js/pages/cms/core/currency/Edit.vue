@@ -7,8 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import RadioGroup from '@/components/ui/radio-group/RadioGroup.vue';
 import RadioGroupItem from '@/components/ui/radio-group/RadioGroupItem.vue';
-import { useToast } from '@/composables/useToast';
-import { CurrencyDataItem } from '@/types/cms/core/currency';
+import { useSwal } from '@/composables/useSwal';
+import { CurrencyDataItem } from '@/types/cms/core';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
 import { Save } from 'lucide-vue-next';
@@ -17,7 +17,7 @@ defineProps<{
     currency: CurrencyDataItem;
 }>();
 
-const { toast } = useToast();
+const { toast } = useSwal();
 </script>
 
 <template>

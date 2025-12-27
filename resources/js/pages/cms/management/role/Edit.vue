@@ -12,8 +12,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { useToast } from '@/composables/useToast';
-import { RoleDataItem } from '@/types/cms/management/role';
+import { useSwal } from '@/composables/useSwal';
+import { RoleDataItem } from '@/types/cms/management';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
 import { Save } from 'lucide-vue-next';
@@ -22,7 +22,7 @@ defineProps<{
     role: RoleDataItem;
 }>();
 
-const { toast } = useToast();
+const { toast } = useSwal();
 </script>
 
 <template>

@@ -1,0 +1,264 @@
+<script setup lang="ts">
+import {
+    index,
+    store,
+} from '@/actions/App/Http/Controllers/Cms/Attribute/AttributeController';
+import AttributeOptionsSection from '@/components/Cms/Attribute/AttributeOptionsSection.vue';
+import Heading from '@/components/Heading.vue';
+import InputDescription from '@/components/InputDescription.vue';
+import InputError from '@/components/InputError.vue';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import Select from '@/components/ui/select/Select.vue';
+import SelectContent from '@/components/ui/select/SelectContent.vue';
+import SelectItem from '@/components/ui/select/SelectItem.vue';
+import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
+import SelectValue from '@/components/ui/select/SelectValue.vue';
+import { useSwal } from '@/composables/useSwal';
+import { CommonStatusEnum } from '@/enums/global.enum';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { BreadcrumbItem } from '@/types';
+import { AttributeFamilyDataItem } from '@/types/cms/attribute';
+import { LocaleDataItem } from '@/types/cms/core';
+import { Form, Head, router } from '@inertiajs/vue3';
+import { Save } from 'lucide-vue-next';
+import { ref } from 'vue';
+
+const props = defineProps<{
+    attributeFamily: AttributeFamilyDataItem[];
+    locales: LocaleDataItem[];
+}>();
+
+const { toast } = useSwal();
+
+const title = 'Create New Attributes';
+const description = 'Create a new attribute for the application.';
+
+// Breadcrumbs
+const breadcrumbItems: BreadcrumbItem[] = [
+    {
+        title: 'Attributes',
+        href: '#',
+    },
+    {
+        title: 'Attributes',
+        href: index().url,
+    },
+    {
+        title: 'Create',
+        href: '#',
+    },
+];
+
+// Options state
+const options = ref<any[]>([]);
+
+const addOption = () => {
+    options.value.push({
+        id: Date.now(),
+        name: '',
+        order: options.value.length + 1,
+        status: 1,
+        translations: {
+            // Initialize translations for each locale
+            ...props.locales.reduce(
+                (acc: Record<string, string>, locale: LocaleDataItem) => {
+                    acc[locale.code] = '';
+                    return acc;
+                },
+                {} as Record<string, string>,
+            ),
+        },
+    });
+};
+
+const removeOption = (index: number) => {
+    options.value.splice(index, 1);
+
+    // Reorder remaining options
+    options.value = options.value.map((option, idx) => ({
+        ...option,
+        order: idx + 1,
+    }));
+};
+</script>
+
+<template>
+    <AppLayout :breadcrumbs="breadcrumbItems">
+        <Head :title="title" />
+        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            <div class="flex items-center justify-between">
+                <Heading :title="title" :description="description" />
+            </div>
+
+            <Form
+                v-bind="store.form()"
+                class="space-y-6"
+                @success="
+                    () => {
+                        toast.fire({
+                            icon: 'success',
+                            title: 'Attribute created.',
+                        });
+                        router.visit(index().url);
+                    }
+                "
+                v-slot="{ errors, processing }"
+            >
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                    <div class="grid gap-2">
+                        <Label for="attribute_family_id"
+                            >Attribute Family</Label
+                        >
+                        <InputDescription>
+                            Select the attribute family this attribute belongs
+                            to.
+                        </InputDescription>
+                        <Select name="attribute_family_id">
+                            <SelectTrigger
+                                id="attribute_family_id"
+                                class="mt-1 w-full"
+                            >
+                                <SelectValue
+                                    placeholder="Select attribute family"
+                                />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem :value="null">
+                                    -- All Families --
+                                </SelectItem>
+                                <template
+                                    v-for="family in attributeFamily"
+                                    :key="family.id"
+                                >
+                                    <SelectItem :value="family.id">
+                                        {{ family.name }} ({{ family.code }})
+                                    </SelectItem>
+                                </template>
+                            </SelectContent>
+                        </Select>
+                        <InputError :message="errors.attribute_family_id" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="name">Code</Label>
+                        <InputDescription>
+                            Attribute code used internally (e.g., 'color',
+                            'size').
+                        </InputDescription>
+                        <Input
+                            id="code"
+                            name="code"
+                            type="text"
+                            class="mt-1 block w-full"
+                            required
+                            autofocus
+                        />
+                        <InputError :message="errors.code" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="name">Default Name</Label>
+                        <InputDescription>
+                            Default Display name of the attribute (e.g.,
+                            'Color', 'Size').
+                        </InputDescription>
+                        <Input
+                            id="name"
+                            name="name"
+                            type="text"
+                            class="mt-1 block w-full"
+                            required
+                            autofocus
+                        />
+                        <InputError :message="errors.name" />
+                    </div>
+                </div>
+
+                <template v-for="locale in locales" :key="locale.id">
+                    <div class="grid gap-2">
+                        <Label :for="`name_${locale.code}`"
+                            >Name ({{ locale.name }})</Label
+                        >
+                        <InputDescription>
+                            Translated Display name of the attribute in
+                            {{ locale.name }}.
+                        </InputDescription>
+                        <Input
+                            :id="`name_${locale.code}`"
+                            :name="`translations[${locale.code}][name]`"
+                            type="text"
+                            class="mt-1 block w-full"
+                            :placeholder="`Enter name in ${locale.name}`"
+                            autofocus
+                        />
+                        <InputError
+                            :message="
+                                errors[`translations.${locale.code}.name`]
+                            "
+                        />
+                    </div>
+                </template>
+
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div class="grid gap-2">
+                        <Label for="order">Order</Label>
+                        <InputDescription>
+                            Display order of the attribute in listings.
+                        </InputDescription>
+                        <Input
+                            id="order"
+                            name="order"
+                            type="number"
+                            class="mt-1 block w-full"
+                            required
+                            :default-value="1"
+                            autofocus
+                        />
+                        <InputError :message="errors.order" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="status">Status</Label>
+                        <InputDescription>
+                            Status of the attribute (Active or Inactive).
+                        </InputDescription>
+                        <Select name="status" :default-value="1">
+                            <SelectTrigger id="status" class="mt-1 w-full">
+                                <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <template
+                                    v-for="commnStatus in CommonStatusEnum"
+                                    :key="commnStatus.value"
+                                >
+                                    <SelectItem :value="commnStatus.value">
+                                        {{ commnStatus.label }}
+                                    </SelectItem>
+                                </template>
+                            </SelectContent>
+                        </Select>
+                        <InputError :message="errors.status" />
+                    </div>
+                </div>
+
+                <!-- Options Section -->
+                <AttributeOptionsSection
+                    :options="options"
+                    :locales="locales"
+                    :errors="errors"
+                    @add="addOption"
+                    @remove="removeOption"
+                />
+
+                <div class="flex justify-end gap-4">
+                    <Button :disabled="processing" type="submit">
+                        <Save />
+                        Save Changes
+                    </Button>
+                </div>
+            </Form>
+        </div>
+    </AppLayout>
+</template>

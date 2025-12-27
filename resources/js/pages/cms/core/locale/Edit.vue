@@ -12,8 +12,8 @@ import SelectContent from '@/components/ui/select/SelectContent.vue';
 import SelectItem from '@/components/ui/select/SelectItem.vue';
 import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
-import { useToast } from '@/composables/useToast';
-import { LocaleDataItem } from '@/types/cms/core/locale';
+import { useSwal } from '@/composables/useSwal';
+import { LocaleDataItem } from '@/types/cms/core';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
 import { Save } from 'lucide-vue-next';
@@ -22,7 +22,7 @@ defineProps<{
     locale: LocaleDataItem;
 }>();
 
-const { toast } = useToast();
+const { toast } = useSwal();
 </script>
 
 <template>

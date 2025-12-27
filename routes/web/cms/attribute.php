@@ -8,5 +8,6 @@ Route::group([
 ], function () {
     Route::resources([
         'attribute-families' => \App\Http\Controllers\Cms\Attribute\AttributeFamilyController::class,
+        'attributes' => \App\Http\Controllers\Cms\Attribute\AttributeController::class,
     ]);
 });
