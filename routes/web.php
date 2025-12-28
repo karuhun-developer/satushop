@@ -12,3 +12,4 @@ Route::get('/', function () {
 
 require 'web/settings.php';
 require 'web/cms.php';
+require 'web/service.php';

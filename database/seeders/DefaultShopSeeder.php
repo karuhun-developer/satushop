@@ -27,6 +27,7 @@ class DefaultShopSeeder extends Seeder
                     'phone' => '+621234567890',
                     'email' => 'default@shop.com',
                     'address' => '123 Default St, Default City, Default Country',
+                    'postal_code' => '40115',
                     'latitude' => '-6.914744',
                     'longitude' => '107.609810',
                     'rajaongkir_province_id' => 5,

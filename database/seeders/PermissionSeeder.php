@@ -55,6 +55,8 @@ class PermissionSeeder extends Seeder
         // Create roles
         $roleSuperAdmin = Role::findOrCreate('superadmin', $this->guardName);
         $roleUser = Role::findOrCreate('user', $this->guardName);
+        $roleShopOwner = Role::findOrCreate('shop-owner', $this->guardName);
+        $roleShopStaff = Role::findOrCreate('shop-staff', $this->guardName);
 
         // Loop through each model and create permissions
         foreach ($this->prefixPermission as $permission) {

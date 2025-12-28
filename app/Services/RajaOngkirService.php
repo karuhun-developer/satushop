@@ -76,7 +76,7 @@ class RajaOngkirService
     /**
      * Shipping Cost API - Get District by City ID
      */
-    public function getDistrictsByCityId(int $cityId): array
+    public function getListDistricts(int $cityId): array
     {
         try {
             return Cache::remember($this->cachePrefix.'districts:city:'.$cityId, now()->addMinutes($this->defaultCacheTtl), function () use ($cityId) {
@@ -100,7 +100,7 @@ class RajaOngkirService
     /**
      * Shipping Cost API - Get Subdistrict by District ID
      */
-    public function getSubdistrictsByDistrictId(int $districtId): array
+    public function getListSubDistricts(int $districtId): array
     {
         try {
             return Cache::remember($this->cachePrefix.'subdistricts:district:'.$districtId, now()->addMinutes($this->defaultCacheTtl), function () use ($districtId) {

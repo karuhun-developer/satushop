@@ -54,7 +54,7 @@ class UpdateAttributeAction
 
             // Delete removed options
             $optionsToDelete = array_diff($existingOptionIds, $submittedOptionIds);
-            if (!empty($optionsToDelete)) {
+            if (! empty($optionsToDelete)) {
                 $attribute->options()->whereIn('id', $optionsToDelete)->delete();
             }
         }

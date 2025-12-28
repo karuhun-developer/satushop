@@ -21,7 +21,8 @@ import {
     AttributeDataItem,
     AttributeFamilyDataItem,
 } from '@/types/cms/attribute';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
+import { ModalLink } from '@inertiaui/modal-vue';
 import dayjs from 'dayjs';
 import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 
@@ -49,7 +50,6 @@ const columns = [
         key: 'attribute_families.name',
         sortable: true,
     },
-    { label: 'Code', key: 'attributes.code', sortable: true },
     { label: 'Name', key: 'attributes.name', sortable: true },
     {
         label: 'Order',
@@ -94,16 +94,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="flex items-center justify-between">
                 <Heading :title="title" :description="description" />
-                <Link
+                <ModalLink
                     :href="create().url"
                     slideover
+                    max-width="7xl"
                     v-if="hasPermission('create' + resource)"
                 >
                     <Button>
                         <Plus class="h-4 w-4" />
                         Create
                     </Button>
-                </Link>
+                </ModalLink>
             </div>
             <div class="flex flex-col gap-4">
                 <!-- Filter attributes by family -->
@@ -147,15 +148,22 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 :paginate="paginate"
             >
                 <template #attribute_families.name="{ row }">
-                    {{ row.attribute_family_name }} ({{
-                        row.attribute_family_code
-                    }})
-                </template>
-                <template #attributes.code="{ row }">
-                    {{ row.code }}
+                    <div class="flex flex-col gap-1">
+                        <span class="font-medium">{{
+                            row.attribute_family_name
+                        }}</span>
+                        <span class="text-sm text-muted-foreground">{{
+                            row.attribute_family_code
+                        }}</span>
+                    </div>
                 </template>
                 <template #attributes.name="{ row }">
-                    {{ row.name }}
+                    <div class="flex flex-col gap-1">
+                        <span class="font-medium">{{ row.name }}</span>
+                        <span class="text-sm text-muted-foreground">{{
+                            row.code
+                        }}</span>
+                    </div>
                 </template>
                 <template #attributes.order="{ row }">
                     {{ row.order }}
@@ -176,15 +184,16 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 </template>
                 <template #actions="{ row }">
                     <div class="flex items-center justify-center gap-2">
-                        <Link
+                        <ModalLink
                             :href="edit({ attribute: row.id }).url"
                             slideover
+                            max-width="7xl"
                             v-if="hasPermission('update' + resource)"
                         >
                             <Button variant="ghost" size="icon">
                                 <Pencil class="h-4 w-4" />
                             </Button>
-                        </Link>
+                        </ModalLink>
                         <Button
                             variant="ghost"
                             size="icon"

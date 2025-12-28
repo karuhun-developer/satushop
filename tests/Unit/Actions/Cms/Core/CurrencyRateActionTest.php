@@ -30,7 +30,7 @@ test('update currency rate action updates a currency rate', function () {
         'target_currency_id' => $targetCurrency->id,
         'rate' => 1.0,
     ]);
-    
+
     $action = new UpdateCurrencyRateAction;
     $data = [
         'target_currency_id' => $targetCurrency->id,

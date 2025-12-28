@@ -1,11 +1,11 @@
-import '../css/app.css';
-
 import { createInertiaApp } from '@inertiajs/vue3';
 import { putConfig, renderApp } from '@inertiaui/modal-vue';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { vMaska } from 'maska/vue';
 import type { DefineComponent } from 'vue';
 import { createApp } from 'vue';
+import '../css/app.css';
+import { VueQueryPlugin } from './../../node_modules/@tanstack/vue-query/src/vueQueryPlugin';
 import { initializeTheme } from './composables/useAppearance';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -20,6 +20,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: renderApp(App, props) })
             .use(plugin)
+            .use(VueQueryPlugin)
             .directive('maska', vMaska)
             .mount(el);
     },

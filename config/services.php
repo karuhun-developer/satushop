@@ -40,4 +40,7 @@ return [
         'shipping_delivery_api_key' => env('RAJAONGKIR_SHIPPING_DELIVERY_API_KEY', null),
     ],
 
+    'google_maps' => [
+        'search_api_key' => env('GOOGLE_MAPS_SEARCH_API_KEY', null),
+    ],
 ];

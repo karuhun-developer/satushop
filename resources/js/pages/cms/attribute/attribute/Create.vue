@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import {
-    index,
-    store,
-} from '@/actions/App/Http/Controllers/Cms/Attribute/AttributeController';
-import AttributeOptionsSection from '@/components/Cms/Attribute/AttributeOptionsSection.vue';
-import Heading from '@/components/Heading.vue';
+import { store } from '@/actions/App/Http/Controllers/Cms/Attribute/AttributeController';
+import AttributeOptionsSection from '@/components/cms/attribute/AttributeOptionsSection.vue';
 import InputDescription from '@/components/InputDescription.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
@@ -17,11 +13,10 @@ import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import { useSwal } from '@/composables/useSwal';
 import { CommonStatusEnum } from '@/enums/global.enum';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { BreadcrumbItem } from '@/types';
 import { AttributeFamilyDataItem } from '@/types/cms/attribute';
 import { LocaleDataItem } from '@/types/cms/core';
-import { Form, Head, router } from '@inertiajs/vue3';
+import { Form } from '@inertiajs/vue3';
+import { Modal } from '@inertiaui/modal-vue';
 import { Save } from 'lucide-vue-next';
 import { ref } from 'vue';
 
@@ -31,25 +26,6 @@ const props = defineProps<{
 }>();
 
 const { toast } = useSwal();
-
-const title = 'Create New Attributes';
-const description = 'Create a new attribute for the application.';
-
-// Breadcrumbs
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: 'Attributes',
-        href: '#',
-    },
-    {
-        title: 'Attributes',
-        href: index().url,
-    },
-    {
-        title: 'Create',
-        href: '#',
-    },
-];
 
 // Options state
 const options = ref<any[]>([]);
@@ -85,12 +61,15 @@ const removeOption = (index: number) => {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head :title="title" />
-        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            <div class="flex items-center justify-between">
-                <Heading :title="title" :description="description" />
-            </div>
+    <Modal v-slot="{ close }">
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Create Attribute
+            </h2>
+
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                Create a new attribute for the application.
+            </p>
 
             <Form
                 v-bind="store.form()"
@@ -101,7 +80,7 @@ const removeOption = (index: number) => {
                             icon: 'success',
                             title: 'Attribute created.',
                         });
-                        router.visit(index().url);
+                        close();
                     }
                 "
                 v-slot="{ errors, processing }"
@@ -260,5 +239,5 @@ const removeOption = (index: number) => {
                 </div>
             </Form>
         </div>
-    </AppLayout>
+    </Modal>
 </template>

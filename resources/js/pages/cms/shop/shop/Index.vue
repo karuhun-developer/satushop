@@ -3,22 +3,22 @@ import {
     create,
     destroy,
     edit,
-} from '@/actions/App/Http/Controllers/Cms/Core/CurrencyRateController';
+} from '@/actions/App/Http/Controllers/Cms/Shop/ShopController';
 import Heading from '@/components/Heading.vue';
 import ResourceTable from '@/components/ResourceTable.vue';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { usePermission } from '@/composables/usePermission';
 import { useSwal } from '@/composables/useSwal';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { PaginationItem, type BreadcrumbItem } from '@/types';
-import { CurrencyRateDataItem } from '@/types/cms/core';
-import { Head, router, usePage } from '@inertiajs/vue3';
+import { ShopDataItem } from '@/types/cms/shop';
+import { Head, router } from '@inertiajs/vue3';
 import { ModalLink } from '@inertiaui/modal-vue';
 import dayjs from 'dayjs';
+import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 
 defineProps<{
-    data: PaginationItem<CurrencyRateDataItem>;
+    data: PaginationItem<ShopDataItem>;
     orderBy?: string;
     order?: 'asc' | 'desc';
     search?: string;
@@ -26,19 +26,18 @@ defineProps<{
     resource: string;
 }>();
 
-const page = usePage();
 const { confirm, toast } = useSwal();
 const { hasPermission } = usePermission();
 
-const title = 'Currency Rates';
-const description =
-    'Manage the currency rates available in the application, including their codes, names, directions, and default settings.';
+const title = 'Shops';
+const description = 'Manage the shops available in this platform.';
 
 const columns = [
-    { label: 'Currency Code', key: 'currencies.code', sortable: true },
-    { label: 'Currency Name', key: 'currencies.name', sortable: true },
-    { label: 'Rate', key: 'currency_rates.rate', sortable: true },
-    { label: 'Created At', key: 'currency_rates.created_at', sortable: true },
+    { label: 'Name', key: 'name', sortable: true },
+    { label: 'Phone', key: 'phone', sortable: true },
+    { label: 'Email', key: 'email', sortable: true },
+    { label: 'Address', key: 'address', sortable: true },
+    { label: 'Created At', key: 'created_at', sortable: true },
     {
         label: 'Actions',
         key: 'actions',
@@ -69,6 +68,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 <ModalLink
                     :href="create().url"
                     slideover
+                    max-width="7xl"
                     v-if="hasPermission('create' + resource)"
                 >
                     <Button>
@@ -76,14 +76,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         Create
                     </Button>
                 </ModalLink>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="text-sm font-medium text-muted-foreground">
-                    Default Currency:
-                </span>
-                <Badge variant="secondary" class="text-sm">
-                    {{ page.props.defaultCurrency.code }}
-                </Badge>
             </div>
             <ResourceTable
                 :data="data"
@@ -93,23 +85,23 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 :search="search"
                 :paginate="paginate"
             >
-                <template #currencies.code="{ row }">
-                    {{ row.target_currency_code }}
+                <template #name="{ row }">
+                    <div class="flex flex-col gap-1">
+                        <span class="font-medium">{{ row.name }}</span>
+                        <span class="text-sm text-muted-foreground">{{
+                            row.slug
+                        }}</span>
+                    </div>
                 </template>
-                <template #currencies.name="{ row }">
-                    {{ row.target_currency_name }}
-                </template>
-                <template #currency_rates.rate="{ row }">
-                    {{ row.rate }}
-                </template>
-                <template #currency_rates.created_at="{ row }">
+                <template #created_at="{ row }">
                     {{ dayjs(row.created_at).format('DD MMMM YYYY H:m:s') }}
                 </template>
                 <template #actions="{ row }">
                     <div class="flex items-center justify-center gap-2">
                         <ModalLink
-                            :href="edit({ currency_rate: row.id }).url"
+                            :href="edit({ shop: row.slug }).url"
                             slideover
+                            max-width="7xl"
                             v-if="hasPermission('update' + resource)"
                         >
                             <Button variant="ghost" size="icon">
@@ -122,22 +114,21 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             v-if="hasPermission('delete' + resource)"
                             @click="
                                 confirm({
-                                    title: 'Delete Currency Rate?',
+                                    title: 'Delete Shop?',
                                     text: 'This action cannot be undone.',
                                     icon: 'warning',
                                     confirmButtonText: 'Yes, delete it!',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         router.delete(
-                                            destroy({ currency_rate: row.id })
-                                                .url,
+                                            destroy({ shop: row.slug }).url,
                                             {
                                                 preserveScroll: true,
                                                 preserveState: true,
                                                 onSuccess: () => {
                                                     toast.fire({
                                                         icon: 'success',
-                                                        title: 'Currency Rate deleted successfully.',
+                                                        title: 'Shop deleted successfully.',
                                                     });
                                                 },
                                             },

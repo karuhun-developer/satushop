@@ -5,6 +5,7 @@ namespace App\Models\Shop;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -17,6 +18,8 @@ class Shop extends Model implements HasMedia
         'slug',
         'phone',
         'email',
+        'address',
+        'postal_code',
         'latitude',
         'longitude',
         'rating',
@@ -45,6 +48,15 @@ class Shop extends Model implements HasMedia
             ->usingSuffixGenerator(
                 fn (string $slug, int $iteration) => bin2hex(random_bytes(4))
             );
+    }
+
+    // Media convertions
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('avif')
+            // ->nonQueued()
+            ->format('avif') // Specify AVIF format
+            ->sharpen(10);
     }
 
     public function translations()

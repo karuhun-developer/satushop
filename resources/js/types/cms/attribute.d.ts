@@ -27,7 +27,7 @@ export interface AttributeDataTranslationItem {
     id: number;
     attribute_id: number;
     locale: string;
-    name: string;
+    name?: string;
     created_at: string;
     updated_at: string;
     attribute?: AttributeDataItem;
@@ -49,7 +49,7 @@ export interface AttributeOptionDataTranslationItem {
     id: number;
     attribute_option_id: number;
     locale: string;
-    name: string;
+    name?: string;
     created_at: string;
     updated_at: string;
     attribute_option?: AttributeOptionDataItem;

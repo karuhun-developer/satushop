@@ -42,7 +42,7 @@ class HandleInertiaRequests extends Middleware
 
         // User and role
         $user = $request->user();
-        $role = $user ? $user->roles()->first() : null;
+        $role = $user ? $user->roles()->get()->pluck('id')->toArray() : [];
 
         return [
             ...parent::share($request),
@@ -59,13 +59,14 @@ class HandleInertiaRequests extends Middleware
                         'roles' => $user->getRoleNames(),
                     ];
                 }) : null,
-                'menus' => ($user && $role) ? Cache::flexible('menus:role:'.$role->id, [300, 600], function () use ($role) {
-                    return Menu::with('subMenu')->where('role_id', $role->id)->orderBy('order', 'asc')->get();
+                'menus' => ($user && $role) ? Cache::flexible('menus:role:'.implode($role), [300, 600], function () use ($role) {
+                    return Menu::with('subMenu')->whereIn('role_id', $role)->orderBy('order', 'asc')->get();
                 }) : [],
             ],
             'defaultLocale' => defaultLocale(),
             'defaultCurrency' => defaultCurrency(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'csrfToken' => csrf_token(),
         ];
     }
 }

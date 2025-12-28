@@ -4,6 +4,7 @@ import AppShell from '@/components/AppShell.vue';
 import AppSidebar from '@/components/AppSidebar.vue';
 import AppSidebarHeader from '@/components/AppSidebarHeader.vue';
 import type { BreadcrumbItemType } from '@/types';
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
 
 interface Props {
     breadcrumbs?: BreadcrumbItemType[];
@@ -19,7 +20,10 @@ withDefaults(defineProps<Props>(), {
         <AppSidebar />
         <AppContent variant="sidebar" class="overflow-x-hidden">
             <AppSidebarHeader :breadcrumbs="breadcrumbs" />
-            <slot />
+            <div class="p-4 lg:p-6">
+                <slot />
+            </div>
         </AppContent>
     </AppShell>
+    <VueQueryDevtools />
 </template>

@@ -24,6 +24,7 @@ class SuperadminMenuSeeder extends Seeder
 
         // Create menu
         $this->dashboardMenu();
+        $this->shopMenu();
         $this->attributeMenu();
         $this->coreMenu();
         $this->managementMenu();
@@ -38,6 +39,19 @@ class SuperadminMenuSeeder extends Seeder
             'icon' => 'LayoutGrid',
             'order' => 1,
             'active_pattern' => '/cms/dashboard',
+            'status' => 1,
+        ]);
+    }
+
+    public function shopMenu()
+    {
+        Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'Shop',
+            'url' => '/cms/shop/shops',
+            'icon' => 'Store',
+            'order' => 2,
+            'active_pattern' => '/cms/shop/shops',
             'status' => 1,
         ]);
     }

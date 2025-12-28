@@ -34,7 +34,6 @@ const description =
     'Manage the attribute families for your products and categories.';
 
 const columns = [
-    { label: 'Code', key: 'code', sortable: true },
     { label: 'Name', key: 'name', sortable: true },
     { label: 'Status', key: 'status', sortable: true },
     { label: 'Created At', key: 'created_at', sortable: true },
@@ -84,6 +83,15 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 :search="search"
                 :paginate="paginate"
             >
+                <template #name="{ row }">
+                    <div class="flex flex-col gap-1">
+                        <span class="font-medium">{{ row.name }}</span>
+                        <span class="text-sm text-muted-foreground">{{
+                            row.code
+                        }}</span>
+                    </div>
+                </template>
+
                 <template #status="{ row }">
                     <span
                         :class="{

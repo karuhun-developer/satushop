@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         );
 
         // Add role to the superadmin user
-        $superadmin->assignRole('superadmin');
+        $superadmin->syncRoles(['superadmin', 'shop-owner']);
         $superadmin->markEmailAsVerified();
 
         $user = User::firstOrCreate(
@@ -39,6 +39,6 @@ class UserSeeder extends Seeder
         );
 
         // Add role to the user
-        $user->assignRole('user');
+        $user->syncRoles('user');
     }
 }

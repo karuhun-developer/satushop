@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import {
-    index,
-    update,
-} from '@/actions/App/Http/Controllers/Cms/Attribute/AttributeController';
-import AttributeOptionsSection from '@/components/Cms/Attribute/AttributeOptionsSection.vue';
-import Heading from '@/components/Heading.vue';
+import { update } from '@/actions/App/Http/Controllers/Cms/Attribute/AttributeController';
+import AttributeOptionsSection from '@/components/cms/attribute/AttributeOptionsSection.vue';
 import InputDescription from '@/components/InputDescription.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
@@ -17,14 +13,13 @@ import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import { useSwal } from '@/composables/useSwal';
 import { CommonStatusEnum } from '@/enums/global.enum';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { BreadcrumbItem } from '@/types';
 import {
     AttributeDataItem,
     AttributeFamilyDataItem,
 } from '@/types/cms/attribute';
 import { LocaleDataItem } from '@/types/cms/core';
-import { Form, Head, router } from '@inertiajs/vue3';
+import { Form } from '@inertiajs/vue3';
+import { Modal } from '@inertiaui/modal-vue';
 import { Save } from 'lucide-vue-next';
 import { ref } from 'vue';
 
@@ -35,25 +30,6 @@ const props = defineProps<{
 }>();
 
 const { toast } = useSwal();
-
-const title = `Edit Attribute: ${props.attribute.name} (${props.attribute.code})`;
-const description = 'Edit the attribute details and options.';
-
-// Breadcrumbs
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: 'Attributes',
-        href: '#',
-    },
-    {
-        title: 'Attributes',
-        href: index().url,
-    },
-    {
-        title: props.attribute.code,
-        href: '#',
-    },
-];
 
 // Options state - initialize from existing options
 const options = ref(
@@ -115,12 +91,15 @@ const translations = ref(
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head :title="title" />
-        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            <div class="flex items-center justify-between">
-                <Heading :title="title" :description="description" />
-            </div>
+    <Modal v-slot="{ close }">
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Edit Attribute
+            </h2>
+
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                Edit the attribute details.
+            </p>
 
             <Form
                 v-bind="update.form({ attribute: attribute.id })"
@@ -131,7 +110,7 @@ const translations = ref(
                             icon: 'success',
                             title: 'Attribute updated.',
                         });
-                        router.visit(index().url);
+                        close();
                     }
                 "
                 v-slot="{ errors, processing }"
@@ -297,5 +276,5 @@ const translations = ref(
                 </div>
             </Form>
         </div>
-    </AppLayout>
+    </Modal>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { LocaleDataItem } from '@/types/cms/core';
+import { Plus } from 'lucide-vue-next';
 import AttributeOptionsTable from './AttributeOptionsTable.vue';
 
 defineProps<{
@@ -26,7 +27,15 @@ const emit = defineEmits<{
                     Add attribute options with translations
                 </p>
             </div>
-            <Button type="button" @click="emit('add')"> Add Row </Button>
+            <Button
+                type="button"
+                variant="secondary"
+                class="bg-yellow-500 hover:bg-yellow-600"
+                @click="emit('add')"
+            >
+                <Plus />
+                Add Row
+            </Button>
         </div>
 
         <AttributeOptionsTable
