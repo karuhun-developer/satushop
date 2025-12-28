@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Cms\Shop\Shop;
 
+use App\Enums\ValidationEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateShopRequest extends FormRequest
@@ -26,7 +27,7 @@ class UpdateShopRequest extends FormRequest
             'rajaongkir_district_id' => 'required|integer',
             'logo' => 'nullable|image|max:2048', // 2MB
             'banner' => 'nullable|image|max:5120', // 5MB
-            'status' => 'required|boolean',
+            'status' => 'required|in:'.implode(',', ValidationEnum::toArray()),
 
             'translations' => 'nullable|array',
             'translations.*.name' => 'required|string|max:255',

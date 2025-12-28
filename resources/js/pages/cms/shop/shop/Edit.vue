@@ -14,7 +14,7 @@ import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import { useRajaongkirQuery } from '@/composables/query/useRajaongkirQuery';
 import { useSwal } from '@/composables/useSwal';
-import { CommonStatusEnum } from '@/enums/global.enum';
+import { ValidationEnum } from '@/enums/global.enum';
 import { LocaleDataItem } from '@/types/cms/core';
 import { ShopDataItem } from '@/types/cms/shop';
 import { Form } from '@inertiajs/vue3';
@@ -512,11 +512,11 @@ watch(selectedCity, (newValue, oldValue) => {
                         </SelectTrigger>
                         <SelectContent>
                             <template
-                                v-for="commnStatus in CommonStatusEnum"
-                                :key="commnStatus.value"
+                                v-for="valStatus in ValidationEnum"
+                                :key="valStatus.value"
                             >
-                                <SelectItem :value="commnStatus.value">
-                                    {{ commnStatus.label }}
+                                <SelectItem :value="valStatus.value">
+                                    {{ valStatus.label }}
                                 </SelectItem>
                             </template>
                         </SelectContent>

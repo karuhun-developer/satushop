@@ -139,4 +139,16 @@ class ShopController extends Controller
 
         return back();
     }
+
+    /**
+     * Update the status of the specified resource in storage.
+     */
+    public function updateStatus(\App\Http\Requests\Cms\Shop\Shop\UpdateShopStatusRequest $request, Shop $shop, \App\Actions\Cms\Shop\Shop\UpdateShopStatusAction $action)
+    {
+        Gate::authorize('update'.$this->resource);
+
+        $action->handle($shop, $request->validated());
+
+        return back();
+    }
 }

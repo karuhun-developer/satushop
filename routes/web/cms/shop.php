@@ -9,4 +9,6 @@ Route::group([
     Route::resources([
         'shops' => \App\Http\Controllers\Cms\Shop\ShopController::class,
     ]);
+
+    Route::patch('shops/{shop}/status', [\App\Http\Controllers\Cms\Shop\ShopController::class, 'updateStatus'])->name('shops.update-status');
 });

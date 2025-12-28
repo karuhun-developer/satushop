@@ -3,12 +3,21 @@ import {
     create,
     destroy,
     edit,
+    updateStatus,
 } from '@/actions/App/Http/Controllers/Cms/Shop/ShopController';
 import Heading from '@/components/Heading.vue';
 import ResourceTable from '@/components/ResourceTable.vue';
 import { Button } from '@/components/ui/button';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { usePermission } from '@/composables/usePermission';
 import { useSwal } from '@/composables/useSwal';
+import { ValidationEnum } from '@/enums/global.enum';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { PaginationItem, type BreadcrumbItem } from '@/types';
 import { ShopDataItem } from '@/types/cms/shop';
@@ -37,6 +46,7 @@ const columns = [
     { label: 'Phone', key: 'phone', sortable: true },
     { label: 'Email', key: 'email', sortable: true },
     { label: 'Address', key: 'address', sortable: true },
+    { label: 'Status', key: 'status', sortable: true },
     { label: 'Created At', key: 'created_at', sortable: true },
     {
         label: 'Actions',
@@ -57,6 +67,28 @@ const breadcrumbItems: BreadcrumbItem[] = [
         href: '#',
     },
 ];
+
+const onStatusChange = (row: ShopDataItem, value: any) => {
+    if (value === null) {
+        return;
+    }
+
+    router.patch(
+        updateStatus({ shop: row.slug }).url,
+        {
+            status: Number(value),
+        },
+        {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.fire({
+                    icon: 'success',
+                    title: 'Status updated successfully.',
+                });
+            },
+        },
+    );
+};
 </script>
 
 <template>
@@ -92,6 +124,51 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             row.slug
                         }}</span>
                     </div>
+                </template>
+                <template #status="{ row }">
+                    <div
+                        v-if="hasPermission('update' + resource)"
+                        class="w-32"
+                        @click.stop
+                    >
+                        <Select
+                            :model-value="String(row.status)"
+                            @update:model-value="
+                                (value) => onStatusChange(row, value)
+                            "
+                        >
+                            <SelectTrigger class="h-8">
+                                <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <template
+                                    v-for="status in ValidationEnum"
+                                    :key="status.value"
+                                >
+                                    <SelectItem :value="String(status.value)">
+                                        {{ status.label }}
+                                    </SelectItem>
+                                </template>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <span
+                        v-else
+                        :class="{
+                            'rounded-full px-2 py-1 text-sm font-medium': true,
+                            'bg-yellow-100 text-yellow-800': row.status == 0,
+                            'bg-green-100 text-green-800': row.status == 1,
+                            'bg-red-100 text-red-800': row.status == 2,
+                        }"
+                    >
+                        {{
+                            row.status == 0
+                                ? 'Pending'
+                                : row.status == 1
+                                  ? 'Approved'
+                                  : 'Rejected'
+                        }}
+                    </span>
                 </template>
                 <template #created_at="{ row }">
                     {{ dayjs(row.created_at).format('DD MMMM YYYY H:m:s') }}

@@ -16,7 +16,7 @@ export interface ShopDataItem {
     rajaongkir_province_id?: number;
     rajaongkir_city_id?: number;
     rajaongkir_district_id?: number;
-    status: boolean;
+    status: number;
     created_at: string;
     updated_at: string;
 }

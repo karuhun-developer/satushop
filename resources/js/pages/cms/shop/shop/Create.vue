@@ -14,7 +14,7 @@ import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import { useRajaongkirQuery } from '@/composables/query/useRajaongkirQuery';
 import { useSwal } from '@/composables/useSwal';
-import { CommonStatusEnum } from '@/enums/global.enum';
+import { ValidationEnum } from '@/enums/global.enum';
 import { LocaleDataItem } from '@/types/cms/core';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
@@ -449,17 +449,17 @@ watch(selectedCity, () => {
                 <div class="grid gap-2">
                     <Label for="status">Status</Label>
                     <InputDescription> Status of the shop. </InputDescription>
-                    <Select name="status" :default-value="1">
+                    <Select name="status" :default-value="0">
                         <SelectTrigger id="status" class="mt-1 w-full">
                             <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                         <SelectContent>
                             <template
-                                v-for="commnStatus in CommonStatusEnum"
-                                :key="commnStatus.value"
+                                v-for="valStatus in ValidationEnum"
+                                :key="valStatus.value"
                             >
-                                <SelectItem :value="commnStatus.value">
-                                    {{ commnStatus.label }}
+                                <SelectItem :value="valStatus.value">
+                                    {{ valStatus.label }}
                                 </SelectItem>
                             </template>
                         </SelectContent>
