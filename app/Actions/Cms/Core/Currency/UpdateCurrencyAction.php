@@ -9,8 +9,8 @@ class UpdateCurrencyAction
     /**
      * Handle the action.
      */
-    public function handle(Currency $Currency, array $data): bool
+    public function handle(Currency $currency, array $data): bool
     {
-        return $Currency->update($data);
+        return $currency->update($data);
     }
 }

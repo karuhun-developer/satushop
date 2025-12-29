@@ -73,7 +73,7 @@ const removeOption = (index: number) => {
 
             <Form
                 v-bind="store.form()"
-                class="space-y-6"
+                class="mt-6 space-y-6"
                 @success="
                     () => {
                         toast.fire({

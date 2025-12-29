@@ -25,6 +25,7 @@ class SuperadminMenuSeeder extends Seeder
         // Create menu
         $this->dashboardMenu();
         $this->shopMenu();
+        $this->catalogMenu();
         $this->attributeMenu();
         $this->coreMenu();
         $this->managementMenu();
@@ -52,6 +53,35 @@ class SuperadminMenuSeeder extends Seeder
             'icon' => 'Store',
             'order' => 2,
             'active_pattern' => '/cms/shop/shops',
+            'status' => 1,
+        ]);
+    }
+
+    public function catalogMenu()
+    {
+        $catalog = Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'Catalog',
+            'url' => '#',
+            'icon' => 'Box',
+            'order' => 996,
+            'active_pattern' => '/cms/catalog',
+            'status' => 1,
+        ]);
+        $catalog->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Product Categories',
+            'url' => '/cms/catalog/product-categories',
+            'order' => 1,
+            'active_pattern' => '/cms/catalog/product-categories',
+            'status' => 1,
+        ]);
+        $catalog->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Products',
+            'url' => '/cms/catalog/products',
+            'order' => 2,
+            'active_pattern' => '/cms/catalog/products',
             'status' => 1,
         ]);
     }

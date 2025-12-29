@@ -1,25 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Cms\Shop;
+namespace App\Http\Controllers\Cms\Catalog;
 
-use App\Actions\Cms\Shop\Shop\DeleteShopAction;
-use App\Actions\Cms\Shop\Shop\StoreShopAction;
-use App\Actions\Cms\Shop\Shop\UpdateShopAction;
-use App\Actions\Cms\Shop\Shop\UpdateShopStatusAction;
+use App\Actions\Cms\Catalog\ProductCategory\DeleteProductCategoryAction;
+use App\Actions\Cms\Catalog\ProductCategory\StoreProductCategoryAction;
+use App\Actions\Cms\Catalog\ProductCategory\UpdateProductCategoryAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Cms\Shop\Shop\StoreShopRequest;
-use App\Http\Requests\Cms\Shop\Shop\UpdateShopRequest;
-use App\Http\Requests\Cms\Shop\Shop\UpdateShopStatusRequest;
-use App\Models\Shop\Shop;
+use App\Http\Requests\Cms\Catalog\ProductCategory\StoreProductCategoryRequest;
+use App\Http\Requests\Cms\Catalog\ProductCategory\UpdateProductCategoryRequest;
+use App\Models\Catalog\ProductCategory;
 use App\Traits\WithGetFilterData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-class ShopController extends Controller
+class ProductCategoryController extends Controller
 {
     use WithGetFilterData;
 
-    protected string $resource = Shop::class;
+    protected string $resource = ProductCategory::class;
 
     /**
      * Display a listing of the resource.
@@ -33,18 +31,10 @@ class ShopController extends Controller
         $paginate = $request?->paginate ?? 10;
         $searchBySpecific = $request?->searchBySpecific ?? '';
         $search = $request?->search ?? '';
-
-        // Query
         $model = $this->getDataWithFilter(
-            model: new Shop,
+            model: ProductCategory::with('media'),
             searchBy: [
                 'name',
-                'slug',
-                'phone',
-                'email',
-                'address',
-                'rating',
-                'total_reviews',
                 'status',
             ],
             order: $order,
@@ -54,7 +44,14 @@ class ShopController extends Controller
             s: $search,
         );
 
-        return inertia('cms/shop/shop/Index', [
+        // Load media
+        $model->map(function ($item) {
+            $item->image = $item->getFirstMediaUrl('image');
+
+            return $item;
+        });
+
+        return inertia('cms/catalog/product-category/Index', [
             'data' => $model,
             'order' => $order,
             'orderBy' => $orderBy,
@@ -72,7 +69,7 @@ class ShopController extends Controller
     {
         Gate::authorize('create'.$this->resource);
 
-        return inertia('cms/shop/shop/Create', [
+        return inertia('cms/catalog/product-category/Create', [
             'locales' => getLocales(),
         ]);
     }
@@ -80,7 +77,7 @@ class ShopController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreShopRequest $request, StoreShopAction $action)
+    public function store(StoreProductCategoryRequest $request, StoreProductCategoryAction $action)
     {
         Gate::authorize('create'.$this->resource);
 
@@ -92,7 +89,7 @@ class ShopController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Shop $shop)
+    public function show(ProductCategory $productCategory)
     {
         //
     }
@@ -100,29 +97,28 @@ class ShopController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Shop $shop)
+    public function edit(ProductCategory $productCategory)
     {
         Gate::authorize('update'.$this->resource);
 
         // Load image url
-        $shop->logo_url = $shop->getFirstMediaUrl('logo');
-        $shop->banner_url = $shop->getFirstMediaUrl('banner');
-        $shop->load('translations');
+        $productCategory->image = $productCategory->getFirstMediaUrl('image');
+        $productCategory->load('translations');
 
-        return inertia('cms/shop/shop/Edit', [
+        return inertia('cms/catalog/product-category/Edit', [
             'locales' => getLocales(),
-            'shop' => $shop,
+            'productCategory' => $productCategory,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateShopRequest $request, Shop $shop, UpdateShopAction $action)
+    public function update(UpdateProductCategoryRequest $request, ProductCategory $productCategory, UpdateProductCategoryAction $action)
     {
         Gate::authorize('update'.$this->resource);
 
-        $action->handle($shop, $request->validated());
+        $action->handle($productCategory, $request->validated());
 
         return back();
     }
@@ -130,23 +126,11 @@ class ShopController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Shop $shop, DeleteShopAction $action)
+    public function destroy(ProductCategory $productCategory, DeleteProductCategoryAction $action)
     {
         Gate::authorize('delete'.$this->resource);
 
-        $action->handle($shop);
-
-        return back();
-    }
-
-    /**
-     * Update the status of the specified resource in storage.
-     */
-    public function updateStatus(UpdateShopStatusRequest $request, Shop $shop, UpdateShopStatusAction $action)
-    {
-        Gate::authorize('validate'.$this->resource);
-
-        $action->handle($shop, $request->validated());
+        $action->handle($productCategory);
 
         return back();
     }

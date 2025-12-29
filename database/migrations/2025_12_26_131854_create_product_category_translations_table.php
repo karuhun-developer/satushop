@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_category_translations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Product\ProductCategory::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(App\Models\Catalog\ProductCategory::class)->constrained()->cascadeOnDelete();
             $table->string('locale')->index();
             $table->string('name');
             $table->text('description')->nullable();

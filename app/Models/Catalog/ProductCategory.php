@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Product;
+namespace App\Models\Catalog;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;

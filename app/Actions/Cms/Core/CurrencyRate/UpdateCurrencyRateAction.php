@@ -9,8 +9,8 @@ class UpdateCurrencyRateAction
     /**
      * Handle the action.
      */
-    public function handle(CurrencyRate $CurrencyRate, array $data): bool
+    public function handle(CurrencyRate $currencyRate, array $data): bool
     {
-        return $CurrencyRate->update($data);
+        return $currencyRate->update($data);
     }
 }

@@ -9,8 +9,8 @@ class UpdateLocaleAction
     /**
      * Handle the action.
      */
-    public function handle(Locale $Locale, array $data): bool
+    public function handle(Locale $locale, array $data): bool
     {
-        return $Locale->update($data);
+        return $locale->update($data);
     }
 }
