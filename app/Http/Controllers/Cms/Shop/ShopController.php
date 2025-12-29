@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Cms\Shop;
 use App\Actions\Cms\Shop\Shop\DeleteShopAction;
 use App\Actions\Cms\Shop\Shop\StoreShopAction;
 use App\Actions\Cms\Shop\Shop\UpdateShopAction;
+use App\Actions\Cms\Shop\Shop\UpdateShopStatusAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cms\Shop\Shop\StoreShopRequest;
 use App\Http\Requests\Cms\Shop\Shop\UpdateShopRequest;
+use App\Http\Requests\Cms\Shop\Shop\UpdateShopStatusRequest;
 use App\Models\Shop\Shop;
 use App\Traits\WithGetFilterData;
 use Illuminate\Http\Request;
@@ -143,9 +145,9 @@ class ShopController extends Controller
     /**
      * Update the status of the specified resource in storage.
      */
-    public function updateStatus(\App\Http\Requests\Cms\Shop\Shop\UpdateShopStatusRequest $request, Shop $shop, \App\Actions\Cms\Shop\Shop\UpdateShopStatusAction $action)
+    public function updateStatus(UpdateShopStatusRequest $request, Shop $shop, UpdateShopStatusAction $action)
     {
-        Gate::authorize('update'.$this->resource);
+        Gate::authorize('validate'.$this->resource);
 
         $action->handle($shop, $request->validated());
 
