@@ -45,7 +45,6 @@ const columns = [
         label: 'Status',
         key: 'status',
         sortable: true,
-        class: 'text-center',
     },
     {
         label: 'Created At',

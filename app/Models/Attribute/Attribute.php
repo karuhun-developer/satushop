@@ -33,4 +33,9 @@ class Attribute extends Model
     {
         return $this->hasMany(AttributeOption::class, 'attribute_id')->orderBy('order');
     }
+
+    public function productAttributes()
+    {
+        return $this->hasMany(\App\Models\Catalog\ProductAttribute::class, 'attribute_id');
+    }
 }

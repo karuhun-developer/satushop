@@ -27,4 +27,9 @@ class AttributeOption extends Model
     {
         return $this->belongsTo(Attribute::class, 'attribute_id');
     }
+
+    public function productAttributes()
+    {
+        return $this->hasMany(\App\Models\Catalog\ProductAttribute::class, 'attribute_option_id');
+    }
 }
