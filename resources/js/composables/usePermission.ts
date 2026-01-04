@@ -9,5 +9,12 @@ export function usePermission() {
         return permissions.includes(name);
     };
 
-    return { hasPermission };
+    const hasRoles = (roles: string[]) => {
+        const page = usePage<AppPageProps>();
+        const userRoles = page.props.auth?.user?.roles || [];
+
+        return roles.some((role) => userRoles.includes(role));
+    };
+
+    return { hasPermission, hasRoles };
 }

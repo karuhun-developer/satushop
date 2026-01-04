@@ -30,3 +30,18 @@ export const ValidationEnum: Enum = {
         label: 'Rejected',
     },
 };
+
+export const ProductTypeEnum: Enum = {
+    SIMPLE: {
+        value: 'simple',
+        label: 'Simple Product',
+    },
+    VARIABLE: {
+        value: 'variable',
+        label: 'Variable Product',
+    },
+    BUNDLE: {
+        value: 'bundle',
+        label: 'Bundle Product',
+    },
+};

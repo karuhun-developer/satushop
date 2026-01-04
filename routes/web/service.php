@@ -9,4 +9,7 @@ Route::group([
 ], function () {
     // Raja Ongkir Service
     require 'service/rajaongkir.php';
+
+    // Shop Service
+    require 'service/shop.php';
 });

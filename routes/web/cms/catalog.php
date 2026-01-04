@@ -8,5 +8,6 @@ Route::group([
 ], function () {
     Route::resources([
         'product-categories' => App\Http\Controllers\Cms\Catalog\ProductCategoryController::class,
+        'products' => App\Http\Controllers\Cms\Catalog\ProductController::class,
     ]);
 });

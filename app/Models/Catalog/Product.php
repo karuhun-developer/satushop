@@ -13,6 +13,10 @@ class Product extends Model
         'sku',
     ];
 
+    protected $casts = [
+        'type' => \App\Enums\ProductTypeEnum::class,
+    ];
+
     public function shop()
     {
         return $this->belongsTo(\App\Models\Shop\Shop::class);
@@ -40,6 +44,11 @@ class Product extends Model
 
     public function attributes()
     {
-        return $this->hasMany(\App\Models\Catalog\ProductAttribute::class);
+        return $this->hasMany(ProductAttribute::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(ProductFlatCategory::class);
     }
 }

@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Requests\Cms\Catalog\Product;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateProductRequest extends FormRequest
+{
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'product_id' => 'required|exists:products,id',
+            'sku' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'short_description' => 'nullable|string',
+            'description' => 'nullable|string',
+            'meta_data' => 'nullable|array',
+            'price' => 'required|numeric|min:0',
+            'special_price' => 'nullable|numeric|min:0|lt:price',
+            'special_price_start' => 'nullable|date',
+            'special_price_end' => 'nullable|date|after_or_equal:special_price_start',
+            'weight' => 'nullable|numeric|min:0',
+            'length' => 'nullable|numeric|min:0',
+            'width' => 'nullable|numeric|min:0',
+            'height' => 'nullable|numeric|min:0',
+            'diameter' => 'nullable|numeric|min:0',
+            'visible_individually' => 'required|boolean',
+
+            'translations' => 'required|array',
+            'translations.*.name' => 'nullable|string|max:255',
+            'translations.*.short_description' => 'nullable|string',
+            'translations.*.description' => 'nullable|string',
+
+            'attributes' => 'nullable|array',
+            'attributes.*.attribute_option_id' => 'required|exists:attribute_options,id',
+
+            'categories' => 'nullable|array',
+            'categories.*' => 'required|exists:product_categories,id',
+
+            'variants' => 'nullable|array',
+            'variants.*' => 'required|exists:product_flats,id',
+        ];
+    }
+}
