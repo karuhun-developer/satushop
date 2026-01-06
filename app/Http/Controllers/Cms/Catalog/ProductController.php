@@ -110,7 +110,7 @@ class ProductController extends Controller
         Gate::authorize('update'.$this->resource);
 
         // Load image url
-        $product->load('translations', 'categories', 'media');
+        $product->load('translations', 'categories', 'media', 'variants');
         $product->image_1 = $product->getFirstMediaUrl('image_1');
         $product->image_2 = $product->getFirstMediaUrl('image_2');
         $product->image_3 = $product->getFirstMediaUrl('image_3');
@@ -123,6 +123,11 @@ class ProductController extends Controller
             'productCategories' => ProductCategory::where('status', true)->get(),
             'flat' => $product,
             'product' => $product->product,
+            'siblingFlats' => ProductFlat::where('product_id', $product->product_id)
+                ->where('id', '!=', $product->id)
+                ->get(),
+            'currentVariantIds' => $product->variants()->pluck('variant_product_id'),
+            'currentCategoryIds' => $product->categories()->pluck('product_category_id'),
         ]);
     }
 

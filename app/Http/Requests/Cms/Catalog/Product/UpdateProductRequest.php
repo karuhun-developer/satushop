@@ -35,9 +35,6 @@ class UpdateProductRequest extends FormRequest
             'translations.*.short_description' => 'nullable|string',
             'translations.*.description' => 'nullable|string',
 
-            'attributes' => 'nullable|array',
-            'attributes.*.attribute_option_id' => 'required|exists:attribute_options,id',
-
             'categories' => 'nullable|array',
             'categories.*' => 'required|exists:product_categories,id',
 

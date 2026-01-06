@@ -51,6 +51,18 @@ class UpdateProductAction
             }
         }
 
+        // Save variants
+        if (isset($data['variants'])) {
+            $product->variants()->delete();
+
+            foreach ($data['variants'] as $variantId) {
+                $product->variants()->create([
+                    'product_id' => $product->product_id,
+                    'variant_product_id' => $variantId,
+                ]);
+            }
+        }
+
         return $product->update($data);
     }
 }

@@ -74,6 +74,7 @@ export interface ProductFlatDataItem {
     image_10?: string;
     product?: ProductDataItem;
     categories?: ProductFlatCategoryDataItem[];
+    variants?: ProductVariantDataItem[];
     translations?: ProductFlatTranslationDataItem[];
 }
 

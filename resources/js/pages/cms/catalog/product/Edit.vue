@@ -32,6 +32,9 @@ const props = defineProps<{
     flat: ProductFlatDataItem;
     productCategories: ProductCategoryDataItem[];
     locales: LocaleDataItem[];
+    siblingFlats: ProductFlatDataItem[];
+    currentCategoryIds: number[];
+    currentVariantIds: number[];
 }>();
 
 const { toast } = useSwal();
@@ -55,9 +58,10 @@ if (props.flat.translations) {
     });
 }
 
-const selectedCategoryIds = ref<number[]>(
-    props.flat.categories?.map((c) => c.product_category_id) || [],
-);
+const selectedCategoryIds = ref<number[]>(props.currentCategoryIds || []);
+
+const selectedVariantIds = ref<number[]>(props.currentVariantIds || []);
+const visibleIndividually = ref(Number(props.flat.visible_individually));
 </script>
 
 <template>
@@ -309,6 +313,7 @@ const selectedCategoryIds = ref<number[]>(
                 </InputDescription>
                 <Select
                     name="visible_individually"
+                    v-model="visibleIndividually"
                     :default-value="Number(flat.visible_individually)"
                 >
                     <SelectTrigger id="status" class="mt-1 w-full">
@@ -371,6 +376,52 @@ const selectedCategoryIds = ref<number[]>(
                 </template>
             </div>
 
+            <div
+                class="grid gap-2"
+                v-if="
+                    ['variable', 'bundle'].includes(product.type) &&
+                    visibleIndividually == 1
+                "
+            >
+                <Label>Product Variants</Label>
+                <InputDescription>
+                    Select visible individual products to be variants of this
+                    product.
+                </InputDescription>
+                <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
+                    <div
+                        v-for="sibling in siblingFlats"
+                        :key="sibling.id"
+                        class="mt-2 flex items-center gap-2"
+                    >
+                        <Checkbox
+                            :id="`variant-${sibling.id}`"
+                            name="variants[]"
+                            :value="sibling.id"
+                            :default-value="
+                                selectedVariantIds.includes(sibling.id)
+                            "
+                            @update:checked="
+                                (checked: boolean) => {
+                                    if (checked) {
+                                        selectedVariantIds.push(sibling.id);
+                                    } else {
+                                        selectedVariantIds =
+                                            selectedVariantIds.filter(
+                                                (id) => id !== sibling.id,
+                                            );
+                                    }
+                                }
+                            "
+                        />
+                        <Label :for="`variant-${sibling.id}`">
+                            {{ sibling.name }} ({{ sibling.sku }})
+                        </Label>
+                    </div>
+                </div>
+                <InputError :message="errors.variants" />
+            </div>
+
             <div class="grid gap-2">
                 <Label>Categories</Label>
                 <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
@@ -383,9 +434,11 @@ const selectedCategoryIds = ref<number[]>(
                             :id="`category-${category.id}`"
                             name="categories[]"
                             :value="category.id"
-                            :checked="selectedCategoryIds.includes(category.id)"
+                            :default-value="
+                                selectedCategoryIds.includes(category.id)
+                            "
                             @update:checked="
-                                (checked) => {
+                                (checked: boolean) => {
                                     if (checked) {
                                         selectedCategoryIds.push(category.id);
                                     } else {
