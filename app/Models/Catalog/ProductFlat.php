@@ -38,7 +38,6 @@ class ProductFlat extends Model implements HasMedia
         'meta_data' => 'array',
         'special_price_start' => 'datetime',
         'special_price_end' => 'datetime',
-        'price' => 'float',
         'special_price' => 'float',
         'weight' => 'float',
         'length' => 'float',
@@ -87,5 +86,10 @@ class ProductFlat extends Model implements HasMedia
     public function translations()
     {
         return $this->hasMany(\App\Models\Catalog\ProductFlatTranslation::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(ProductFlatCategory::class);
     }
 }

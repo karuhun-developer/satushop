@@ -81,7 +81,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 <ModalLink
                     :href="create().url"
                     slideover
-                    max-width="4xl"
                     v-if="hasPermission('create' + resource)"
                 >
                     <Button>
@@ -117,7 +116,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <ModalLink
                             :href="edit({ product_category: row.slug }).url"
                             slideover
-                            max-width="4xl"
                             v-if="hasPermission('update' + resource)"
                         >
                             <Button variant="ghost" size="icon">

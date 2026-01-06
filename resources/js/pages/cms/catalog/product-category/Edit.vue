@@ -114,7 +114,7 @@ if (props.productCategory.translations) {
                                 >Name ({{ locale.name }})</Label
                             >
                             <InputDescription>
-                                The shop name in
+                                The product category name in
                                 {{ locale.name }}.
                             </InputDescription>
                             <Input
@@ -145,7 +145,7 @@ if (props.productCategory.translations) {
                                 >Description ({{ locale.name }})</Label
                             >
                             <InputDescription>
-                                The shop description in
+                                The product category description in
                                 {{ locale.name }}.
                             </InputDescription>
                             <Input

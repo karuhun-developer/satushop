@@ -38,9 +38,7 @@ export function useRajaongkirQuery() {
                 const id = unref(provinceId);
                 if (!id) return [];
 
-                const res = await axios.get(
-                    `/service/rajaongkir/cities/${id}`,
-                );
+                const res = await axios.get(`/service/rajaongkir/cities/${id}`);
                 if (res.status !== 200) {
                     throw new Error('Failed to fetch cities');
                 }

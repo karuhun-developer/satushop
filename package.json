@@ -46,7 +46,6 @@
         "leaflet": "^1.9.4",
         "leaflet-geosearch": "^4.2.2",
         "lucide-vue-next": "^0.468.0",
-        "maska": "^3.2.0",
         "reka-ui": "^2.7.0",
         "sweetalert2": "^11.26.10",
         "tailwind-merge": "^3.2.0",

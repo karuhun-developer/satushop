@@ -99,7 +99,7 @@ const descriptions = ref<Record<string, string>>({});
                                 >Name ({{ locale.name }})</Label
                             >
                             <InputDescription>
-                                The shop name in
+                                The product category name in
                                 {{ locale.name }}.
                             </InputDescription>
                             <Input
@@ -129,7 +129,7 @@ const descriptions = ref<Record<string, string>>({});
                                 >Description ({{ locale.name }})</Label
                             >
                             <InputDescription>
-                                The shop description in
+                                The product category description in
                                 {{ locale.name }}.
                             </InputDescription>
                             <Input

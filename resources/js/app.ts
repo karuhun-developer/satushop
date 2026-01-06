@@ -1,7 +1,6 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import { putConfig, renderApp } from '@inertiaui/modal-vue';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { vMaska } from 'maska/vue';
 import type { DefineComponent } from 'vue';
 import { createApp } from 'vue';
 import '../css/app.css';
@@ -21,7 +20,6 @@ createInertiaApp({
         createApp({ render: renderApp(App, props) })
             .use(plugin)
             .use(VueQueryPlugin)
-            .directive('maska', vMaska)
             .mount(el);
     },
     progress: {
@@ -43,7 +41,7 @@ putConfig({
     slideover: {
         closeButton: true,
         closeExplicitly: false,
-        maxWidth: 'md',
+        maxWidth: '4xl',
         paddingClasses: 'p-4 sm:p-6',
         panelClasses: 'bg-(--background) min-h-screen border-l',
         position: 'right',

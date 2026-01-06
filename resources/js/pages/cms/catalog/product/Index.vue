@@ -84,7 +84,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 <ModalLink
                     :href="create().url"
                     slideover
-                    max-width="4xl"
                     v-if="hasPermission('create' + resource)"
                 >
                     <Button>
@@ -131,7 +130,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <div class="font-semibold text-destructive">
                                 {{
                                     new Intl.NumberFormat('id-ID', {
-                                        style: 'currency',
                                         currency: 'IDR',
                                     }).format(row.price)
                                 }}
@@ -173,7 +171,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <ModalLink
                             :href="edit({ product: row.slug }).url"
                             slideover
-                            max-width="4xl"
+                            max-width="7xl"
                             v-if="hasPermission('update' + resource)"
                         >
                             <Button variant="ghost" size="icon">

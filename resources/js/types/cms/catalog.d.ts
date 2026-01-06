@@ -48,7 +48,7 @@ export interface ProductFlatDataItem {
     short_description?: string;
     description?: string;
     meta_data?: Record<string, unknown>;
-    price: number;
+    price: number | string;
     special_price?: number;
     special_price_start?: string;
     special_price_end?: string;
@@ -73,6 +73,7 @@ export interface ProductFlatDataItem {
     image_9?: string;
     image_10?: string;
     product?: ProductDataItem;
+    categories?: ProductFlatCategoryDataItem[];
     translations?: ProductFlatTranslationDataItem[];
 }
 

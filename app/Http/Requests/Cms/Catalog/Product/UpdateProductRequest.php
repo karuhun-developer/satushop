@@ -14,13 +14,12 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|exists:products,id',
             'sku' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
             'meta_data' => 'nullable|array',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required',
             'special_price' => 'nullable|numeric|min:0|lt:price',
             'special_price_start' => 'nullable|date',
             'special_price_end' => 'nullable|date|after_or_equal:special_price_start',
@@ -44,6 +43,15 @@ class UpdateProductRequest extends FormRequest
 
             'variants' => 'nullable|array',
             'variants.*' => 'required|exists:product_flats,id',
+
+            'image_1' => 'nullable|image|max:5120', // 5MB
+            'image_2' => 'nullable|image|max:5120', // 5MB
+            'image_3' => 'nullable|image|max:5120', // 5MB
+            'image_4' => 'nullable|image|max:5120', // 5MB
+            'image_5' => 'nullable|image|max:5120', // 5MB
+            'image_6' => 'nullable|image|max:5120', // 5MB
+            'image_7' => 'nullable|image|max:5120', // 5MB
+            'image_8' => 'nullable|image|max:5120', // 5MB
         ];
     }
 }

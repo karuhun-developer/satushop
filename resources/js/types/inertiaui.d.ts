@@ -6,4 +6,5 @@ declare module '@inertiaui/modal-vue' {
     export function renderApp(component: any, props: any): any;
     const plugin: Plugin;
     export default plugin;
+    export function visitModal(url: any, config: any): void;
 }

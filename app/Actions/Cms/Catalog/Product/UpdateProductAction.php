@@ -15,6 +15,8 @@ class UpdateProductAction
      */
     public function handle(ProductFlat $product, array $data): bool
     {
+        $data['price'] = currencyToNumber($data['price']);
+
         // Translations
         foreach ($data['translations'] as $locale => $translation) {
             $product->translations()->updateOrCreate(
@@ -22,17 +24,31 @@ class UpdateProductAction
                 [
                     'name' => $translation['name'] ?? null,
                     'description' => $translation['description'] ?? null,
+                    'short_description' => $translation['short_description'] ?? null,
                 ]
             );
         }
 
         // Save media
-        if ($data['image'] ?? null instanceof UploadedFile) {
-            $this->saveMedia(
-                model: $product,
-                file: $data['image'],
-                collection: 'image',
-            );
+        for ($i = 1; $i <= 8; $i++) {
+            if ($data['image_'.$i] ?? null instanceof UploadedFile) {
+                $this->saveMedia(
+                    model: $product,
+                    file: $data['image_'.$i],
+                    collection: 'image_'.$i,
+                );
+            }
+        }
+
+        // Save categories
+        if (isset($data['categories'])) {
+            $product->categories()->delete();
+
+            foreach ($data['categories'] as $categoryId) {
+                $product->categories()->create([
+                    'product_category_id' => $categoryId,
+                ]);
+            }
         }
 
         return $product->update($data);

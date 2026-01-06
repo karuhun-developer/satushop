@@ -63,8 +63,8 @@ class HandleInertiaRequests extends Middleware
                     return Menu::with('subMenu')->whereIn('role_id', $role)->orderBy('order', 'asc')->get();
                 }) : [],
             ],
-            'defaultLocale' => defaultLocale(),
-            'defaultCurrency' => defaultCurrency(),
+            'defaultLocale' => fn () => defaultLocale(),
+            'defaultCurrency' => fn () => defaultCurrency(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'csrfToken' => csrf_token(),
         ];

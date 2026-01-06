@@ -83,6 +83,7 @@ watch(selectedShop, (val) => {
                             icon: 'success',
                             title: 'Product created.',
                         });
+
                         close();
                     }
                 "

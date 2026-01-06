@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class ProductFlatCategory extends Model
 {
     protected $fillable = [
-        'product_id',
+        'product_flat_id',
         'product_category_id',
     ];
 
-    public function product()
+    public function productFlat()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(ProductFlat::class);
     }
 
     public function productCategory()

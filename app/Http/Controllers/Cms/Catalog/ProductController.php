@@ -10,6 +10,7 @@ use App\Http\Requests\Cms\Catalog\Product\StoreProductRequest;
 use App\Http\Requests\Cms\Catalog\Product\UpdateProductRequest;
 use App\Models\Attribute\AttributeFamily;
 use App\Models\Catalog\Product;
+use App\Models\Catalog\ProductCategory;
 use App\Models\Catalog\ProductFlat;
 use App\Traits\WithGetFilterData;
 use Illuminate\Http\Request;
@@ -72,7 +73,7 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         Gate::authorize('create'.$this->resource);
 
@@ -109,12 +110,19 @@ class ProductController extends Controller
         Gate::authorize('update'.$this->resource);
 
         // Load image url
-        $product->image = $product->getFirstMediaUrl('image');
-        $product->load('translations');
+        $product->load('translations', 'categories', 'media');
+        $product->image_1 = $product->getFirstMediaUrl('image_1');
+        $product->image_2 = $product->getFirstMediaUrl('image_2');
+        $product->image_3 = $product->getFirstMediaUrl('image_3');
+        $product->image_4 = $product->getFirstMediaUrl('image_4');
+        $product->image_5 = $product->getFirstMediaUrl('image_5');
+        $product->image_6 = $product->getFirstMediaUrl('image_6');
 
         return inertia('cms/catalog/product/Edit', [
             'locales' => getLocales(),
-            'product' => $product,
+            'productCategories' => ProductCategory::where('status', true)->get(),
+            'flat' => $product,
+            'product' => $product->product,
         ]);
     }
 

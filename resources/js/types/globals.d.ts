@@ -24,3 +24,14 @@ declare module 'vue' {
         $headManager: ReturnType<typeof createHeadManager>;
     }
 }
+
+declare module '@inertiajs/core' {
+    export interface InertiaConfig {
+        flashDataType: {
+            toast?: {
+                type: 'success' | 'error';
+                message: string;
+            };
+        };
+    }
+}
