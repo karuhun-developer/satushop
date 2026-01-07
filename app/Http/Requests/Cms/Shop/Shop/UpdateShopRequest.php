@@ -25,6 +25,8 @@ class UpdateShopRequest extends FormRequest
             'rajaongkir_province_id' => 'required|integer',
             'rajaongkir_city_id' => 'required|integer',
             'rajaongkir_district_id' => 'required|integer',
+            'meta_data' => 'nullable|array',
+            'meta_data.*' => 'nullable|string',
             'logo' => 'nullable|image|max:2048', // 2MB
             'banner' => 'nullable|image|max:5120', // 5MB
             'status' => 'required|in:'.implode(',', ValidationEnum::toArray()),

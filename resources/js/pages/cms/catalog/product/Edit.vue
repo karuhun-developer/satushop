@@ -14,6 +14,7 @@ import SelectContent from '@/components/ui/select/SelectContent.vue';
 import SelectItem from '@/components/ui/select/SelectItem.vue';
 import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
+import Textarea from '@/components/ui/textarea/Textarea.vue';
 import { useSwal } from '@/composables/useSwal';
 import {
     ProductCategoryDataItem,
@@ -330,6 +331,51 @@ const visibleIndividually = ref(Number(props.flat.visible_individually));
                     </SelectContent>
                 </Select>
                 <InputError :message="errors.status" />
+            </div>
+
+            <div class="grid gap-2">
+                <Label for="meta_title">Meta Title</Label>
+                <InputDescription>
+                    The meta title for SEO purposes.
+                </InputDescription>
+                <Input
+                    id="meta_title"
+                    name="meta_data[meta_title]"
+                    type="text"
+                    class="mt-1 block w-full"
+                    :default-value="flat.meta_data?.meta_title || ''"
+                />
+                <InputError :message="errors.meta_data" />
+            </div>
+
+            <div class="grid gap-2">
+                <Label for="meta_description">Meta Description</Label>
+                <InputDescription>
+                    The meta description for SEO purposes.
+                </InputDescription>
+                <Textarea
+                    id="meta_description"
+                    name="meta_data[meta_description]"
+                    class="mt-1 block w-full"
+                    rows="3"
+                    :default-value="flat.meta_data?.meta_description || ''"
+                />
+                <InputError :message="errors.meta_data" />
+            </div>
+
+            <div class="grid gap-2">
+                <Label for="meta_keywords">Meta Keywords</Label>
+                <InputDescription>
+                    The meta keywords for SEO purposes (comma separated).
+                </InputDescription>
+                <Input
+                    id="meta_keywords"
+                    name="meta_data[meta_keywords]"
+                    type="text"
+                    class="mt-1 block w-full"
+                    :default-value="flat.meta_data?.meta_keywords || ''"
+                />
+                <InputError :message="errors.meta_data" />
             </div>
 
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">

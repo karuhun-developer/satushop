@@ -47,7 +47,8 @@ export interface ProductFlatDataItem {
     slug: string;
     short_description?: string;
     description?: string;
-    meta_data?: Record<string, unknown>;
+    // meta_data?: Record<string, unknown>;
+    meta_data?: any;
     price: number | string;
     special_price?: number;
     special_price_start?: string;
