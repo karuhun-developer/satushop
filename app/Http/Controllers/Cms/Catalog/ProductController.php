@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cms\Catalog;
 use App\Actions\Cms\Catalog\Product\DeleteProductAction;
 use App\Actions\Cms\Catalog\Product\StoreProductAction;
 use App\Actions\Cms\Catalog\Product\UpdateProductAction;
+use App\Enums\ProductTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cms\Catalog\Product\StoreProductRequest;
 use App\Http\Requests\Cms\Catalog\Product\UpdateProductRequest;
@@ -119,14 +120,27 @@ class ProductController extends Controller
         $product->image_5 = $product->getFirstMediaUrl('image_5');
         $product->image_6 = $product->getFirstMediaUrl('image_6');
 
+        // Variant
+        $siblingFlats = $product->type === ProductTypeEnum::VARIABLE
+            ? ProductFlat::where('product_id', $product->product_id)
+                ->with('media')
+                ->where('id', '!=', $product->id)
+                ->get()
+            : collect();
+
+        // Load image url for sibling flats
+        $siblingFlats->map(function ($item) {
+            $item->image_1 = $item->getFirstMediaUrl('image_1');
+
+            return $item;
+        });
+
         return inertia('cms/catalog/product/Edit', [
             'locales' => getLocales(),
             'productCategories' => ProductCategory::where('status', true)->get(),
             'flat' => $product,
             'product' => $product->product,
-            'siblingFlats' => ProductFlat::where('product_id', $product->product_id)
-                ->where('id', '!=', $product->id)
-                ->get(),
+            'siblingFlats' => $siblingFlats,
             'currentVariantIds' => $product->variants()->pluck('variant_product_id'),
             'currentCategoryIds' => $product->categories()->pluck('product_category_id'),
         ]);

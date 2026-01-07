@@ -47,6 +47,7 @@ class ProductFlat extends Model implements HasMedia
         'diameter' => 'float',
         'stock' => 'integer',
         'visible_individually' => 'boolean',
+        'type' => \App\Enums\ProductTypeEnum::class,
     ];
 
     public function getRouteKeyName()

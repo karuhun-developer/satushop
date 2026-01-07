@@ -23,7 +23,7 @@ class StoreProductAction
             case ProductTypeEnum::SIMPLE:
                 $productFlat = ProductFlat::create([
                     'product_id' => $product->id,
-                    'sku' => 'sample-sku-'.$product->id,
+                    'sku' => 'sku-'.$product->id,
                     'name' => 'New Product '.$product->id,
                     'meta_data' => [
                         'meta_title' => 'New Product '.$product->id,
@@ -32,12 +32,13 @@ class StoreProductAction
                     ],
                     'visible_individually' => true,
                     'type' => ProductTypeEnum::SIMPLE,
+                    'stock' => 0,
                 ]);
                 break;
             case ProductTypeEnum::VARIABLE:
                 $productFlat = ProductFlat::create([
                     'product_id' => $product->id,
-                    'sku' => 'sample-sku-'.$product->id,
+                    'sku' => 'sku-'.$product->id,
                     'name' => 'New Product '.$product->id,
                     'meta_data' => [
                         'meta_title' => 'New Product '.$product->id,
@@ -53,7 +54,7 @@ class StoreProductAction
                 // Handle downloadable product specific logic here
                 $productFlat = ProductFlat::create([
                     'product_id' => $product->id,
-                    'sku' => 'sample-sku-'.$product->id,
+                    'sku' => 'sku-'.$product->id,
                     'name' => 'New Product '.$product->id,
                     'meta_data' => [
                         'meta_title' => 'New Product '.$product->id,
@@ -62,6 +63,7 @@ class StoreProductAction
                     ],
                     'visible_individually' => true,
                     'type' => ProductTypeEnum::BUNDLE,
+                    'stock' => 0,
                 ]);
                 break;
         }
@@ -88,6 +90,7 @@ class StoreProductAction
                         'meta_description' => '',
                     ],
                     'visible_individually' => false,
+                    'stock' => 0,
                     'type' => ProductTypeEnum::SIMPLE,
                 ]);
             }

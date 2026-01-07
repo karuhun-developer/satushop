@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Http/Controllers/Cms/Catalog/ProductController';
+import ProductVariantSelector from '@/components/cms/catalog/product/ProductVariantSelector.vue';
 import ImageUploadPreview from '@/components/ImageUploadPreview.vue';
 import InputDescription from '@/components/InputDescription.vue';
 import InputError from '@/components/InputError.vue';
@@ -378,47 +379,17 @@ const visibleIndividually = ref(Number(props.flat.visible_individually));
 
             <div
                 class="grid gap-2"
-                v-if="
-                    ['variable', 'bundle'].includes(product.type) &&
-                    visibleIndividually == 1
-                "
+                v-if="['variable', 'bundle'].includes(flat.type)"
             >
                 <Label>Product Variants</Label>
                 <InputDescription>
                     Select visible individual products to be variants of this
                     product.
                 </InputDescription>
-                <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
-                    <div
-                        v-for="sibling in siblingFlats"
-                        :key="sibling.id"
-                        class="mt-2 flex items-center gap-2"
-                    >
-                        <Checkbox
-                            :id="`variant-${sibling.id}`"
-                            name="variants[]"
-                            :value="sibling.id"
-                            :default-value="
-                                selectedVariantIds.includes(sibling.id)
-                            "
-                            @update:checked="
-                                (checked: boolean) => {
-                                    if (checked) {
-                                        selectedVariantIds.push(sibling.id);
-                                    } else {
-                                        selectedVariantIds =
-                                            selectedVariantIds.filter(
-                                                (id) => id !== sibling.id,
-                                            );
-                                    }
-                                }
-                            "
-                        />
-                        <Label :for="`variant-${sibling.id}`">
-                            {{ sibling.name }} ({{ sibling.sku }})
-                        </Label>
-                    </div>
-                </div>
+                <ProductVariantSelector
+                    :current-variants="selectedVariantIds"
+                    :siblings="siblingFlats"
+                />
                 <InputError :message="errors.variants" />
             </div>
 

@@ -22,7 +22,7 @@ class UpdateProductAction
             $product->translations()->updateOrCreate(
                 ['locale' => $locale],
                 [
-                    'name' => $translation['name'] ?? null,
+                    'name' => $translation['name'] ?? '',
                     'description' => $translation['description'] ?? null,
                     'short_description' => $translation['short_description'] ?? null,
                 ]
