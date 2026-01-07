@@ -1,45 +1,61 @@
-# Laravel Inertia Vue Starter Kit
+# Laravel Inertia E-Commerce
 
-A robust, modern starter kit built with **Laravel 12**, **Inertia.js v2**, and **Vue 3**. Designed for rapid development of CMS and management applications with a focus on developer experience and UI quality.
+A modern, full-featured e-commerce application built with **Laravel 12**, **Inertia.js v2**, **Vue 3**, and **Tailwind CSS v4**.
 
 ## 🚀 Features
 
-- **Authentication & Security**
-    - Powered by **Laravel Fortify** for backend authentication logic.
-    - **Laravel Sanctum** for API token management.
-    - Secure user management with password updates.
+### ✅ Implemented Features
 
-- **Role-Based Access Control (RBAC)**
-    - Integrated with **Spatie Laravel Permission**.
-    - **Visual Management UI**: create roles, assign extensive permissions, and manage user access with ease.
+**Product Catalog Management**
+- **Product Management**: Comprehensive CRUD for products, including variant management (simple, variable, bundle types).
+- **Category Management**: Organize products into hierarchical categories.
+- **Attribute Management**: Define custom attributes (color, size, material, etc.) for products.
+- **Attribute Families**: Group attributes into reusable families for different product types.
 
-- **Dynamic Menu Builder**
-    - **Menu Management**: Create and reorder sidebar menus.
-    - **Nested Sub-Menus**: Support for multi-level navigation structures managed directly from the dashboard.
+**Shop & Outlet Management**
+- **Shop/Outlet Management**: Manage physical or digital store locations and details.
 
-- **Modern Frontend Stack**
-    - **Vue 3** (Composition API) with **TypeScript**.
-    - **Inertia.js v2**: Build modern single-page apps using classic server-side routing.
-    - **Tailwind CSS v4**: The latest utility-first CSS framework.
-    - **Shadcn-vue**: Accessible, customizable UI components built on **Radix Vue**.
-    - **Lucide Icons**: Beautiful, consistent icon set.
+**User & Access Control**
+- **User Management**: Administer user accounts.
+- **Role & Permission Management**: Granular access control using Spatie Permissions. Create roles and assign specific permissions via a visual interface.
 
-- **Developer Experience**
-    - **Laravel Wayfinder**: Type-safe route generation for Inertia.
-    - **Prettier & ESLint**: configured for consistent code style.
-    - **Activity Logging**: powered by `spatie/laravel-activitylog`.
+**System Administration**
+- **Dynamic Menu Builder**: Create and reorder sidebar menus and nested sub-menus directly from the dashboard.
+- **Activity Logging**: Track detailed user activities and system changes.
+- **Localization & Currency**:
+    - **Multi-Locale**: Comprehensive support for multiple languages across the platform.
+    - **Multi-Currency**: Handle pricing and transactions in various currencies.
+
+---
+
+### 🚧 Work In Progress (WIP)
+
+**Frontend & Customer Experience**
+- [ ] **Homepage**: Modern, responsive landing page.
+- [ ] **Shopping Cart**: Real-time cart management.
+- [ ] **Checkout Flow**: Secure and streamlined checkout process.
+- [ ] **Voucher Management**: Discount codes and promotional campaigns.
+
+**Integrations**
+- [ ] **Payment Gateways**:
+    - Midtrans
+    - Tripay
+    - Xendit
+    - Doku
+- [ ] **Shipping**:
+    - Raja Ongkir Integration for real-time shipping rates.
+
+---
 
 ## 📦 Tech Stack
 
-- **Backend**: PHP 8.2+, Laravel 12
-- **Frontend**: Vue 3, Inertia.js
-- **Styling**: Tailwind CSS v4
-- **Database**: SQLite (default), MySQL, or PostgreSQL
-- **Package Manager**: Composer (PHP), NPM (JS)
+- **Backend**: PHP 8.4+, Laravel 12
+- **Frontend**: Vue 3, Inertia.js v2
+- **Styling**: Tailwind CSS v4, Shadcn-vue
+- **Database**: mysql
+- **Tools**: Laravel Wayfinder, Pest PHP, Pint
 
 ## 🛠 Installation
-
-Follow these steps to set up the project locally.
 
 ### Prerequisites
 
@@ -52,78 +68,37 @@ Follow these steps to set up the project locally.
 1.  **Clone the Repository**
 
     ```bash
-    git clone
-    cd template-laravel-inertia
+    git clone <repository-url>
+    cd <project-directory>
     ```
 
-2.  **Install PHP Dependencies**
+2.  **Install Dependencies**
 
     ```bash
     composer install
+    npm install
     ```
 
-3.  **Setup Environment Variables**
-    Copy the example entry file and configure your database settings.
+3.  **Setup Environment**
 
     ```bash
     cp .env.example .env
-    ```
-
-4.  **Generate Application Key**
-
-    ```bash
     php artisan key:generate
     ```
 
-5.  **Run Database Migrations**
+4.  **Database Setup**
+
+    Configure your `.env` with your database credentials, then run:
 
     ```bash
     php artisan migrate --seed
     ```
 
-6.  **Install Node Dependencies**
-
-    ```bash
-    npm install
-    ```
-
-7.  **Start Development Server**
+5.  **Run Development Server**
 
     ```bash
     php artisan serve
-    ```
-
-    ```bash
     npm run dev
     ```
 
     Access the application at `http://localhost:8000`.
-
-## 📚 Key Packages
-
-### Backend (Composer)
-
-| Package                          | Version | Description                                 |
-| :------------------------------- | :------ | :------------------------------------------ |
-| `laravel/framework`              | ^12.0   | The core Laravel framework.                 |
-| `inertiajs/inertia-laravel`      | ^2.0    | Server-side adapter for Inertia.js.         |
-| `laravel/fortify`                | ^1.30   | Backend-only authentication implementation. |
-| `laravel/sanctum`                | ^4.0    | API token authentication system.            |
-| `spatie/laravel-permission`      | ^6.24   | Associate users with roles and permissions. |
-| `spatie/laravel-activitylog`     | ^4.10   | Log activity inside your Laravel app.       |
-| `spatie/laravel-medialibrary`    | ^11.17  | Associate files with Eloquent models.       |
-| `laravel/wayfinder`              | ^0.1.9  | Helper for generating typed routes for JS.  |
-| `rap2hpoutre/laravel-log-viewer` | ^2.5    | UI for viewing Laravel logs.                |
-
-### Frontend (NPM)
-
-| Package                | Version | Description                                 |
-| :--------------------- | :------ | :------------------------------------------ |
-| `@inertiajs/vue3`      | ^2.1.0  | Vue 3 adapter for Inertia.js.               |
-| `vue`                  | ^3.5.13 | The progressive JavaScript framework.       |
-| `tailwindcss`          | ^4.1.1  | Utility-first CSS framework.                |
-| `reka-ui`              | ^2.6.1  | Unstyled, accessible UI primitives for Vue. |
-| `@inertiaui/modal-vue` | ^1.0.0  | Modal handling for Inertia apps.            |
-| `lucide-vue-next`      | ^0.468  | Icon library.                               |
-| `dayjs`                | ^1.11   | Fast 2kB immutable date time library.       |
-| `@tanstack/vue-table`  | ^8.21   | Headless UI for building powerful tables.   |
