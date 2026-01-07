@@ -31,6 +31,7 @@ class StoreProductAction
                         'meta_description' => 'This is a new product.',
                     ],
                     'visible_individually' => true,
+                    'type' => ProductTypeEnum::SIMPLE,
                 ]);
                 break;
             case ProductTypeEnum::VARIABLE:
@@ -44,6 +45,7 @@ class StoreProductAction
                         'meta_description' => 'This is a new product.',
                     ],
                     'visible_individually' => true,
+                    'type' => ProductTypeEnum::VARIABLE,
                 ]);
                 $this->createVariantProducts($product);
                 break;
@@ -59,6 +61,7 @@ class StoreProductAction
                         'meta_description' => 'This is a new product.',
                     ],
                     'visible_individually' => true,
+                    'type' => ProductTypeEnum::BUNDLE,
                 ]);
                 break;
         }
@@ -85,6 +88,7 @@ class StoreProductAction
                         'meta_description' => '',
                     ],
                     'visible_individually' => false,
+                    'type' => ProductTypeEnum::SIMPLE,
                 ]);
             }
         }

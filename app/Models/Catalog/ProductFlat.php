@@ -30,6 +30,7 @@ class ProductFlat extends Model implements HasMedia
         'height',
         'diameter',
         'stock',
+        'type',
         'rating',
         'visible_individually',
     ];

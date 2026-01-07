@@ -58,6 +58,7 @@ export interface ProductFlatDataItem {
     height?: number;
     diameter?: number;
     stock?: number;
+    type: string;
     rating: number;
     visible_individually: boolean;
     created_at: string;

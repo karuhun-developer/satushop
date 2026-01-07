@@ -159,7 +159,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             </span>
                         </div>
                         <div class="text-sm text-muted-foreground">
-                            Type: {{ row.product?.type ?? 'N/A' }}
+                            Type: {{ row.type ?? 'N/A' }}
                         </div>
                     </div>
                 </template>

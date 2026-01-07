@@ -12,7 +12,7 @@ class DeleteProductAction
      */
     public function handle(ProductFlat $product): ?bool
     {
-        if ($product->product->type === ProductTypeEnum::VARIABLE && $product->visible_individually) {
+        if ($product->type === ProductTypeEnum::VARIABLE) {
             return $product->product->delete();
         }
 

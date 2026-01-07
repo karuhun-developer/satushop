@@ -44,6 +44,7 @@ class ProductController extends Controller
                 'slug',
                 'price',
                 'stock',
+                'type',
             ],
             order: $order,
             orderBy: $orderBy,
