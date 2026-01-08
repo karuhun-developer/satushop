@@ -6,6 +6,7 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import QuilTextEditor from '@/components/ui/quil-editor/QuilTextEditor.vue';
 import Select from '@/components/ui/select/Select.vue';
 import SelectContent from '@/components/ui/select/SelectContent.vue';
 import SelectItem from '@/components/ui/select/SelectItem.vue';
@@ -17,8 +18,6 @@ import { ProductCategoryDataItem } from '@/types/cms/catalog';
 import { LocaleDataItem } from '@/types/cms/core';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
-import { QuillEditor } from '@vueup/vue-quill';
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { Save } from 'lucide-vue-next';
 import { ref } from 'vue';
 
@@ -155,10 +154,7 @@ if (props.productCategory.translations) {
                                 :default-value="descriptions[locale.code]"
                                 :value="descriptions[locale.code]"
                             />
-                            <QuillEditor
-                                toolbar="minimal"
-                                theme="snow"
-                                content-type="html"
+                            <QuilTextEditor
                                 :content="descriptions[locale.code]"
                                 @update:content="
                                     (value) => {

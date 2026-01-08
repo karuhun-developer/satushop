@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Http/Controllers/Cms/Catalog/ProductController';
+import { editModal } from '@/actions/App/Http/Controllers/Cms/Catalog/ProductController';
 import Button from '@/components/ui/button/Button.vue';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ProductFlatDataItem } from '@/types/cms/catalog';
@@ -139,7 +139,7 @@ const selectedVariantIds = ref<number[]>([...props.currentVariants]);
                     </td>
                     <td class="px-4 py-2 text-right align-top">
                         <ModalLink
-                            :href="edit({ product: variant.slug }).url"
+                            :href="editModal({ product: variant.slug }).url"
                             max-width="7xl"
                         >
                             <Button variant="ghost" size="icon">

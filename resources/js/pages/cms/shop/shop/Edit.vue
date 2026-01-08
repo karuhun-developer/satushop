@@ -7,6 +7,7 @@ import MapLocationSelector from '@/components/MapLocationSelector.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import QuilTextEditor from '@/components/ui/quil-editor/QuilTextEditor.vue';
 import Select from '@/components/ui/select/Select.vue';
 import SelectContent from '@/components/ui/select/SelectContent.vue';
 import SelectItem from '@/components/ui/select/SelectItem.vue';
@@ -19,8 +20,6 @@ import { LocaleDataItem } from '@/types/cms/core';
 import { ShopDataItem } from '@/types/cms/shop';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
-import { QuillEditor } from '@vueup/vue-quill';
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { Save } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
 
@@ -242,11 +241,9 @@ watch(selectedCity, (newValue, oldValue) => {
                                 :name="`translations[${locale.code}][description]`"
                                 type="hidden"
                                 :default-value="descriptions[locale.code]"
+                                :value="descriptions[locale.code]"
                             />
-                            <QuillEditor
-                                toolbar="minimal"
-                                theme="snow"
-                                content-type="html"
+                            <QuilTextEditor
                                 :content="descriptions[locale.code]"
                                 @update:content="
                                     (value) => {

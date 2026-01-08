@@ -12,7 +12,7 @@ import { useSwal } from '@/composables/useSwal';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { PaginationItem, type BreadcrumbItem } from '@/types';
 import { ProductFlatDataItem } from '@/types/cms/catalog';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { ModalLink } from '@inertiaui/modal-vue';
 import dayjs from 'dayjs';
 import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
@@ -168,16 +168,14 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 </template>
                 <template #actions="{ row }">
                     <div class="flex items-center justify-center gap-2">
-                        <ModalLink
+                        <Link
                             :href="edit({ product: row.slug }).url"
-                            slideover
-                            max-width="7xl"
                             v-if="hasPermission('update' + resource)"
                         >
                             <Button variant="ghost" size="icon">
                                 <Pencil class="h-4 w-4" />
                             </Button>
-                        </ModalLink>
+                        </Link>
                         <Button
                             variant="ghost"
                             size="icon"

@@ -107,7 +107,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProductFlat $product)
+    public function edit(ProductFlat $product, $modal = false)
     {
         Gate::authorize('update'.$this->resource);
 
@@ -135,7 +135,13 @@ class ProductController extends Controller
             return $item;
         });
 
-        return inertia('cms/catalog/product/Edit', [
+        // Modal or page view
+        $view = 'cms/catalog/product/Edit';
+        if ($modal) {
+            $view = 'cms/catalog/product/EditModal';
+        }
+
+        return inertia($view, [
             'locales' => getLocales(),
             'productCategories' => ProductCategory::where('status', true)->get(),
             'flat' => $product,
@@ -144,6 +150,14 @@ class ProductController extends Controller
             'currentVariantIds' => $product->variants()->pluck('variant_product_id'),
             'currentCategoryIds' => $product->categories()->pluck('product_category_id'),
         ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function editModal(ProductFlat $product)
+    {
+        return $this->edit($product, true);
     }
 
     /**

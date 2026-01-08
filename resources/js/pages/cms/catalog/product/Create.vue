@@ -25,7 +25,6 @@ import { ProductTypeEnum } from '@/enums/global.enum';
 import { AttributeFamilyDataItem } from '@/types/cms/attribute';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { Save } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
 
