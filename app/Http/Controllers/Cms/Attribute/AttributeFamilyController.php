@@ -8,6 +8,7 @@ use App\Actions\Cms\Attribute\AttributeFamily\UpdateAttributeFamilyAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cms\Attribute\AttributeFamily\StoreAttributeFamilyRequest;
 use App\Http\Requests\Cms\Attribute\AttributeFamily\UpdateAttributeFamilyRequest;
+use App\Models\Attribute\Attribute;
 use App\Models\Attribute\AttributeFamily;
 use App\Traits\WithGetFilterData;
 use Illuminate\Http\Request;
@@ -63,7 +64,9 @@ class AttributeFamilyController extends Controller
     {
         Gate::authorize('create'.$this->resource);
 
-        return inertia('cms/attribute/attribute-family/Create');
+        return inertia('cms/attribute/attribute-family/Create', [
+            'attributes' => Attribute::where('status', true)->get(),
+        ]);
     }
 
     /**
@@ -94,7 +97,8 @@ class AttributeFamilyController extends Controller
         Gate::authorize('update'.$this->resource);
 
         return inertia('cms/attribute/attribute-family/Edit', [
-            'attributeFamily' => $attributeFamily,
+            'attributes' => Attribute::where('status', true)->get(),
+            'attributeFamily' => $attributeFamily->load('groups'),
         ]);
     }
 

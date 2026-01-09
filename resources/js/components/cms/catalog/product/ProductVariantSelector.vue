@@ -80,7 +80,7 @@ const selectedVariantIds = ref<number[]>([...props.currentVariants]);
                                 selectedVariantIds.includes(variant.id)
                             "
                             @update:model-value="
-                                (value: boolean) =>
+                                (value) =>
                                     value
                                         ? selectedVariantIds.push(variant.id)
                                         : selectedVariantIds.splice(

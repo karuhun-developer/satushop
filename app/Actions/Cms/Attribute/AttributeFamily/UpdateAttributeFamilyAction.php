@@ -11,6 +11,14 @@ class UpdateAttributeFamilyAction
      */
     public function handle(AttributeFamily $attributeFamily, array $data): bool
     {
+        // Attach attributes if provided
+        $attributeFamily->groups()->delete();
+        foreach ($data['attributes'] ?? [] as $attributeId) {
+            $attributeFamily->groups()->create([
+                'attribute_id' => $attributeId,
+            ]);
+        }
+
         return $attributeFamily->update($data);
     }
 }

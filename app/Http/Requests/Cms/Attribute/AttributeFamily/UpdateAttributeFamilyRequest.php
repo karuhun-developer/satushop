@@ -16,6 +16,8 @@ class UpdateAttributeFamilyRequest extends FormRequest
         return [
             'code' => 'required|string|max:255|unique:attribute_families,code,'.$this->attribute_family->id,
             'name' => 'required|string|max:255',
+            'attributes' => 'nullable|array',
+            'attributes.*' => 'integer|exists:attributes,id',
             'status' => 'required|boolean',
         ];
     }

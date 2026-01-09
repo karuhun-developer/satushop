@@ -3,6 +3,7 @@ import { store } from '@/actions/App/Http/Controllers/Cms/Attribute/AttributeFam
 import InputDescription from '@/components/InputDescription.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
+import Checkbox from '@/components/ui/checkbox/Checkbox.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Select from '@/components/ui/select/Select.vue';
@@ -12,11 +13,20 @@ import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import { useSwal } from '@/composables/useSwal';
 import { CommonStatusEnum } from '@/enums/global.enum';
+import { AttributeDataItem } from '@/types/cms/attribute';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
 import { Save } from 'lucide-vue-next';
+import { ref } from 'vue';
+
+defineProps<{
+    attributes: AttributeDataItem[];
+}>();
 
 const { toast } = useSwal();
+
+// Selected attribute IDs
+const selectedAttributeIds = ref<number[]>([]);
 </script>
 
 <template>
@@ -76,6 +86,46 @@ const { toast } = useSwal();
                         autofocus
                     />
                     <InputError :message="errors.name" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label>Attributes </Label>
+                    <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
+                        <div
+                            v-for="attribute in attributes"
+                            :key="attribute.id"
+                            class="mt-2 flex items-center gap-2"
+                        >
+                            <Checkbox
+                                :id="`attribute-${attribute.id}`"
+                                :value="attribute.id"
+                                @update:model-value="
+                                    (value) =>
+                                        value
+                                            ? selectedAttributeIds.push(
+                                                  attribute.id,
+                                              )
+                                            : selectedAttributeIds.splice(
+                                                  selectedAttributeIds.indexOf(
+                                                      attribute.id,
+                                                  ),
+                                                  1,
+                                              )
+                                "
+                            />
+                            <Label :for="`attribute-${attribute.id}`">
+                                {{ attribute.name }}
+                            </Label>
+                        </div>
+                    </div>
+                    <input
+                        v-for="id in selectedAttributeIds"
+                        :key="id"
+                        type="hidden"
+                        name="attributes[]"
+                        :value="id"
+                    />
+                    <InputError :message="errors.attributes" />
                 </div>
 
                 <div class="grid gap-2">

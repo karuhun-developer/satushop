@@ -74,16 +74,16 @@ class StoreProductAction
     private function createVariantProducts(Product $product): void
     {
         // Loop through attributes in the attribute family
-        foreach ($product->attributeFamily->attributes as $attribute) {
+        foreach ($product->attributeFamily->groups->load('attribute') as $group) {
             // Loop through options
-            foreach ($attribute->options as $option) {
+            foreach ($group->attribute->options as $option) {
                 // Create flat product entry
                 $product->flats()->create([
                     'product_id' => $product->id,
-                    'sku' => 'variant-sku-'.$product->sku.'-'.$attribute->code.'-'.$option->name,
-                    'name' => 'Variant Product '.$product->sku.' '.$attribute->name.' '.$option->name,
-                    'short_description' => 'This is a variant product of '.$product->sku.' with '.$attribute->name.' '.$option->name,
-                    'description' => 'Detailed description for variant product of '.$product->sku.' with '.$attribute->name.' '.$option->name,
+                    'sku' => 'variant-sku-'.$product->sku.'-'.$group->attribute->code.'-'.$option->name,
+                    'name' => 'Variant Product '.$product->sku.' '.$group->attribute->name.' '.$option->name,
+                    'short_description' => 'This is a variant product of '.$product->sku.' with '.$group->attribute->name.' '.$option->name,
+                    'description' => 'Detailed description for variant product of '.$product->sku.' with '.$group->attribute->name.' '.$option->name,
                     'meta_data' => [
                         'meta_title' => '',
                         'meta_keywords' => '',

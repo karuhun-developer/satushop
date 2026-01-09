@@ -16,6 +16,8 @@ class StoreAttributeFamilyRequest extends FormRequest
         return [
             'code' => 'required|string|max:255|unique:attribute_families,code',
             'name' => 'required|string|max:255',
+            'attributes' => 'nullable|array',
+            'attributes.*' => 'integer|exists:attributes,id',
             'status' => 'required|boolean',
         ];
     }

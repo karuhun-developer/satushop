@@ -13,10 +13,7 @@ import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import { useSwal } from '@/composables/useSwal';
 import { CommonStatusEnum } from '@/enums/global.enum';
-import {
-    AttributeDataItem,
-    AttributeFamilyDataItem,
-} from '@/types/cms/attribute';
+import { AttributeDataItem } from '@/types/cms/attribute';
 import { LocaleDataItem } from '@/types/cms/core';
 import { Form } from '@inertiajs/vue3';
 import { Modal } from '@inertiaui/modal-vue';
@@ -25,7 +22,6 @@ import { ref } from 'vue';
 
 const props = defineProps<{
     attribute: AttributeDataItem;
-    attributeFamily: AttributeFamilyDataItem[];
     locales: LocaleDataItem[];
 }>();
 
@@ -115,44 +111,7 @@ const translations = ref(
                 "
                 v-slot="{ errors, processing }"
             >
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                    <div class="grid gap-2">
-                        <Label for="attribute_family_id"
-                            >Attribute Family</Label
-                        >
-                        <InputDescription>
-                            Select the attribute family this attribute belongs
-                            to.
-                        </InputDescription>
-                        <Select
-                            name="attribute_family_id"
-                            :default-value="attribute.attribute_family_id"
-                        >
-                            <SelectTrigger
-                                id="attribute_family_id"
-                                class="mt-1 w-full"
-                            >
-                                <SelectValue
-                                    placeholder="Select attribute family"
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem :value="null">
-                                    -- All Families --
-                                </SelectItem>
-                                <template
-                                    v-for="family in attributeFamily"
-                                    :key="family.id"
-                                >
-                                    <SelectItem :value="family.id">
-                                        {{ family.name }} ({{ family.code }})
-                                    </SelectItem>
-                                </template>
-                            </SelectContent>
-                        </Select>
-                        <InputError :message="errors.status" />
-                    </div>
-
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div class="grid gap-2">
                         <Label for="code">Code</Label>
                         <InputDescription>

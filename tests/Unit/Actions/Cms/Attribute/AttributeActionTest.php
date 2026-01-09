@@ -4,17 +4,14 @@ use App\Actions\Cms\Attribute\Attribute\DeleteAttributeAction;
 use App\Actions\Cms\Attribute\Attribute\StoreAttributeAction;
 use App\Actions\Cms\Attribute\Attribute\UpdateAttributeAction;
 use App\Models\Attribute\Attribute;
-use App\Models\Attribute\AttributeFamily;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
 test('store attribute action creates an attribute with translations and options', function () {
-    $family = AttributeFamily::create(['code' => 'fam', 'name' => 'Fam', 'status' => true]);
     $action = new StoreAttributeAction;
     $data = [
-        'attribute_family_id' => $family->id,
         'code' => 'color',
         'name' => 'Color', // Added name
         'type' => 'select',
@@ -47,10 +44,8 @@ test('store attribute action creates an attribute with translations and options'
 });
 
 test('update attribute action updates an attribute with translations', function () {
-    $family = AttributeFamily::create(['code' => 'fam', 'name' => 'Fam', 'status' => true]);
     $actionStore = new StoreAttributeAction;
     $dataStore = [
-        'attribute_family_id' => $family->id,
         'code' => 'color',
         'name' => 'Color', // Added name
         'type' => 'select',
@@ -66,7 +61,6 @@ test('update attribute action updates an attribute with translations', function 
 
     $action = new UpdateAttributeAction;
     $data = [
-        'attribute_family_id' => $family->id,
         'code' => 'colour',
         'name' => 'Colour', // Added name
         'type' => 'select',
@@ -85,9 +79,7 @@ test('update attribute action updates an attribute with translations', function 
 });
 
 test('delete attribute action deletes an attribute', function () {
-    $family = AttributeFamily::create(['code' => 'fam', 'name' => 'Fam', 'status' => true]);
     $attribute = Attribute::create([
-        'attribute_family_id' => $family->id,
         'code' => 'del',
         'name' => 'Delete Me',
         // 'order' and 'status' might have defaults or be nullable, but good to set if not sure.

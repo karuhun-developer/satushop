@@ -99,18 +99,18 @@ class SuperadminMenuSeeder extends Seeder
         ]);
         $attribute->subMenu()->create([
             'role_id' => $this->role->id,
-            'name' => 'Attribute Families',
-            'url' => '/cms/attribute/attribute-families',
+            'name' => 'Attributes',
+            'url' => '/cms/attribute/attributes',
             'order' => 1,
-            'active_pattern' => '/cms/attribute/attribute-families',
+            'active_pattern' => '/cms/attribute/attributes',
             'status' => 1,
         ]);
         $attribute->subMenu()->create([
             'role_id' => $this->role->id,
-            'name' => 'Attributes',
-            'url' => '/cms/attribute/attributes',
+            'name' => 'Attribute Families',
+            'url' => '/cms/attribute/attribute-families',
             'order' => 2,
-            'active_pattern' => '/cms/attribute/attributes',
+            'active_pattern' => '/cms/attribute/attribute-families',
             'status' => 1,
         ]);
     }

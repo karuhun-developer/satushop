@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Attribute\Attribute;
 use App\Models\Attribute\AttributeFamily;
+use App\Models\Attribute\AttributeGroup;
 use Illuminate\Database\Seeder;
 
 class AttributeSeeder extends Seeder
@@ -22,56 +24,40 @@ class AttributeSeeder extends Seeder
             'name' => 'Clothing',
         ]);
 
-        // Attribute: Color for Electronics
-        $colorAttribute = $electronicsFamily->attributes()->firstOrCreate([
-            'code' => 'electronics-color',
+        // Attribute: Color
+        $color = Attribute::firstOrCreate([
+            'code' => 'color',
             'name' => 'Color',
             'order' => 1,
             'status' => true,
         ]);
-        $colorAttribute->translations()->firstOrCreate([
+        $color->translations()->firstOrCreate([
             'locale' => 'en',
             'name' => 'Color',
         ]);
-        $colorAttribute->translations()->firstOrCreate([
+        $color->translations()->firstOrCreate([
             'locale' => 'id',
             'name' => 'Warna',
         ]);
 
-        // Attribute: Size for Electronics
-        $sizeAttribute = $electronicsFamily->attributes()->firstOrCreate([
-            'code' => 'electronics-size',
+        // Attribute: Size
+        $size = Attribute::firstOrCreate([
+            'code' => 'size',
             'name' => 'Size',
             'order' => 2,
             'status' => true,
         ]);
-        $sizeAttribute->translations()->firstOrCreate([
+        $size->translations()->firstOrCreate([
             'locale' => 'en',
             'name' => 'Size',
         ]);
-        $sizeAttribute->translations()->firstOrCreate([
+        $size->translations()->firstOrCreate([
             'locale' => 'id',
             'name' => 'Ukuran',
         ]);
 
-        // Attribute: Color for Clothing
-        $clothingColorAttribute = $clothingFamily->attributes()->firstOrCreate([
-            'code' => 'color-clothing',
-            'name' => 'Color',
-            'order' => 1,
-            'status' => true,
-        ]);
-        $clothingColorAttribute->translations()->firstOrCreate([
-            'locale' => 'en',
-            'name' => 'Color',
-        ]);
-        $clothingColorAttribute->translations()->firstOrCreate([
-            'locale' => 'id',
-            'name' => 'Warna',
-        ]);
-
         // Color options (Red, Blue, Green)
-        $redOption = $colorAttribute->options()->firstOrCreate([
+        $redOption = $color->options()->firstOrCreate([
             'name' => 'Red',
             'order' => 1,
             'status' => true,
@@ -85,7 +71,7 @@ class AttributeSeeder extends Seeder
             'name' => 'Merah',
         ]);
 
-        $blueOption = $colorAttribute->options()->firstOrCreate([
+        $blueOption = $color->options()->firstOrCreate([
             'name' => 'Blue',
             'order' => 2,
             'status' => true,
@@ -99,7 +85,7 @@ class AttributeSeeder extends Seeder
             'name' => 'Biru',
         ]);
 
-        $greenOption = $colorAttribute->options()->firstOrCreate([
+        $greenOption = $color->options()->firstOrCreate([
             'name' => 'Green',
             'order' => 3,
             'status' => true,
@@ -114,7 +100,7 @@ class AttributeSeeder extends Seeder
         ]);
 
         // Size options (Small, Medium, Large)
-        $smallOption = $sizeAttribute->options()->firstOrCreate([
+        $smallOption = $size->options()->firstOrCreate([
             'name' => 'Small',
             'order' => 1,
             'status' => true,
@@ -128,7 +114,7 @@ class AttributeSeeder extends Seeder
             'name' => 'Kecil',
         ]);
 
-        $mediumOption = $sizeAttribute->options()->firstOrCreate([
+        $mediumOption = $size->options()->firstOrCreate([
             'name' => 'Medium',
             'order' => 2,
             'status' => true,
@@ -142,7 +128,7 @@ class AttributeSeeder extends Seeder
             'name' => 'Sedang',
         ]);
 
-        $largeOption = $sizeAttribute->options()->firstOrCreate([
+        $largeOption = $size->options()->firstOrCreate([
             'name' => 'Large',
             'order' => 3,
             'status' => true,
@@ -156,33 +142,18 @@ class AttributeSeeder extends Seeder
             'name' => 'Besar',
         ]);
 
-        // Clothing color options (Black, White)
-        $blackOption = $clothingColorAttribute->options()->firstOrCreate([
-            'name' => 'Black',
-            'order' => 1,
-            'status' => true,
+        // Link attributes to families via attribute groups
+        AttributeGroup::firstOrCreate([
+            'attribute_family_id' => $clothingFamily->id,
+            'attribute_id' => $color->id,
         ]);
-        $blackOption->translations()->firstOrCreate([
-            'locale' => 'en',
-            'name' => 'Black',
+        AttributeGroup::firstOrCreate([
+            'attribute_family_id' => $clothingFamily->id,
+            'attribute_id' => $size->id,
         ]);
-        $blackOption->translations()->firstOrCreate([
-            'locale' => 'id',
-            'name' => 'Hitam',
-        ]);
-
-        $whiteOption = $clothingColorAttribute->options()->firstOrCreate([
-            'name' => 'White',
-            'order' => 2,
-            'status' => true,
-        ]);
-        $whiteOption->translations()->firstOrCreate([
-            'locale' => 'en',
-            'name' => 'White',
-        ]);
-        $whiteOption->translations()->firstOrCreate([
-            'locale' => 'id',
-            'name' => 'Putih',
+        AttributeGroup::firstOrCreate([
+            'attribute_family_id' => $electronicsFamily->id,
+            'attribute_id' => $color->id,
         ]);
     }
 }

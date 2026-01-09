@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Cms\Attribute\Attribute\StoreAttributeRequest;
 use App\Http\Requests\Cms\Attribute\Attribute\UpdateAttributeRequest;
 use App\Models\Attribute\Attribute;
-use App\Models\Attribute\AttributeFamily;
 use App\Traits\WithGetFilterData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -28,33 +27,18 @@ class AttributeController extends Controller
         Gate::authorize('view'.$this->resource);
 
         $order = $request?->order ?? 'asc';
-        $orderBy = $request?->orderBy ?? 'attributes.order';
+        $orderBy = $request?->orderBy ?? 'order';
         $paginate = $request?->paginate ?? 10;
         $searchBySpecific = $request?->searchBySpecific ?? '';
         $search = $request?->search ?? '';
 
-        // Query
-        $model = Attribute::query()
-            ->join('attribute_families', 'attributes.attribute_family_id', '=', 'attribute_families.id')
-            ->when($request->has('attribute_family_id') && ! empty($request->attribute_family_id), function ($q) use ($request) {
-                $q->where('attributes.attribute_family_id', $request->attribute_family_id);
-            })
-            ->select(
-                'attributes.*',
-                'attribute_families.name as attribute_family_name',
-                'attribute_families.code as attribute_family_code',
-            );
-
         $model = $this->getDataWithFilter(
-            model: $model,
+            model: new Attribute,
             searchBy: [
-                'attribute_families.name',
-                'attribute_families.code',
-                'attributes.code',
-                'attributes.name',
-                'attributes.order',
-                'attributes.status',
-                'attributes.created_at',
+                'code',
+                'name',
+                'order',
+                'status',
             ],
             order: $order,
             orderBy: $orderBy,
@@ -64,7 +48,6 @@ class AttributeController extends Controller
         );
 
         return inertia('cms/attribute/attribute/Index', [
-            'attributeFamily' => AttributeFamily::all(),
             'data' => $model,
             'order' => $order,
             'orderBy' => $orderBy,
@@ -83,7 +66,6 @@ class AttributeController extends Controller
         Gate::authorize('create'.$this->resource);
 
         return inertia('cms/attribute/attribute/Create', [
-            'attributeFamily' => AttributeFamily::all(),
             'locales' => getLocales(),
         ]);
     }
@@ -116,7 +98,6 @@ class AttributeController extends Controller
         Gate::authorize('update'.$this->resource);
 
         return inertia('cms/attribute/attribute/Edit', [
-            'attributeFamily' => AttributeFamily::all(),
             'locales' => getLocales(),
             'attribute' => $attribute->load('translations', 'options.translations'),
         ]);

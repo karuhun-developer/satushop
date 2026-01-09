@@ -5,22 +5,20 @@ export interface AttributeFamilyDataItem {
     status: boolean;
     created_at: string;
     updated_at: string;
+    groups?: AttributeGroupItem[];
 }
 
 export interface AttributeDataItem {
     id: number;
-    attribute_family_id: number;
-    attribute_family_name?: string;
-    attribute_family_code?: string;
     code: string;
     name: string;
     order: number;
     status: boolean;
     created_at: string;
     updated_at: string;
-    family?: AttributeFamilyDataItem;
     translations?: AttributeDataTranslationItem[];
     options?: AttributeOptionDataItem[];
+    groups?: AttributeGroupItem[];
 }
 
 export interface AttributeDataTranslationItem {
@@ -53,4 +51,14 @@ export interface AttributeOptionDataTranslationItem {
     created_at: string;
     updated_at: string;
     attribute_option?: AttributeOptionDataItem;
+}
+
+export interface AttributeGroupItem {
+    id: number;
+    attribute_family_id: number;
+    attribute_id: number;
+    created_at: string;
+    updated_at: string;
+    attribute?: AttributeDataItem;
+    attribute_family?: AttributeFamilyDataItem;
 }

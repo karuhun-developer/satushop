@@ -16,8 +16,8 @@ class AttributeFamily extends Model
         'status' => 'boolean',
     ];
 
-    public function attributes()
+    public function groups()
     {
-        return $this->hasMany(Attribute::class, 'attribute_family_id')->orderBy('order');
+        return $this->hasMany(AttributeGroup::class, 'attribute_family_id');
     }
 }

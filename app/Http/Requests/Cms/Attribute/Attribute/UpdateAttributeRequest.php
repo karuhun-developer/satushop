@@ -14,7 +14,6 @@ class UpdateAttributeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'attribute_family_id' => 'required|exists:attribute_families,id',
             'code' => 'required|string|max:255|unique:attributes,code,'.$this->attribute->id,
             'name' => 'required|string|max:255',
             'order' => 'required|integer',

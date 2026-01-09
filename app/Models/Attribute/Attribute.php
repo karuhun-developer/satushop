@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Attribute extends Model
 {
     protected $fillable = [
-        'attribute_family_id',
         'code',
         'name',
         'order',
@@ -24,14 +23,14 @@ class Attribute extends Model
         return $this->hasMany(AttributeTranslation::class);
     }
 
-    public function family()
-    {
-        return $this->belongsTo(AttributeFamily::class, 'attribute_family_id');
-    }
-
     public function options()
     {
         return $this->hasMany(AttributeOption::class, 'attribute_id')->orderBy('order');
+    }
+
+    public function groups()
+    {
+        return $this->hasMany(AttributeGroup::class, 'attribute_id');
     }
 
     public function productAttributes()

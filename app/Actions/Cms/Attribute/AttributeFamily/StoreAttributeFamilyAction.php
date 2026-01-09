@@ -11,6 +11,15 @@ class StoreAttributeFamilyAction
      */
     public function handle(array $data): AttributeFamily
     {
-        return AttributeFamily::create($data);
+        $attributeFamily = AttributeFamily::create($data);
+
+        // Attach attributes if provided
+        foreach ($data['attributes'] ?? [] as $attributeId) {
+            $attributeFamily->groups()->create([
+                'attribute_id' => $attributeId,
+            ]);
+        }
+
+        return $attributeFamily;
     }
 }

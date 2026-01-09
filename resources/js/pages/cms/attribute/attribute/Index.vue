@@ -7,20 +7,11 @@ import {
 import Heading from '@/components/Heading.vue';
 import ResourceTable from '@/components/ResourceTable.vue';
 import { Button } from '@/components/ui/button';
-import Select from '@/components/ui/select/Select.vue';
-import SelectContent from '@/components/ui/select/SelectContent.vue';
-import SelectItem from '@/components/ui/select/SelectItem.vue';
-import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
-import SelectValue from '@/components/ui/select/SelectValue.vue';
-import { useFilter } from '@/composables/useFilter';
 import { usePermission } from '@/composables/usePermission';
 import { useSwal } from '@/composables/useSwal';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { PaginationItem, type BreadcrumbItem } from '@/types';
-import {
-    AttributeDataItem,
-    AttributeFamilyDataItem,
-} from '@/types/cms/attribute';
+import { AttributeDataItem } from '@/types/cms/attribute';
 import { Head, router } from '@inertiajs/vue3';
 import { ModalLink } from '@inertiaui/modal-vue';
 import dayjs from 'dayjs';
@@ -28,7 +19,6 @@ import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 
 defineProps<{
     data: PaginationItem<AttributeDataItem>;
-    attributeFamily: AttributeFamilyDataItem[];
     orderBy?: string;
     order?: 'asc' | 'desc';
     search?: string;
@@ -38,33 +28,27 @@ defineProps<{
 
 const { confirm, toast } = useSwal();
 const { hasPermission } = usePermission();
-const { updateParams } = useFilter();
 
 const title = 'Attributes';
 const description =
     'Manage the attributes used to define product characteristics.';
 
 const columns = [
-    {
-        label: 'Attribute Family',
-        key: 'attribute_families.name',
-        sortable: true,
-    },
-    { label: 'Name', key: 'attributes.name', sortable: true },
+    { label: 'Name', key: 'name', sortable: true },
     {
         label: 'Order',
-        key: 'attributes.order',
+        key: 'order',
         sortable: true,
     },
     {
         label: 'Status',
-        key: 'attributes.status',
+        key: 'status',
         sortable: true,
         class: 'text-center',
     },
     {
         label: 'Created At',
-        key: 'attributes.created_at',
+        key: 'created_at',
         sortable: true,
     },
     {
@@ -106,39 +90,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     </Button>
                 </ModalLink>
             </div>
-            <div class="flex flex-col gap-4">
-                <!-- Filter attributes by family -->
-                <div class="flex flex-col gap-2">
-                    <span class="text-sm font-medium">Filter by Family:</span>
-                    <Select
-                        @update:model-value="
-                            (v) =>
-                                updateParams({
-                                    attribute_family_id: v || null,
-                                })
-                        "
-                    >
-                        <SelectTrigger id="family-filter" class="w-56">
-                            <SelectValue
-                                placeholder="Select attribute family"
-                            />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem :value="null">
-                                -- All Families --
-                            </SelectItem>
-                            <template
-                                v-for="family in attributeFamily"
-                                :key="family.id"
-                            >
-                                <SelectItem :value="family.id">
-                                    {{ family.name }} ({{ family.code }})
-                                </SelectItem>
-                            </template>
-                        </SelectContent>
-                    </Select>
-                </div>
-            </div>
             <ResourceTable
                 :data="data"
                 :columns="columns"
@@ -147,28 +98,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 :search="search"
                 :paginate="paginate"
             >
-                <template #attribute_families.name="{ row }">
-                    <div class="flex flex-col gap-1">
-                        <span class="font-medium">{{
-                            row.attribute_family_name
-                        }}</span>
-                        <span class="text-sm text-muted-foreground">{{
-                            row.attribute_family_code
-                        }}</span>
-                    </div>
-                </template>
-                <template #attributes.name="{ row }">
-                    <div class="flex flex-col gap-1">
-                        <span class="font-medium">{{ row.name }}</span>
-                        <span class="text-sm text-muted-foreground">{{
-                            row.code
-                        }}</span>
-                    </div>
-                </template>
-                <template #attributes.order="{ row }">
-                    {{ row.order }}
-                </template>
-                <template #attributes.status="{ row }">
+                <template #status="{ row }">
                     <span
                         :class="{
                             'rounded-full px-2 py-1 text-sm font-medium': true,
@@ -179,7 +109,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         {{ row.status ? 'Active' : 'Inactive' }}
                     </span>
                 </template>
-                <template #attributes.created_at="{ row }">
+                <template #created_at="{ row }">
                     {{ dayjs(row.created_at).format('DD MMMM YYYY H:m:s') }}
                 </template>
                 <template #actions="{ row }">

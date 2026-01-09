@@ -400,32 +400,36 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         >
                             <Checkbox
                                 :id="`category-${category.id}`"
-                                name="categories[]"
                                 :value="category.id"
                                 :default-value="
                                     selectedCategoryIds.includes(category.id)
                                 "
-                                @update:checked="
-                                    (checked: boolean) => {
-                                        if (checked) {
-                                            selectedCategoryIds.push(
-                                                category.id,
-                                            );
-                                        } else {
-                                            selectedCategoryIds =
-                                                selectedCategoryIds.filter(
-                                                    (id) => id !== category.id,
-                                                );
-                                        }
-                                    }
+                                @update:model-value="
+                                    (value) =>
+                                        value
+                                            ? selectedCategoryIds.push(
+                                                  category.id,
+                                              )
+                                            : selectedCategoryIds.splice(
+                                                  selectedCategoryIds.indexOf(
+                                                      category.id,
+                                                  ),
+                                                  1,
+                                              )
                                 "
                             />
                             <Label :for="`category-${category.id}`">
                                 {{ category.name }}
                             </Label>
                         </div>
+                        <input
+                            v-for="id in selectedCategoryIds"
+                            :key="id"
+                            type="hidden"
+                            name="categories[]"
+                            :value="id"
+                        />
                     </div>
-                    <input type="hidden" name="_categories_present" value="1" />
                     <InputError :message="errors.categories" />
                 </div>
 
