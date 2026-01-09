@@ -75,14 +75,14 @@ const featuredProducts = [
 
     <ShopLayout>
         <!-- Hero Section -->
-        <section class="relative w-full bg-muted/20">
-            <div class="container mx-auto px-4 py-8 md:py-12">
-                <Carousel class="mx-auto w-full max-w-6xl">
+        <section class="relative w-full bg-background">
+            <div class="w-full">
+                <Carousel class="w-full">
                     <CarouselContent>
                         <!-- Slide 1 -->
                         <CarouselItem>
                             <div
-                                class="grid items-center gap-8 overflow-hidden rounded-3xl border bg-card shadow-sm md:grid-cols-2"
+                                class="grid items-center gap-0 overflow-hidden bg-card shadow-none md:grid-cols-2"
                             >
                                 <div class="space-y-6 p-8 md:p-12">
                                     <Badge class="px-3 py-1" variant="secondary"
@@ -114,9 +114,9 @@ const featuredProducts = [
                                         >
                                     </div>
                                 </div>
-                                <div class="relative h-[400px] w-full bg-muted">
+                                <div class="relative h-[500px] w-full bg-muted">
                                     <img
-                                        src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=800&h=800"
+                                        src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1920&h=800"
                                         alt="Hero Image"
                                         class="absolute inset-0 h-full w-full object-cover"
                                     />
@@ -126,7 +126,7 @@ const featuredProducts = [
                         <!-- Slide 2 (Mockup) -->
                         <CarouselItem>
                             <div
-                                class="grid items-center gap-8 overflow-hidden rounded-3xl border bg-card shadow-sm md:grid-cols-2"
+                                class="grid items-center gap-0 overflow-hidden bg-card shadow-none md:grid-cols-2"
                             >
                                 <div class="space-y-6 p-8 md:p-12">
                                     <Badge class="px-3 py-1" variant="secondary"
@@ -149,9 +149,9 @@ const featuredProducts = [
                                         >
                                     </div>
                                 </div>
-                                <div class="relative h-[400px] w-full bg-muted">
+                                <div class="relative h-[500px] w-full bg-muted">
                                     <img
-                                        src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800&h=800"
+                                        src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=1920&h=800"
                                         alt="Headphones"
                                         class="absolute inset-0 h-full w-full object-cover"
                                     />
