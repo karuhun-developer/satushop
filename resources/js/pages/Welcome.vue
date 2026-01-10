@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
-import { index as shopIndex, show as shopShow } from '@/routes/shop';
-import ShopLayout from '@/layouts/ShopLayout.vue';
-import { ArrowRight, Star } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,9 +6,12 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
 } from '@/components/ui/carousel';
+import ShopLayout from '@/layouts/ShopLayout.vue';
+import { index as shopIndex, show as shopShow } from '@/routes/shop';
+import { Head, Link } from '@inertiajs/vue3';
+import Autoplay from 'embla-carousel-autoplay';
+import { ArrowRight, Star } from 'lucide-vue-next';
 
 // Static Data
 const categories = [
@@ -77,23 +76,47 @@ const featuredProducts = [
         <!-- Hero Section -->
         <section class="relative w-full bg-background">
             <div class="w-full">
-                <Carousel class="w-full">
+                <Carousel
+                    class="w-full bg-black"
+                    :plugins="[
+                        Autoplay({
+                            delay: 10000,
+                        }),
+                    ]"
+                >
                     <CarouselContent>
                         <!-- Slide 1 -->
                         <CarouselItem>
                             <div
-                                class="grid items-center gap-0 overflow-hidden bg-card shadow-none md:grid-cols-2"
+                                class="relative h-[600px] w-full overflow-hidden"
                             >
-                                <div class="space-y-6 p-8 md:p-12">
-                                    <Badge class="px-3 py-1" variant="secondary"
-                                        >New Season</Badge
+                                <!-- Background Image -->
+                                <div class="absolute inset-0">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1920&h=1080"
+                                        alt="Hero Image"
+                                        class="h-full w-full object-cover"
+                                    />
+                                    <div
+                                        class="absolute inset-0 bg-black/40"
+                                    ></div>
+                                </div>
+                                <div
+                                    class="relative z-10 container mx-auto flex h-full flex-col items-start justify-center space-y-6 px-4 text-white"
+                                >
+                                    <Badge
+                                        class="w-fit border-white/20 bg-white/20 px-3 py-1 text-white backdrop-blur-sm hover:bg-white/30"
                                     >
+                                        New Season
+                                    </Badge>
                                     <h1
-                                        class="text-4xl font-extrabold tracking-tight text-foreground md:text-6xl"
+                                        class="max-w-3xl text-5xl font-extrabold tracking-tight md:text-7xl"
                                     >
                                         Summer Collection 2024
                                     </h1>
-                                    <p class="text-lg text-muted-foreground">
+                                    <p
+                                        class="max-w-2xl text-lg text-white/90 md:text-xl"
+                                    >
                                         Discover the latest trends in fashion
                                         and lifestyle. Premium quality for the
                                         modern individual.
@@ -102,42 +125,46 @@ const featuredProducts = [
                                         <Link :href="shopIndex.url()">
                                             <Button
                                                 size="lg"
-                                                class="rounded-full px-8"
-                                                >Shop Now</Button
+                                                class="rounded-full bg-white px-8 text-black hover:bg-white/90"
                                             >
+                                                Shop Now
+                                            </Button>
                                         </Link>
-                                        <Button
-                                            size="lg"
-                                            variant="outline"
-                                            class="rounded-full px-8"
-                                            >View Lookbook</Button
-                                        >
                                     </div>
-                                </div>
-                                <div class="relative h-[500px] w-full bg-muted">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1920&h=800"
-                                        alt="Hero Image"
-                                        class="absolute inset-0 h-full w-full object-cover"
-                                    />
                                 </div>
                             </div>
                         </CarouselItem>
                         <!-- Slide 2 (Mockup) -->
                         <CarouselItem>
                             <div
-                                class="grid items-center gap-0 overflow-hidden bg-card shadow-none md:grid-cols-2"
+                                class="relative h-[600px] w-full overflow-hidden"
                             >
-                                <div class="space-y-6 p-8 md:p-12">
-                                    <Badge class="px-3 py-1" variant="secondary"
-                                        >Tech Deals</Badge
+                                <div class="absolute inset-0 bg-black">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=1920&h=1080"
+                                        alt="Headphones"
+                                        class="h-full w-full object-cover opacity-80"
+                                    />
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent"
+                                    ></div>
+                                </div>
+                                <div
+                                    class="relative z-10 container mx-auto flex h-full flex-col items-start justify-center space-y-6 px-4 text-white"
+                                >
+                                    <Badge
+                                        class="w-fit border-none bg-primary px-3 py-1 text-primary-foreground"
                                     >
+                                        Tech Deals
+                                    </Badge>
                                     <h1
-                                        class="text-4xl font-extrabold tracking-tight text-foreground md:text-6xl"
+                                        class="max-w-3xl text-5xl font-extrabold tracking-tight md:text-7xl"
                                     >
                                         Next Gen Audio
                                     </h1>
-                                    <p class="text-lg text-muted-foreground">
+                                    <p
+                                        class="max-w-2xl text-lg text-white/90 md:text-xl"
+                                    >
                                         Experience sound like never before with
                                         our premium audio collection.
                                     </p>
@@ -145,22 +172,14 @@ const featuredProducts = [
                                         <Button
                                             size="lg"
                                             class="rounded-full px-8"
-                                            >Listen Now</Button
                                         >
+                                            Listen Now
+                                        </Button>
                                     </div>
-                                </div>
-                                <div class="relative h-[500px] w-full bg-muted">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=1920&h=800"
-                                        alt="Headphones"
-                                        class="absolute inset-0 h-full w-full object-cover"
-                                    />
                                 </div>
                             </div>
                         </CarouselItem>
                     </CarouselContent>
-                    <CarouselPrevious class="left-4" />
-                    <CarouselNext class="right-4" />
                 </Carousel>
             </div>
         </section>
@@ -244,9 +263,7 @@ const featuredProducts = [
                                 class="absolute right-0 bottom-4 left-0 translate-y-4 px-4 opacity-0 transition-opacity duration-300 group-hover:translate-y-0 group-hover:opacity-100"
                             >
                                 <Link
-                                    :href="
-                                        shopShow.url({ id: product.id })
-                                    "
+                                    :href="shopShow.url({ id: product.id })"
                                     class="w-full"
                                 >
                                     <Button
