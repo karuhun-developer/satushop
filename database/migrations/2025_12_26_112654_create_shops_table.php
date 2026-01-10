@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('postal_code', 20)->nullable();
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
-            $table->decimal('rating', 1, 2)->default(0.00); // Max 5.00
+            $table->decimal('rating', 3, 2)->default(0.00); // Max 5.00
             $table->unsignedInteger('total_reviews')->default(0);
             $table->unsignedBigInteger('rajaongkir_province_id')->nullable()->index();
             $table->unsignedBigInteger('rajaongkir_city_id')->nullable()->index();
