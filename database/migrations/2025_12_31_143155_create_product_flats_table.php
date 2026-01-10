@@ -30,7 +30,7 @@ return new class extends Migration
             $table->decimal('height', 12, 4)->default(0);
             $table->decimal('diameter', 12, 4)->default(0);
             $table->unsignedBigInteger('stock')->nullable();
-            $table->decimal('rating', 1, 2)->default(0);
+            $table->decimal('rating', 3, 2)->default(0);
             $table->boolean('visible_individually')->default(true);
             $table->timestamps();
         });
