@@ -8,8 +8,9 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
-import { Star, ShoppingCart } from 'lucide-vue-next';
+import { Star, ShoppingCart, ShoppingBag } from 'lucide-vue-next';
 import { EmptyState } from '@/components/ui/empty-state';
+import ProductCard from '@/components/ProductCard.vue';
 
 interface Product {
     id: number;
@@ -99,40 +100,12 @@ const filteredProducts = computed(() => {
 
                 <!-- Product Grid -->
                 <div class="md:col-span-3">
-                    <div v-if="filteredProducts.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                         <Card 
+                    <div v-if="filteredProducts.length > 0" class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
+                         <ProductCard 
                             v-for="product in filteredProducts" 
                             :key="product.id"
-                            class="group overflow-hidden border-none shadow-sm hover:shadow-md transition-shadow"
-                        >
-                            <div class="relative aspect-square bg-muted">
-                                <img 
-                                    :src="product.image" 
-                                    :alt="product.name"
-                                    class="object-cover w-full h-full"
-                                />
-                                <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <Button variant="secondary" size="icon" class="rounded-full">
-                                        <ShoppingCart class="h-4 w-4" />
-                                    </Button>
-                                </div>
-                            </div>
-                            <CardContent class="p-4">
-                                <div class="text-xs text-muted-foreground mb-1">{{ product.category }}</div>
-                                <h3 class="font-medium truncate mb-1">
-                                    <Link :href="shopShow.url({ id: product.id })" class="hover:underline">
-                                        {{ product.name }}
-                                    </Link>
-                                </h3>
-                                <div class="flex items-center justify-between">
-                                    <span class="font-bold">{{ product.price }}</span>
-                                    <div class="flex items-center gap-1 text-xs text-muted-foreground">
-                                        <Star class="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                                        <span>{{ product.rating }}</span>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                            :product="product"
+                        />
                     </div>
                     
                     <!-- Empty State -->

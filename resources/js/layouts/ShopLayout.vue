@@ -11,19 +11,20 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@/components/ui/sheet';
+import { urlIsActive } from '@/lib/utils';
 import { home } from '@/routes';
 import { index as cartIndex } from '@/routes/cart';
 import { index as checkoutIndex } from '@/routes/checkout';
 import { index as shopIndex } from '@/routes/shop';
 import { Link } from '@inertiajs/vue3';
-import { Menu, Search, ShoppingCart, User } from 'lucide-vue-next';
+import {
+    Compass,
+    FileText,
+    Home,
+    Search,
+    ShoppingCart,
+    User,
+} from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 const isMobileMenuOpen = ref(false);
@@ -70,91 +71,91 @@ const navLinks = [
 
 <template>
     <div class="min-h-screen bg-background font-sans antialiased">
-        <!-- Top Bar (Optional for Premium feel) -->
+        <!-- Top Bar -->
         <div
-            class="bg-primary py-2 text-center text-xs text-primary-foreground"
+            class="hidden border-b bg-muted/50 py-1 text-[11px] text-muted-foreground md:block"
         >
-            Free shipping on all orders over Rp 500.000
+            <div
+                class="relative container mx-auto flex items-center justify-between px-4"
+            >
+                <div class="flex gap-4">
+                    <span class="cursor-pointer hover:text-primary"
+                        >Tentang Tokohebat</span
+                    >
+                    <span class="cursor-pointer hover:text-primary"
+                        >Mitra Tokohebat</span
+                    >
+                    <span class="cursor-pointer hover:text-primary"
+                        >Mulai Berjualan</span
+                    >
+                    <!-- Categories (Kategori) & Explore -->
+                </div>
+                <!-- Explore Button Removed -->
+                <div class="flex gap-4">
+                    <span>Download Tokohebat App</span>
+                </div>
+            </div>
         </div>
 
         <!-- Header -->
-        <header
-            class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-        >
+        <header class="sticky top-0 z-50 w-full border-b bg-background">
             <div
                 class="container mx-auto flex h-16 items-center justify-between gap-4 px-4"
             >
-                <!-- Mobile Menu Trigger -->
-                <Sheet>
-                    <SheetTrigger as-child>
-                        <Button variant="ghost" size="icon" class="md:hidden">
-                            <Menu class="h-5 w-5" />
-                            <span class="sr-only">Toggle menu</span>
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left">
-                        <SheetHeader>
-                            <SheetTitle class="text-left text-lg font-bold"
-                                >Menu</SheetTitle
-                            >
-                        </SheetHeader>
-                        <div class="grid gap-4 py-4">
-                            <Link
-                                v-for="link in navLinks"
-                                :key="link.name"
-                                :href="link.href"
-                                class="text-sm font-medium transition-colors hover:text-primary"
-                            >
-                                {{ link.name }}
-                            </Link>
-                        </div>
-                    </SheetContent>
-                </Sheet>
+                <!-- Mobile Menu Trigger Removed -->
 
-                <!-- Logo -->
-                <div class="flex-shrink-0">
+                <!-- Logo (Tokohebat Style) -->
+                <div class="mr-2 flex-shrink-0 md:mr-4">
                     <Link
                         :href="home.url()"
-                        class="flex items-center gap-2 text-xl font-bold tracking-tight"
+                        class="flex items-center gap-2 text-2xl font-bold tracking-tight text-primary"
                     >
-                        <div
-                            class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"
-                        >
-                            E
-                        </div>
-                        <span>E-Commerce</span>
+                        <span class="hidden md:inline">Tokohebat</span>
+                        <span class="md:hidden">tkhb</span>
                     </Link>
                 </div>
 
-                <!-- Desktop Navigation -->
-                <nav
-                    class="hidden items-center gap-6 text-sm font-medium md:flex"
-                >
+                <!-- Explore Button -->
+                <div class="mr-4 hidden items-center md:flex">
                     <Link
-                        v-for="link in navLinks"
-                        :key="link.name"
-                        :href="link.href"
-                        class="transition-colors hover:text-primary"
-                        :class="{ 'text-primary': $page.url === link.href }"
+                        :href="shopIndex.url()"
+                        class="flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
+                        :class="{
+                            'bg-muted text-primary': urlIsActive(
+                                shopIndex.url(),
+                                $page.url,
+                            ),
+                        }"
                     >
-                        {{ link.name }}
+                        <Compass class="h-4 w-4" />
+                        <span>Explore</span>
                     </Link>
-                </nav>
-
-                <!-- Search (Visual Only for now) -->
-                <div class="relative ml-auto hidden max-w-sm flex-1 md:flex">
-                    <Search
-                        class="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground"
-                    />
-                    <Input
-                        type="search"
-                        placeholder="Search products..."
-                        class="w-full bg-muted/50 pl-8 transition-colors focus-visible:bg-background"
-                    />
                 </div>
 
-                <!-- Right Actions -->
-                <div class="flex items-center gap-2">
+                <!-- Search (Tokohebat Style: Wide & Central) -->
+                <div class="relative flex max-w-3xl flex-1 gap-2">
+                    <div class="group relative w-full">
+                        <Search
+                            class="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary"
+                        />
+                        <Input
+                            type="search"
+                            placeholder="Cari..."
+                            class="h-10 w-full rounded-lg border-gray-200 pr-10 pl-10 transition-all focus-visible:border-primary focus-visible:ring-primary md:placeholder:text-muted-foreground"
+                        />
+                    </div>
+                    <Button
+                        size="icon"
+                        variant="secondary"
+                        class="bg-gray-100 text-gray-600 hover:bg-gray-200 md:w-auto md:px-4"
+                    >
+                        <Search class="h-4 w-4 md:hidden" />
+                        <span class="hidden md:inline">Cari</span>
+                    </Button>
+                </div>
+
+                <!-- Right Actions (Divider | Auth/Cart) -->
+                <div class="ml-4 flex items-center gap-2">
                     <!-- Mobile Search Toggle (Could implement later) -->
 
                     <!-- Cart -->
@@ -274,23 +275,15 @@ const navLinks = [
                         </DropdownMenuContent>
                     </DropdownMenu>
 
-                    <!-- User Menu -->
-                    <DropdownMenu>
-                        <DropdownMenuTrigger as-child>
-                            <Button variant="ghost" size="icon">
-                                <User class="h-5 w-5" />
-                                <span class="sr-only">User menu</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Profile</DropdownMenuItem>
-                            <DropdownMenuItem>Orders</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Log out</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <!-- User Menu / Auth Buttons -->
+                    <div
+                        class="ml-2 hidden items-center gap-2 border-l pl-4 md:flex"
+                    >
+                        <Button variant="ghost" size="sm" class="font-bold">
+                            Masuk
+                        </Button>
+                        <Button size="sm" class="font-bold"> Daftar </Button>
+                    </div>
                 </div>
             </div>
         </header>
@@ -376,5 +369,66 @@ const navLinks = [
                 </div>
             </div>
         </footer>
+        <!-- Mobile Bottom Navigation -->
+        <div
+            class="pb-safe fixed right-0 bottom-0 left-0 z-50 border-t bg-background md:hidden"
+        >
+            <div
+                class="grid h-16 grid-cols-4 items-center justify-items-center"
+            >
+                <Link
+                    :href="home.url()"
+                    class="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary"
+                    :class="{
+                        'text-primary': home.url() === $page.url,
+                    }"
+                >
+                    <Home class="h-6 w-6" />
+                    <span class="text-[10px] font-medium">Home</span>
+                </Link>
+                <Link
+                    :href="shopIndex.url()"
+                    class="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary"
+                    :class="{
+                        'text-primary': urlIsActive(shopIndex.url(), $page.url),
+                    }"
+                >
+                    <Compass class="h-6 w-6" />
+                    <span class="text-[10px] font-medium">Explore</span>
+                </Link>
+                <Link
+                    href="#"
+                    class="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary"
+                >
+                    <FileText class="h-6 w-6" />
+                    <span class="text-[10px] font-medium">History</span>
+                </Link>
+
+                <!-- Profile / Login -->
+                <DropdownMenu>
+                    <DropdownMenuTrigger as-child>
+                        <button
+                            class="flex flex-col items-center gap-1 text-muted-foreground outline-none hover:text-primary"
+                        >
+                            <User class="h-6 w-6" />
+                            <span class="text-[10px] font-medium">Profile</span>
+                        </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" class="mb-2 w-56">
+                        <DropdownMenuLabel>Account Action</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <div class="flex flex-col gap-2 p-2">
+                            <Button class="w-full justify-start" variant="ghost"
+                                >Masuk</Button
+                            >
+                            <Button
+                                class="w-full justify-start bg-primary text-white"
+                                >Daftar</Button
+                            >
+                        </div>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+        </div>
     </div>
 </template>

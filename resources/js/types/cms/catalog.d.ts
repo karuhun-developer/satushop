@@ -61,6 +61,7 @@ export interface ProductFlatDataItem {
     stock?: number;
     type: string;
     rating: number;
+    sold_count: number;
     visible_individually: boolean;
     created_at: string;
     updated_at: string;

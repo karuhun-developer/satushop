@@ -32,6 +32,7 @@ class ProductFlat extends Model implements HasMedia
         'stock',
         'type',
         'rating',
+        'sold_count',
         'visible_individually',
     ];
 
@@ -46,6 +47,8 @@ class ProductFlat extends Model implements HasMedia
         'height' => 'float',
         'diameter' => 'float',
         'stock' => 'integer',
+        'rating' => 'float',
+        'sold_count' => 'integer',
         'visible_individually' => 'boolean',
         'type' => \App\Enums\ProductTypeEnum::class,
     ];

@@ -2,9 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return Inertia\Inertia::render('Welcome');
-})->name('home');
+Route::get('/', [App\Http\Controllers\Main\HomeController::class, 'index'])->name('home');
 
 Route::prefix('shop')->name('shop.')->group(function () {
     Route::get('/', function () {

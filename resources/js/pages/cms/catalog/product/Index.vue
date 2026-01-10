@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { usePermission } from '@/composables/usePermission';
 import { useSwal } from '@/composables/useSwal';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { formatCurrency } from '@/lib/utils';
 import { PaginationItem, type BreadcrumbItem } from '@/types';
 import { ProductFlatDataItem } from '@/types/cms/catalog';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -128,11 +129,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         </div>
                         <div class="space-y-1">
                             <div class="font-semibold text-destructive">
-                                {{
-                                    new Intl.NumberFormat('id-ID', {
-                                        currency: 'IDR',
-                                    }).format(row.price)
-                                }}
+                                {{ formatCurrency(row.price) }}
                             </div>
                             <div
                                 class="text-xs font-medium text-muted-foreground"
