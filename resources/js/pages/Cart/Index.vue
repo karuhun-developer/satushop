@@ -1,52 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
-import { index as shopIndex } from '@/routes/shop';
-import { index as checkoutIndex } from '@/routes/checkout';
-import ShopLayout from '@/layouts/ShopLayout.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { EmptyState } from '@/components/ui/empty-state';
-import { Trash2, ShoppingBag } from 'lucide-vue-next';
+import { Separator } from '@/components/ui/separator';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from '@/components/ui/table';
+import { useCartStore } from '@/composables/useCartStore';
+import ShopLayout from '@/layouts/ShopLayout.vue';
+import { formatCurrency } from '@/lib/utils';
+import { index as checkoutIndex } from '@/routes/checkout';
+import { index as shopIndex } from '@/routes/shop';
+import { Head, Link } from '@inertiajs/vue3';
+import { ShoppingBag, Trash2 } from 'lucide-vue-next';
 
-// Mock Cart Data
-const cartItems = ref([
-    {
-        id: 1,
-        name: 'Premium Wireless Headphones',
-        price: 2500000,
-        quantity: 1,
-        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=200&h=200'
-    },
-    {
-        id: 2,
-        name: 'Minimalist Watch',
-        price: 1200000,
-        quantity: 2,
-        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=200&h=200'
-    }
-]);
+const cart = useCartStore();
 
-const subtotal = 4900000;
-const shipping = 0;
-const total = 4900000;
-
-const removeItem = (id: number) => {
-    cartItems.value = cartItems.value.filter(item => item.id !== id);
-};
-
-const clearCart = () => {
-    cartItems.value = [];
-};
+const {
+    items: cartItems,
+    subtotal,
+    total,
+    removeItem,
+    updateQuantity,
+    clearCart,
+} = cart;
 </script>
 
 <template>
@@ -54,12 +36,17 @@ const clearCart = () => {
 
     <ShopLayout>
         <div class="container mx-auto px-4 py-8 md:py-12">
-            <h1 class="text-3xl font-bold tracking-tight mb-8">Shopping Cart</h1>
+            <h1 class="mb-8 text-3xl font-bold tracking-tight">
+                Shopping Cart
+            </h1>
 
-            <div v-if="cartItems.length > 0" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div
+                v-if="cartItems.length > 0"
+                class="grid grid-cols-1 gap-8 lg:grid-cols-3"
+            >
                 <!-- Cart Items -->
-                <div class="lg:col-span-2 space-y-4">
-                     <Table>
+                <div class="space-y-4 lg:col-span-2">
+                    <Table>
                         <TableHeader>
                             <TableRow>
                                 <TableHead class="w-[100px]">Product</TableHead>
@@ -73,55 +60,133 @@ const clearCart = () => {
                         <TableBody>
                             <TableRow v-for="item in cartItems" :key="item.id">
                                 <TableCell>
-                                    <div class="h-16 w-16 bg-muted rounded-md overflow-hidden">
-                                        <img :src="item.image" :alt="item.name" class="object-cover w-full h-full" />
+                                    <div
+                                        class="h-16 w-16 overflow-hidden rounded-md bg-muted"
+                                    >
+                                        <img
+                                            :src="item.image"
+                                            :alt="item.name"
+                                            class="h-full w-full object-cover"
+                                        />
                                     </div>
                                 </TableCell>
-                                <TableCell class="font-medium">{{ item.name }}</TableCell>
-                                <TableCell>{{ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price) }}</TableCell>
-                                <TableCell>{{ item.quantity }}</TableCell>
+                                <TableCell class="font-medium">
+                                    {{ item.name }}
+                                    <div
+                                        class="mt-1 text-xs text-muted-foreground"
+                                    >
+                                        <span v-if="item.options?.color"
+                                            >Color:
+                                            {{ item.options.color }}</span
+                                        >
+                                        <span
+                                            v-if="item.options?.size"
+                                            class="ml-2"
+                                            >Size: {{ item.options.size }}</span
+                                        >
+                                    </div>
+                                </TableCell>
+                                <TableCell>{{
+                                    formatCurrency(item.price)
+                                }}</TableCell>
+                                <TableCell>
+                                    <div class="flex items-center gap-2">
+                                        <Button
+                                            variant="outline"
+                                            size="icon"
+                                            class="h-6 w-6"
+                                            @click="
+                                                updateQuantity(
+                                                    item.id,
+                                                    item.quantity - 1,
+                                                )
+                                            "
+                                            :disabled="item.quantity <= 1"
+                                        >
+                                            -
+                                        </Button>
+                                        <span class="w-4 text-center">{{
+                                            item.quantity
+                                        }}</span>
+                                        <Button
+                                            variant="outline"
+                                            size="icon"
+                                            class="h-6 w-6"
+                                            @click="
+                                                updateQuantity(
+                                                    item.id,
+                                                    item.quantity + 1,
+                                                )
+                                            "
+                                        >
+                                            +
+                                        </Button>
+                                    </div>
+                                </TableCell>
                                 <TableCell class="text-right font-bold">
-                                    {{ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price * item.quantity) }}
+                                    {{
+                                        formatCurrency(
+                                            item.price * item.quantity,
+                                        )
+                                    }}
                                 </TableCell>
                                 <TableCell class="text-right">
-                                    <Button variant="ghost" size="icon" class="text-destructive" @click="removeItem(item.id)">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        class="text-destructive"
+                                        @click="removeItem(item.id)"
+                                    >
                                         <Trash2 class="h-4 w-4" />
                                     </Button>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
-                     </Table> 
-                     
-                     <div class="flex justify-end">
-                        <Button variant="link" class="text-destructive" @click="clearCart">Clear Cart</Button>
-                     </div>
+                    </Table>
+
+                    <div class="flex justify-end">
+                        <Button
+                            variant="link"
+                            class="text-destructive"
+                            @click="clearCart"
+                            >Clear Cart</Button
+                        >
+                    </div>
                 </div>
 
                 <!-- Order Summary -->
                 <div class="lg:col-span-1">
                     <Card class="sticky top-24">
-                        <CardContent class="p-6 space-y-4">
-                            <h3 class="font-semibold text-lg">Order Summary</h3>
+                        <CardContent class="space-y-4 p-6">
+                            <h3 class="text-lg font-semibold">Order Summary</h3>
                             <Separator />
                             <div class="flex justify-between text-sm">
-                                <span class="text-muted-foreground">Subtotal</span>
-                                <span>{{ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(subtotal) }}</span>
+                                <span class="text-muted-foreground"
+                                    >Subtotal</span
+                                >
+                                <span>{{ formatCurrency(subtotal) }}</span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-muted-foreground">Shipping</span>
+                                <span class="text-muted-foreground"
+                                    >Shipping</span
+                                >
                                 <span class="text-green-600">Free</span>
                             </div>
                             <Separator />
-                            <div class="flex justify-between font-bold text-lg">
+                            <div class="flex justify-between text-lg font-bold">
                                 <span>Total</span>
-                                <span>{{ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(total) }}</span>
+                                <span>{{ formatCurrency(total) }}</span>
                             </div>
-                            
+
                             <Link :href="checkoutIndex.url()" class="w-full">
-                                <Button class="w-full mt-4" size="lg">Proceed to Checkout</Button>
+                                <Button class="mt-4 w-full" size="lg"
+                                    >Proceed to Checkout</Button
+                                >
                             </Link>
 
-                            <p class="text-xs text-muted-foreground text-center mt-4">
+                            <p
+                                class="mt-4 text-center text-xs text-muted-foreground"
+                            >
                                 Secure Checkout - SSL Encrypted
                             </p>
                         </CardContent>
@@ -130,14 +195,14 @@ const clearCart = () => {
             </div>
 
             <!-- Empty State -->
-             <EmptyState 
+            <EmptyState
                 v-else
                 :icon="ShoppingBag"
                 title="Your cart is empty"
                 description="Looks like you haven't added anything to your cart yet."
                 actionLabel="Continue Shopping"
                 @action="$inertia.visit(shopIndex.url())"
-             />
+            />
         </div>
     </ShopLayout>
 </template>

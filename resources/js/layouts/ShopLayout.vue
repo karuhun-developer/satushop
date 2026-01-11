@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { Badge } from '@/components/ui/badge';
+import CartDropdown from '@/components/CartDropdown.vue';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
@@ -13,8 +12,6 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { urlIsActive } from '@/lib/utils';
 import { home } from '@/routes';
-import { index as cartIndex } from '@/routes/cart';
-import { index as checkoutIndex } from '@/routes/checkout';
 import { index as shopIndex } from '@/routes/shop';
 import { Link } from '@inertiajs/vue3';
 import {
@@ -22,43 +19,12 @@ import {
     FileText,
     Home,
     Search,
-    ShoppingCart,
     User,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 const isMobileMenuOpen = ref(false);
 
-const cartItems = ref([
-    {
-        id: 1,
-        name: 'Premium Wireless Headphones',
-        price: 2500000,
-        quantity: 1,
-        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=200&h=200',
-    },
-    {
-        id: 2,
-        name: 'Minimalist Watch',
-        price: 1200000,
-        quantity: 2,
-        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=200&h=200',
-    },
-]);
-
-const cartTotal = computed(() => {
-    return cartItems.value.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0,
-    );
-});
-
-const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-    }).format(price);
-};
 
 const navLinks = [
     { name: 'Home', href: home.url() },
@@ -159,121 +125,7 @@ const navLinks = [
                     <!-- Mobile Search Toggle (Could implement later) -->
 
                     <!-- Cart -->
-                    <DropdownMenu>
-                        <DropdownMenuTrigger as-child>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                class="relative"
-                            >
-                                <ShoppingCart class="h-5 w-5" />
-                                <Badge
-                                    v-if="cartItems.length > 0"
-                                    class="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center p-0 text-[10px]"
-                                >
-                                    {{ cartItems.length }}
-                                </Badge>
-                                <span class="sr-only">Open cart</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" class="w-80 p-0">
-                            <DropdownMenuLabel class="p-4 font-normal">
-                                <div class="flex flex-col space-y-1">
-                                    <p class="text-sm leading-none font-medium">
-                                        Shopping Cart
-                                    </p>
-                                    <p
-                                        class="text-xs leading-none text-muted-foreground"
-                                    >
-                                        {{ cartItems.length }} items
-                                    </p>
-                                </div>
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-
-                            <!-- Items -->
-                            <div
-                                class="max-h-[300px] space-y-4 overflow-y-auto p-4"
-                            >
-                                <div
-                                    v-for="item in cartItems"
-                                    :key="item.id"
-                                    class="flex gap-4"
-                                >
-                                    <div
-                                        class="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md bg-muted"
-                                    >
-                                        <img
-                                            :src="item.image"
-                                            :alt="item.name"
-                                            class="h-full w-full object-cover"
-                                        />
-                                    </div>
-                                    <div class="min-w-0 flex-1 space-y-1">
-                                        <p
-                                            class="truncate text-sm leading-none font-medium"
-                                        >
-                                            {{ item.name }}
-                                        </p>
-                                        <p
-                                            class="text-xs text-muted-foreground"
-                                        >
-                                            {{ item.quantity }} x
-                                            {{ formatPrice(item.price) }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div
-                                    v-if="cartItems.length === 0"
-                                    class="py-6 text-center text-sm text-muted-foreground"
-                                >
-                                    Your cart is empty
-                                </div>
-                            </div>
-
-                            <DropdownMenuSeparator
-                                v-if="cartItems.length > 0"
-                            />
-
-                            <!-- Footer -->
-                            <div
-                                v-if="cartItems.length > 0"
-                                class="space-y-4 p-4 pt-2"
-                            >
-                                <div
-                                    class="flex justify-between text-sm font-medium"
-                                >
-                                    <span>Total</span>
-                                    <span>{{ formatPrice(cartTotal) }}</span>
-                                </div>
-                                <div class="grid gap-2">
-                                    <DropdownMenuItem as-child>
-                                        <Link
-                                            :href="cartIndex.url()"
-                                            class="w-full cursor-pointer"
-                                        >
-                                            <Button
-                                                variant="outline"
-                                                class="w-full"
-                                                size="sm"
-                                                >View Cart</Button
-                                            >
-                                        </Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem as-child>
-                                        <Link
-                                            :href="checkoutIndex.url()"
-                                            class="w-full cursor-pointer"
-                                        >
-                                            <Button class="w-full" size="sm"
-                                                >Checkout</Button
-                                            >
-                                        </Link>
-                                    </DropdownMenuItem>
-                                </div>
-                            </div>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <CartDropdown />
 
                     <!-- User Menu / Auth Buttons -->
                     <div

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useCartStore } from '@/composables/useCartStore';
+import { useSwal } from '@/composables/useSwal';
 import { formatCurrency } from '@/lib/utils';
 import { ShoppingBag, Star } from 'lucide-vue-next';
 
@@ -14,9 +16,28 @@ interface Product {
     sold_count?: number;
 }
 
-defineProps<{
+const props = defineProps<{
     product: Product;
 }>();
+
+const cart = useCartStore();
+const { toast } = useSwal();
+
+const addToCart = (e: Event) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    cart.addItem({
+        ...props.product,
+        image: props.product.image_1 || props.product.image || '',
+    }, 1);
+
+    toast.fire({
+        icon: 'success',
+        title: 'Added to cart',
+        text: `${props.product.name} has been added to your cart.`,
+    });
+};
 </script>
 
 <template>
@@ -60,7 +81,7 @@ defineProps<{
             </div>
         </CardContent>
         <div class="flex gap-2 p-3 pt-0">
-            <Button variant="secondary" size="sm" class="flex-1 gap-2 text-xs">
+            <Button variant="secondary" size="sm" class="flex-1 gap-2 text-xs" @click="addToCart">
                 <ShoppingBag class="h-3.5 w-3.5" />
                 <span class="hidden sm:inline">Add</span>
             </Button>

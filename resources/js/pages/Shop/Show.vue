@@ -9,6 +9,8 @@ import { Separator } from '@/components/ui/separator';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Star, Truck, ShieldCheck, ArrowLeft, ShoppingCart, Heart } from 'lucide-vue-next';
 import { EmptyState } from '@/components/ui/empty-state';
+import { useCartStore } from '@/composables/useCartStore';
+import { useSwal } from '@/composables/useSwal';
 
 interface Product {
     id: number;
@@ -30,6 +32,24 @@ const selectedSize = ref('M');
 
 const colors = ['Black', 'White', 'Blue'];
 const sizes = ['S', 'M', 'L', 'XL'];
+
+const cart = useCartStore();
+const { toast } = useSwal();
+
+const addToCart = () => {
+    if (!props.product) return;
+
+    cart.addItem(props.product, quantity.value, {
+        color: selectedColor.value,
+        size: selectedSize.value,
+    });
+
+    toast.fire({
+        icon: 'success',
+        title: 'Added to cart',
+        text: `${props.product.name} has been added to your cart.`,
+    });
+};
 
 </script>
 
@@ -136,7 +156,7 @@ const sizes = ['S', 'M', 'L', 'XL'];
                                 <span class="w-12 text-center">{{ quantity }}</span>
                                 <Button variant="ghost" size="icon" @click="quantity++">+</Button>
                             </div>
-                            <Button size="lg" class="flex-1 gap-2">
+                            <Button size="lg" class="flex-1 gap-2" @click="addToCart">
                                 <ShoppingCart class="h-5 w-5" /> Add to Cart
                             </Button>
                             <Button size="lg" variant="outline" class="px-3">
