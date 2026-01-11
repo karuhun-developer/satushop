@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CartDropdown from '@/components/CartDropdown.vue';
+import ShopSearch from '@/components/ShopSearch.vue';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -13,7 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { urlIsActive } from '@/lib/utils';
 import { explore, home } from '@/routes';
 import { Link } from '@inertiajs/vue3';
-import { Compass, FileText, Home, Search, User } from 'lucide-vue-next';
+import { Compass, FileText, Home, User } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 const isMobileMenuOpen = ref(false);
@@ -91,26 +92,7 @@ const navLinks = [
                 </div>
 
                 <!-- Search (Tokohebat Style: Wide & Central) -->
-                <div class="relative flex max-w-3xl flex-1 gap-2">
-                    <div class="group relative w-full">
-                        <Search
-                            class="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary"
-                        />
-                        <Input
-                            type="search"
-                            placeholder="Cari..."
-                            class="h-10 w-full rounded-lg border-gray-200 pr-10 pl-10 transition-all focus-visible:border-primary focus-visible:ring-primary md:placeholder:text-muted-foreground"
-                        />
-                    </div>
-                    <Button
-                        size="icon"
-                        variant="secondary"
-                        class="bg-gray-100 text-gray-600 hover:bg-gray-200 md:w-auto md:px-4"
-                    >
-                        <Search class="h-4 w-4 md:hidden" />
-                        <span class="hidden md:inline">Cari</span>
-                    </Button>
-                </div>
+                <ShopSearch />
 
                 <!-- Right Actions (Divider | Auth/Cart) -->
                 <div class="ml-4 flex items-center gap-2">

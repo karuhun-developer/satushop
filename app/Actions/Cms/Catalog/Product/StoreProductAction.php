@@ -4,6 +4,7 @@ namespace App\Actions\Cms\Catalog\Product;
 
 use App\Enums\ProductTypeEnum;
 use App\Models\Catalog\Product;
+use App\Models\Catalog\ProductAttribute;
 use App\Models\Catalog\ProductFlat;
 use App\Traits\WithMediaCollection;
 
@@ -78,7 +79,7 @@ class StoreProductAction
             // Loop through options
             foreach ($group->attribute->options as $option) {
                 // Create flat product entry
-                $product->flats()->create([
+                $flat = $product->flats()->create([
                     'product_id' => $product->id,
                     'sku' => 'variant-sku-'.$product->sku.'-'.$group->attribute->code.'-'.$option->name,
                     'name' => 'Variant Product '.$product->sku.' '.$group->attribute->name.' '.$option->name,
@@ -92,6 +93,14 @@ class StoreProductAction
                     'visible_individually' => false,
                     'stock' => 0,
                     'type' => ProductTypeEnum::SIMPLE,
+                ]);
+
+                // Attatch attribute option to flat product
+                ProductAttribute::firstOrCreate([
+                    'product_id' => $product->id,
+                    'product_flat_id' => $flat->id,
+                    'attribute_id' => $group->attribute->id,
+                    'attribute_option_id' => $option->id,
                 ]);
             }
         }

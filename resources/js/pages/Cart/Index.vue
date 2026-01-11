@@ -14,8 +14,8 @@ import {
 import { useCartStore } from '@/composables/useCartStore';
 import ShopLayout from '@/layouts/ShopLayout.vue';
 import { formatCurrency } from '@/lib/utils';
+import { explore } from '@/routes';
 import { index as checkoutIndex } from '@/routes/checkout';
-import { index as shopIndex } from '@/routes/shop';
 import { Head, Link } from '@inertiajs/vue3';
 import { ShoppingBag, Trash2 } from 'lucide-vue-next';
 
@@ -201,7 +201,7 @@ const {
                 title="Your cart is empty"
                 description="Looks like you haven't added anything to your cart yet."
                 actionLabel="Continue Shopping"
-                @action="$inertia.visit(shopIndex.url())"
+                @action="$inertia.visit(explore.url())"
             />
         </div>
     </ShopLayout>

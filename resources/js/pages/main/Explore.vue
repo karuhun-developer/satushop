@@ -1,30 +1,28 @@
 <script setup lang="ts">
 import ProductCard from '@/components/ProductCard.vue';
 import { EmptyState } from '@/components/ui/empty-state';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
+import ExploreFilters from '@/components/main/explore/ExploreFilters.vue';
 import ShopLayout from '@/layouts/ShopLayout.vue';
-import { explore } from '@/routes';
-import { category } from '@/routes/explore';
 import { PaginationItem } from '@/types';
 import { AttributeDataItem } from '@/types/cms/attribute';
 import {
     ProductCategoryDataItem,
     ProductFlatDataItem,
 } from '@/types/cms/catalog';
-import { Deferred, Head, InfiniteScroll, Link } from '@inertiajs/vue3';
+import { Head, InfiniteScroll } from '@inertiajs/vue3';
 import { Loader2, ShoppingBag } from 'lucide-vue-next';
-import { ref } from 'vue';
 
 defineProps<{
     currentCategory?: ProductCategoryDataItem;
     products: PaginationItem<ProductFlatDataItem>;
     categories?: ProductCategoryDataItem[];
     attributes?: AttributeDataItem[];
+    filters?: {
+        attribute_option_id?: string[] | number[];
+        price_min?: string;
+        price_max?: string;
+    };
 }>();
-
-const searchTerm = ref('');
 </script>
 
 <template>
@@ -46,100 +44,12 @@ const searchTerm = ref('');
 
             <div class="grid grid-cols-1 gap-8 md:grid-cols-4">
                 <!-- Sidebar Filters -->
-                <aside class="hidden space-y-6 md:block">
-                    <!-- Search -->
-                    <div>
-                        <h3 class="mb-4 font-semibold">Search</h3>
-                        <Input
-                            v-model="searchTerm"
-                            placeholder="Search products..."
-                        />
-                    </div>
-                    <Separator />
-
-                    <!-- Categories (Deferred) -->
-                    <Deferred data="categories">
-                        <template #fallback>
-                            <div class="space-y-4">
-                                <h3 class="font-semibold">Categories</h3>
-                                <div class="space-y-2">
-                                    <Skeleton
-                                        v-for="i in 5"
-                                        :key="i"
-                                        class="h-6 w-full"
-                                    />
-                                </div>
-                            </div>
-                        </template>
-
-                        <div v-if="categories">
-                            <h3 class="mb-4 font-semibold">Categories</h3>
-                            <div class="space-y-2">
-                                <Link
-                                    class="flex cursor-pointer items-center space-x-2 rounded-md p-2 hover:bg-muted/50"
-                                    :class="{
-                                        'bg-muted font-medium':
-                                            currentCategory === null,
-                                    }"
-                                    :href="explore.url()"
-                                >
-                                    <span class="text-sm">
-                                        All Categories
-                                    </span>
-                                </Link>
-                                <Link
-                                    v-for="cat in categories"
-                                    :key="cat.id"
-                                    class="flex cursor-pointer items-center space-x-2 rounded-md p-2 hover:bg-muted/50"
-                                    :class="{
-                                        'bg-muted font-medium':
-                                            currentCategory?.name === cat.name,
-                                    }"
-                                    :href="category.url(cat.slug)"
-                                >
-                                    <span class="text-sm">
-                                        {{ cat.name }}
-                                    </span>
-                                </Link>
-                            </div>
-                        </div>
-                    </Deferred>
-
-                    <Separator />
-
-                    <!-- Attributes (Deferred) -->
-                    <Deferred data="attributes">
-                        <template #fallback>
-                            <div class="space-y-4">
-                                <h3 class="font-semibold">Filters</h3>
-                                <div class="space-y-2">
-                                    <Skeleton
-                                        v-for="i in 3"
-                                        :key="i"
-                                        class="h-10 w-full"
-                                    />
-                                </div>
-                            </div>
-                        </template>
-
-                        <div v-if="attributes" class="space-y-6">
-                            <div v-for="attr in attributes" :key="attr.id">
-                                <h3 class="mb-2 font-semibold">
-                                    {{ attr.name }}
-                                </h3>
-                                <div class="flex flex-wrap gap-2">
-                                    <div
-                                        v-for="opt in attr.options"
-                                        :key="opt.id"
-                                        class="cursor-pointer rounded-md border px-2 py-1 text-xs hover:border-primary"
-                                    >
-                                        {{ opt.name }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Deferred>
-                </aside>
+                <ExploreFilters
+                    :current-category="currentCategory"
+                    :categories="categories"
+                    :attributes="attributes"
+                    :filters="filters"
+                />
 
                 <!-- Product Grid -->
                 <div class="md:col-span-3">
@@ -180,3 +90,4 @@ const searchTerm = ref('');
         </div>
     </ShopLayout>
 </template>
+

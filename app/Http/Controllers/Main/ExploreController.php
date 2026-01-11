@@ -15,6 +15,23 @@ class ExploreController extends Controller
         return inertia('main/Explore', [
             'products' => inertia()->scroll(ProductFlat::query()
                 ->with('media')
+                ->when($request->input('attribute_option_id'), function ($query, $attributeOptionIds) {
+                    $query->whereHas('product.attributes', function ($q) use ($attributeOptionIds) {
+                        $q->whereIn('attribute_option_id', (array) $attributeOptionIds);
+                    });
+                })
+                ->when($request->input('price_min'), function ($query, $priceMin) {
+                    $query->where('price', '>=', $priceMin);
+                })
+                ->when($request->input('price_max'), function ($query, $priceMax) {
+                    $query->where('price', '<=', $priceMax);
+                })
+                ->when($request->input('search'), function ($query, $search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%")
+                            ->orWhere('sku', 'like', "%{$search}%");
+                    });
+                })
                 ->where('visible_individually', true)
                 ->orderByDesc('rating')
                 ->cursorPaginate(12)
@@ -37,6 +54,7 @@ class ExploreController extends Controller
                 ->with('options')
                 ->get()
             ),
+            'filters' => $request->only(['attribute_option_id', 'price_min', 'price_max', 'search']),
         ]);
     }
 
@@ -49,6 +67,23 @@ class ExploreController extends Controller
                 ->whereHas('categories', function ($query) use ($category) {
                     $query->where('product_category_id', $category->id);
                 })
+                ->when($request->input('attribute_option_id'), function ($query, $attributeOptionIds) {
+                    $query->whereHas('product.attributes', function ($q) use ($attributeOptionIds) {
+                        $q->whereIn('attribute_option_id', (array) $attributeOptionIds);
+                    });
+                })
+                ->when($request->input('price_min'), function ($query, $priceMin) {
+                    $query->where('price', '>=', $priceMin);
+                })
+                ->when($request->input('price_max'), function ($query, $priceMax) {
+                    $query->where('price', '<=', $priceMax);
+                })
+                ->when($request->input('search'), function ($query, $search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%")
+                            ->orWhere('sku', 'like', "%{$search}%");
+                    });
+                })
                 ->where('visible_individually', true)
                 ->orderByDesc('rating')
                 ->cursorPaginate(12)
@@ -71,6 +106,7 @@ class ExploreController extends Controller
                 ->with('options')
                 ->get()
             ),
+            'filters' => $request->only(['attribute_option_id', 'price_min', 'price_max', 'search']),
         ]);
     }
 }
