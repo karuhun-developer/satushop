@@ -27,7 +27,7 @@ class HomeController extends Controller
                 ->with('media')
                 ->where('visible_individually', true)
                 ->orderByDesc('rating')
-                ->limit(8)
+                ->limit(6)
                 ->get()
                 ->map(function ($item) {
                     $item->image_1 = $item->getFirstMediaUrl('image_1');
@@ -40,7 +40,7 @@ class HomeController extends Controller
                 ->with('media')
                 ->where('visible_individually', true)
                 ->orderByDesc('created_at')
-                ->limit(8)
+                ->limit(6)
                 ->get()
                 ->map(function ($item) {
                     $item->image_1 = $item->getFirstMediaUrl('image_1');
@@ -53,7 +53,7 @@ class HomeController extends Controller
                 ->with('media')
                 ->where('visible_individually', true)
                 ->orderByDesc('sold_count')
-                ->limit(8)
+                ->limit(6)
                 ->get()
                 ->map(function ($item) {
                     $item->image_1 = $item->getFirstMediaUrl('image_1');

@@ -10,16 +10,21 @@ import {
 import EmptyState from '@/components/ui/empty-state/EmptyState.vue';
 import { Skeleton } from '@/components/ui/skeleton';
 import ShopLayout from '@/layouts/ShopLayout.vue';
-import { index as shopIndex } from '@/routes/shop';
+import { explore } from '@/routes';
+import { category } from '@/routes/explore';
+import {
+    ProductCategoryDataItem,
+    ProductFlatDataItem,
+} from '@/types/cms/catalog';
 import { Deferred, Head, Link } from '@inertiajs/vue3';
 import Autoplay from 'embla-carousel-autoplay';
 import { Compass, ShoppingBag } from 'lucide-vue-next';
 
 defineProps<{
-    categories?: any[];
-    bestProducts?: any[];
-    newProducts?: any[];
-    bestSellers?: any[];
+    categories?: ProductCategoryDataItem[];
+    bestProducts?: ProductFlatDataItem[];
+    newProducts?: ProductFlatDataItem[];
+    bestSellers?: ProductFlatDataItem[];
 }>();
 </script>
 
@@ -80,7 +85,7 @@ defineProps<{
                                             fashion and lifestyle.
                                         </p>
                                         <div class="flex gap-4 pt-2">
-                                            <Link :href="shopIndex.url()">
+                                            <Link :href="explore.url()">
                                                 <Button
                                                     size="sm"
                                                     class="md:size-default rounded-full bg-white px-4 text-xs text-black hover:bg-white/90 md:px-8 md:text-sm"
@@ -159,7 +164,7 @@ defineProps<{
                         <Link
                             v-for="cat in categories"
                             :key="cat.id"
-                            href="#"
+                            :href="category.url(cat.slug)"
                             class="flex flex-shrink-0 items-center gap-2 rounded-full border bg-white px-4 py-2 shadow-sm transition-all hover:border-primary hover:text-primary"
                         >
                             <img
@@ -318,7 +323,7 @@ defineProps<{
 
         <!-- Load More -->
         <div class="mt-8 pb-12 text-center">
-            <Link :href="shopIndex.url()">
+            <Link :href="explore.url()">
                 <Button
                     variant="outline"
                     size="lg"

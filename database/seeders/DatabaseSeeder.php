@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             SuperadminMenuSeeder::class,
             DefaultShopSeeder::class,
             AttributeSeeder::class,
+            ProductSeeder::class,
         ]);
     }
 }

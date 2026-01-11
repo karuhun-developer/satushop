@@ -11,24 +11,16 @@ import {
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { urlIsActive } from '@/lib/utils';
-import { home } from '@/routes';
-import { index as shopIndex } from '@/routes/shop';
+import { explore, home } from '@/routes';
 import { Link } from '@inertiajs/vue3';
-import {
-    Compass,
-    FileText,
-    Home,
-    Search,
-    User,
-} from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { Compass, FileText, Home, Search, User } from 'lucide-vue-next';
+import { ref } from 'vue';
 
 const isMobileMenuOpen = ref(false);
 
-
 const navLinks = [
     { name: 'Home', href: home.url() },
-    { name: 'Shop', href: shopIndex.url() },
+    { name: 'Shop', href: explore.url() },
     { name: 'Categories', href: '#' },
     { name: 'New Arrivals', href: '#' },
     { name: 'About', href: '#' },
@@ -84,11 +76,11 @@ const navLinks = [
                 <!-- Explore Button -->
                 <div class="mr-4 hidden items-center md:flex">
                     <Link
-                        :href="shopIndex.url()"
+                        :href="explore.url()"
                         class="flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
                         :class="{
                             'bg-muted text-primary': urlIsActive(
-                                shopIndex.url(),
+                                explore.url(),
                                 $page.url,
                             ),
                         }"
@@ -239,10 +231,10 @@ const navLinks = [
                     <span class="text-[10px] font-medium">Home</span>
                 </Link>
                 <Link
-                    :href="shopIndex.url()"
+                    :href="explore.url()"
                     class="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary"
                     :class="{
-                        'text-primary': urlIsActive(shopIndex.url(), $page.url),
+                        'text-primary': urlIsActive(explore.url(), $page.url),
                     }"
                 >
                     <Compass class="h-6 w-6" />
