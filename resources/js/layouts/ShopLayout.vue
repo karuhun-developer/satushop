@@ -2,30 +2,14 @@
 import CartDropdown from '@/components/CartDropdown.vue';
 import ShopSearch from '@/components/ShopSearch.vue';
 import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { urlIsActive } from '@/lib/utils';
-import { explore, home } from '@/routes';
-import { Link } from '@inertiajs/vue3';
-import { Compass, FileText, Home, User } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { explore, home, login, register } from '@/routes';
+import { Link, usePage } from '@inertiajs/vue3';
+import { Compass, FileText, Home, LogIn, User } from 'lucide-vue-next';
 
-const isMobileMenuOpen = ref(false);
-
-const navLinks = [
-    { name: 'Home', href: home.url() },
-    { name: 'Shop', href: explore.url() },
-    { name: 'Categories', href: '#' },
-    { name: 'New Arrivals', href: '#' },
-    { name: 'About', href: '#' },
-];
+const page = usePage();
 </script>
 
 <template>
@@ -105,10 +89,32 @@ const navLinks = [
                     <div
                         class="ml-2 hidden items-center gap-2 border-l pl-4 md:flex"
                     >
-                        <Button variant="ghost" size="sm" class="font-bold">
-                            Masuk
-                        </Button>
-                        <Button size="sm" class="font-bold"> Daftar </Button>
+                        <Link
+                            v-if="page.props.auth.user"
+                            :href="home.url()"
+                            class="flex items-center gap-1 text-muted-foreground hover:text-primary"
+                        >
+                            <User class="h-5 w-5" />
+                            <span class="hidden md:inline">Profile</span>
+                        </Link>
+                        <Link
+                            v-if="!page.props.auth.user"
+                            :href="login.url()"
+                            class="flex items-center gap-1 text-muted-foreground hover:text-primary"
+                        >
+                            <Button variant="ghost" size="sm" class="font-bold">
+                                Masuk
+                            </Button>
+                        </Link>
+                        <Link
+                            v-if="!page.props.auth.user"
+                            :href="register.url()"
+                            class="flex items-center gap-1 text-muted-foreground hover:text-primary"
+                        >
+                            <Button size="sm" class="font-bold">
+                                Daftar
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -231,29 +237,22 @@ const navLinks = [
                 </Link>
 
                 <!-- Profile / Login -->
-                <DropdownMenu>
-                    <DropdownMenuTrigger as-child>
-                        <button
-                            class="flex flex-col items-center gap-1 text-muted-foreground outline-none hover:text-primary"
-                        >
-                            <User class="h-6 w-6" />
-                            <span class="text-[10px] font-medium">Profile</span>
-                        </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" class="mb-2 w-56">
-                        <DropdownMenuLabel>Account Action</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <div class="flex flex-col gap-2 p-2">
-                            <Button class="w-full justify-start" variant="ghost"
-                                >Masuk</Button
-                            >
-                            <Button
-                                class="w-full justify-start bg-primary text-white"
-                                >Daftar</Button
-                            >
-                        </div>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <Link
+                    v-if="page.props.auth.user"
+                    href="/"
+                    class="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary"
+                >
+                    <User class="h-6 w-6" />
+                    <span class="text-[10px] font-medium">Profile</span>
+                </Link>
+                <Link
+                    v-else
+                    :href="login.url()"
+                    class="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary"
+                >
+                    <LogIn class="h-6 w-6" />
+                    <span class="text-[10px] font-medium">Login</span>
+                </Link>
             </div>
         </div>
     </div>

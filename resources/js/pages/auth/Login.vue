@@ -99,11 +99,15 @@ defineProps<{
             </div>
 
             <div
-                class="text-center text-sm text-muted-foreground"
-                v-if="canRegister"
+                class="flex flex-col gap-3 text-center text-sm text-muted-foreground"
             >
-                Don't have an account?
-                <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+                <div v-if="canRegister">
+                    Don't have an account?
+                    <TextLink :href="register()" :tabindex="5"
+                        >Sign up</TextLink
+                    >
+                </div>
+                <TextLink href="/" :tabindex="6">Back to homepage</TextLink>
             </div>
         </Form>
     </AuthBase>
