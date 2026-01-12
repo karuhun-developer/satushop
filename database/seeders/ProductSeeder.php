@@ -22,6 +22,7 @@ class ProductSeeder extends Seeder
         $shop = Shop::where('name', 'Default Shop')->first();
         if (! $shop) {
             $this->command->error('Default Shop not found. Please run DefaultShopSeeder first.');
+
             return;
         }
 
@@ -29,8 +30,9 @@ class ProductSeeder extends Seeder
         $electronicsFamily = AttributeFamily::where('code', 'electronics')->first();
         $clothingFamily = AttributeFamily::where('code', 'clothing')->first();
 
-        if (!$electronicsFamily || !$clothingFamily) {
+        if (! $electronicsFamily || ! $clothingFamily) {
             $this->command->error('Attribute families not found. Please run AttributeSeeder first.');
+
             return;
         }
 
@@ -48,7 +50,7 @@ class ProductSeeder extends Seeder
         $this->command->info('Creating products for Default Shop...');
 
         for ($i = 1; $i <= 50; $i++) {
-            $name = 'Product ' . $i . ' ' . fake()->word();
+            $name = 'Product '.$i.' '.fake()->word();
             $price = fake()->numberBetween(10000, 1000000);
             $rating = fake()->randomFloat(1, 3, 5);
             $soldCount = fake()->numberBetween(0, 500);
@@ -71,7 +73,7 @@ class ProductSeeder extends Seeder
                 'shop_id' => $shop->id,
                 'attribute_family_id' => $familyId,
                 'type' => ProductTypeEnum::SIMPLE,
-                'sku' => Str::slug($name) . '-' . Str::random(6),
+                'sku' => Str::slug($name).'-'.Str::random(6),
             ]);
 
             // Create Product Flat
@@ -79,7 +81,7 @@ class ProductSeeder extends Seeder
                 'product_id' => $product->id,
                 'sku' => $product->sku,
                 'name' => $name,
-                'slug' => Str::slug($name) . '-' . $product->id,
+                'slug' => Str::slug($name).'-'.$product->id,
                 'price' => $price,
                 'type' => ProductTypeEnum::SIMPLE,
                 'rating' => $rating,
@@ -91,7 +93,7 @@ class ProductSeeder extends Seeder
 
             // Attach category
             $flat->categories()->create([
-                'product_category_id' => $randomCatId
+                'product_category_id' => $randomCatId,
             ]);
         }
 

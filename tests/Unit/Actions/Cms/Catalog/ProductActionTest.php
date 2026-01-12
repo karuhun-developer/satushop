@@ -19,7 +19,7 @@ uses(TestCase::class, RefreshDatabase::class);
 test('store product action creates a simple product', function () {
     $shop = Shop::factory()->create();
     $family = AttributeFamily::create(['code' => 'default', 'name' => 'Default']);
-    
+
     $action = new StoreProductAction;
     $data = [
         'type' => ProductTypeEnum::SIMPLE->value,
@@ -32,21 +32,21 @@ test('store product action creates a simple product', function () {
 
     expect($productFlat)->toBeInstanceOf(ProductFlat::class);
     $this->assertDatabaseHas('products', [
-        'type' => ProductTypeEnum::SIMPLE->value, 
-        'sku' => 'test-product'
+        'type' => ProductTypeEnum::SIMPLE->value,
+        'sku' => 'test-product',
     ]);
-    
+
     $product = Product::first();
     $this->assertDatabaseHas('product_flats', [
         'product_id' => $product->id,
-        'sku' => 'sku-' . $product->id, // As per StoreProductAction logic
-        'type' => ProductTypeEnum::SIMPLE->value
+        'sku' => 'sku-'.$product->id, // As per StoreProductAction logic
+        'type' => ProductTypeEnum::SIMPLE->value,
     ]);
 });
 
 test('update product action updates a product flat', function () {
     Storage::fake('public');
-    
+
     // Setup
     $shop = Shop::factory()->create();
     $family = AttributeFamily::create(['code' => 'default', 'name' => 'Default']);
@@ -54,17 +54,17 @@ test('update product action updates a product flat', function () {
         'type' => ProductTypeEnum::SIMPLE,
         'attribute_family_id' => $family->id,
         'shop_id' => $shop->id,
-        'sku' => 'test-product'
+        'sku' => 'test-product',
     ]);
     $productFlat = ProductFlat::create([
         'product_id' => $product->id,
-        'sku' => 'sku-' . $product->id,
+        'sku' => 'sku-'.$product->id,
         'name' => 'Old Name',
         'price' => 1000,
         'type' => ProductTypeEnum::SIMPLE,
         'visible_individually' => true,
     ]);
-    
+
     // Create a category to attach
     $category = ProductCategory::create(['name' => 'Cat 1', 'status' => 'active']);
 
@@ -74,7 +74,7 @@ test('update product action updates a product flat', function () {
         'name' => 'New Name',
         'visible_individually' => false,
         'translations' => [
-            'en' => ['name' => 'New Name EN']
+            'en' => ['name' => 'New Name EN'],
         ],
         'categories' => [$category->id],
         // Image test
@@ -82,11 +82,11 @@ test('update product action updates a product flat', function () {
     ];
 
     // Mocking currencyToNumber helper if needed, but integration test should use real one.
-    // Assuming currencyToNumber('Rp 2.000') -> 2000. 
-    // If exact implementation isn't known, I'll allow this test to fail and fix if helper behaves differently, 
+    // Assuming currencyToNumber('Rp 2.000') -> 2000.
+    // If exact implementation isn't known, I'll allow this test to fail and fix if helper behaves differently,
     // or use a safe number '2000' first. I'll check helper later if possible.
     // Let's use '2000' string to be safer but still string.
-    $data['price'] = '2,000.00'; 
+    $data['price'] = '2,000.00';
 
     // Wait, UpdateProductAction calls currencyToNumber($data['price']).
     // If I cannot verify helper, I should just assume standard behavior or look at helper file.
@@ -98,13 +98,13 @@ test('update product action updates a product flat', function () {
     expect($result)->toBeTrue();
     $this->assertDatabaseHas('product_flats', ['id' => $productFlat->id, 'name' => 'New Name', 'price' => 2000]);
     $this->assertDatabaseHas('product_flat_translations', [
-        'product_flat_id' => $productFlat->id, 
-        'locale' => 'en', 
-        'name' => 'New Name EN'
+        'product_flat_id' => $productFlat->id,
+        'locale' => 'en',
+        'name' => 'New Name EN',
     ]);
     $this->assertDatabaseHas('product_flat_categories', [
         'product_flat_id' => $productFlat->id,
-        'product_category_id' => $category->id
+        'product_category_id' => $category->id,
     ]);
 });
 
@@ -115,13 +115,13 @@ test('delete product action deletes simple product', function () {
         'type' => ProductTypeEnum::SIMPLE,
         'attribute_family_id' => $family->id,
         'shop_id' => $shop->id,
-        'sku' => 'test-product'
+        'sku' => 'test-product',
     ]);
     $productFlat = ProductFlat::create([
         'product_id' => $product->id,
-        'sku' => 'sku-' . $product->id,
+        'sku' => 'sku-'.$product->id,
         'name' => 'Delete Me',
-        'type' => ProductTypeEnum::SIMPLE
+        'type' => ProductTypeEnum::SIMPLE,
     ]);
 
     $action = new DeleteProductAction;
@@ -132,9 +132,9 @@ test('delete product action deletes simple product', function () {
     // If I delete product, product_flats should imply missing if cascade.
     // But DeleteProductAction explicitly deletes $product->product->delete().
     // So distinct assertion on products table is key.
-    
+
     $this->assertDatabaseMissing('products', ['id' => $product->id]);
-    // Flat might be deleted by foreign key constraint or explicit delete. 
+    // Flat might be deleted by foreign key constraint or explicit delete.
     // I won't strict check flat if I'm not sure of cascading, but logically it should be gone.
     $this->assertDatabaseMissing('product_flats', ['id' => $productFlat->id]);
 });

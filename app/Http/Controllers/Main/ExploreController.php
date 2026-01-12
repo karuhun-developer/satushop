@@ -38,6 +38,7 @@ class ExploreController extends Controller
                 ->through(function ($item) {
                     $item->image_1 = $item->getFirstMediaUrl('image_1');
                     $item->makeHidden('media');
+
                     return $item;
                 })),
             'categories' => inertia()->defer(fn () => ProductCategory::query()
@@ -47,6 +48,7 @@ class ExploreController extends Controller
                 ->map(function ($item) {
                     $item->image = $item->getFirstMediaUrl('image');
                     $item->makeHidden('media');
+
                     return $item;
                 })
             ),
@@ -90,6 +92,7 @@ class ExploreController extends Controller
                 ->through(function ($item) {
                     $item->image_1 = $item->getFirstMediaUrl('image_1');
                     $item->makeHidden('media');
+
                     return $item;
                 })),
             'categories' => inertia()->defer(fn () => ProductCategory::query()
@@ -99,6 +102,7 @@ class ExploreController extends Controller
                 ->map(function ($item) {
                     $item->image = $item->getFirstMediaUrl('image');
                     $item->makeHidden('media');
+
                     return $item;
                 })
             ),

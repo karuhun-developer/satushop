@@ -37,7 +37,7 @@ test('create new user action validates input', function () {
 
 test('create new user action requires unique email', function () {
     User::factory()->create(['email' => 'existing@example.com']);
-    
+
     $action = new CreateNewUser;
     $data = [
         'name' => 'New User',
