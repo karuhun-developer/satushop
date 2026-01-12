@@ -85,7 +85,7 @@ class ProductFlat extends Model implements HasMedia
 
     public function attributes()
     {
-        return $this->hasMany(\App\Models\Catalog\ProductAttribute::class);
+        return $this->hasMany(\App\Models\Catalog\ProductAttribute::class, 'product_flat_id');
     }
 
     public function translations()

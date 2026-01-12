@@ -19,11 +19,11 @@ class ProductVariant extends Model
 
     public function parentProduct()
     {
-        return $this->belongsTo(Product::class, 'parent_product_id');
+        return $this->belongsTo(ProductFlat::class, 'parent_product_id');
     }
 
     public function variantProduct()
     {
-        return $this->belongsTo(Product::class, 'variant_product_id');
+        return $this->belongsTo(ProductFlat::class, 'variant_product_id');
     }
 }

@@ -37,6 +37,8 @@ export interface ProductDataItem {
     updated_at: string;
     shop?: ShopDataItem;
     attribute_family?: AttributeFamilyDataItem;
+    attributes?: ProductAttributeDataItem[];
+    flats?: ProductFlatDataItem[];
 }
 
 export interface ProductFlatDataItem {
@@ -47,7 +49,6 @@ export interface ProductFlatDataItem {
     slug: string;
     short_description?: string;
     description?: string;
-    // meta_data?: Record<string, unknown>;
     meta_data?: any;
     price: number | string;
     special_price?: number;
@@ -79,6 +80,8 @@ export interface ProductFlatDataItem {
     categories?: ProductFlatCategoryDataItem[];
     variants?: ProductVariantDataItem[];
     translations?: ProductFlatTranslationDataItem[];
+    attributes?: ProductAttributeDataItem[];
+    flat_attributes?: Record<number, ProductAttributeDataItem[]>;
 }
 
 export interface ProductFlatTranslationDataItem {
@@ -125,6 +128,6 @@ export interface ProductVariantDataItem {
     created_at: string;
     updated_at: string;
     product?: ProductDataItem;
-    parent_product?: ProductDataItem;
-    variant_product?: ProductDataItem;
+    parent_product?: ProductFlatDataItem;
+    variant_product?: ProductFlatDataItem;
 }

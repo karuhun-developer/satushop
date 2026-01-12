@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import ExploreFilters from '@/components/main/explore/ExploreFilters.vue';
 import ProductCard from '@/components/ProductCard.vue';
 import { EmptyState } from '@/components/ui/empty-state';
-import ExploreFilters from '@/components/main/explore/ExploreFilters.vue';
 import ShopLayout from '@/layouts/ShopLayout.vue';
 import { PaginationItem } from '@/types';
 import { AttributeDataItem } from '@/types/cms/attribute';
@@ -90,4 +90,3 @@ defineProps<{
         </div>
     </ShopLayout>
 </template>
-
