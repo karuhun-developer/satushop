@@ -13,9 +13,7 @@ Route::prefix('cart')->name('cart.')->group(function () {
 });
 
 Route::prefix('checkout')->name('checkout.')->group(function () {
-    Route::get('/', function () {
-        return Inertia\Inertia::render('Checkout/Index');
-    })->name('index');
+    Route::get('/', [App\Http\Controllers\Main\CheckoutController::class, 'index'])->name('index');
 });
 
 Route::get('/{product}', [App\Http\Controllers\Main\ProductController::class, 'show'])->name('product.show');

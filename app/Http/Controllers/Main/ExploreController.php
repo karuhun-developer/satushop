@@ -16,7 +16,7 @@ class ExploreController extends Controller
             'products' => inertia()->scroll(ProductFlat::query()
                 ->with('media')
                 ->when($request->input('attribute_option_id'), function ($query, $attributeOptionIds) {
-                    $query->whereHas('product.attributes', function ($q) use ($attributeOptionIds) {
+                    $query->whereHas('variants.variantProduct.attributes', function ($q) use ($attributeOptionIds) {
                         $q->whereIn('attribute_option_id', (array) $attributeOptionIds);
                     });
                 })
@@ -70,7 +70,7 @@ class ExploreController extends Controller
                     $query->where('product_category_id', $category->id);
                 })
                 ->when($request->input('attribute_option_id'), function ($query, $attributeOptionIds) {
-                    $query->whereHas('product.attributes', function ($q) use ($attributeOptionIds) {
+                    $query->whereHas('variants.variantProduct.attributes', function ($q) use ($attributeOptionIds) {
                         $q->whereIn('attribute_option_id', (array) $attributeOptionIds);
                     });
                 })
