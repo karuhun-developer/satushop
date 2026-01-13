@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { index as cart } from '@/actions/App/Http/Controllers/Main/CartController';
+import { index as checkout } from '@/actions/App/Http/Controllers/Main/CheckoutController';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,8 +12,6 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useCartStore } from '@/composables/useCartStore';
-import { index as cartIndex } from '@/routes/cart';
-import { index as checkoutIndex } from '@/routes/checkout';
 import { Link } from '@inertiajs/vue3';
 import { ShoppingCart } from 'lucide-vue-next';
 
@@ -54,7 +54,11 @@ const formatPrice = (price: number) => {
 
             <!-- Items -->
             <div class="max-h-[300px] space-y-4 overflow-y-auto p-4">
-                <div v-for="item in cartItems" :key="item.id" class="flex gap-4">
+                <div
+                    v-for="item in cartItems"
+                    :key="item.id"
+                    class="flex gap-4"
+                >
                     <div
                         class="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md bg-muted"
                     >
@@ -92,10 +96,7 @@ const formatPrice = (price: number) => {
                 </div>
                 <div class="grid gap-2">
                     <DropdownMenuItem as-child>
-                        <Link
-                            :href="cartIndex.url()"
-                            class="w-full cursor-pointer"
-                        >
+                        <Link :href="cart.url()" class="w-full cursor-pointer">
                             <Button variant="outline" class="w-full" size="sm"
                                 >View Cart</Button
                             >
@@ -103,7 +104,7 @@ const formatPrice = (price: number) => {
                     </DropdownMenuItem>
                     <DropdownMenuItem as-child>
                         <Link
-                            :href="checkoutIndex.url()"
+                            :href="checkout.url()"
                             class="w-full cursor-pointer"
                         >
                             <Button class="w-full" size="sm">Checkout</Button>

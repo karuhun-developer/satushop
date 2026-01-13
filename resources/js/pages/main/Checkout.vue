@@ -7,7 +7,7 @@ import ShopLayout from '@/layouts/ShopLayout.vue';
 import { formatCurrency } from '@/lib/utils';
 import { explore } from '@/routes';
 import { Head, Link } from '@inertiajs/vue3';
-import { Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-vue-next';
+import { ShoppingBag } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 const cart = useCartStore();
@@ -25,17 +25,21 @@ const hasItems = computed(() => cart.items.value.length > 0);
             <!-- Checkout Content -->
             <div v-if="hasItems" class="grid gap-8 lg:grid-cols-3">
                 <!-- Checkout Form -->
-                <div class="lg:col-span-2 space-y-6">
+                <div class="space-y-6 lg:col-span-2">
                     <!-- Shipping Information -->
                     <div class="rounded-lg border bg-card p-6">
-                        <h2 class="mb-4 text-xl font-semibold">Shipping Information</h2>
-                        
+                        <h2 class="mb-4 text-xl font-semibold">
+                            Shipping Information
+                        </h2>
+
                         <div class="grid gap-4">
                             <div class="grid gap-2">
-                                <label class="text-sm font-medium">Full Name</label>
+                                <label class="text-sm font-medium"
+                                    >Full Name</label
+                                >
                                 <input
                                     type="text"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                     placeholder="Enter your full name"
                                 />
                             </div>
@@ -44,43 +48,51 @@ const hasItems = computed(() => cart.items.value.length > 0);
                                 <label class="text-sm font-medium">Email</label>
                                 <input
                                     type="email"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                     placeholder="Enter your email"
                                 />
                             </div>
 
                             <div class="grid gap-2">
-                                <label class="text-sm font-medium">Phone Number</label>
+                                <label class="text-sm font-medium"
+                                    >Phone Number</label
+                                >
                                 <input
                                     type="tel"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                     placeholder="Enter your phone number"
                                 />
                             </div>
 
                             <div class="grid gap-2">
-                                <label class="text-sm font-medium">Address</label>
+                                <label class="text-sm font-medium"
+                                    >Address</label
+                                >
                                 <textarea
-                                    class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                     placeholder="Enter your full address"
                                 ></textarea>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="grid gap-2">
-                                    <label class="text-sm font-medium">City</label>
+                                    <label class="text-sm font-medium"
+                                        >City</label
+                                    >
                                     <input
                                         type="text"
-                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                         placeholder="City"
                                     />
                                 </div>
 
                                 <div class="grid gap-2">
-                                    <label class="text-sm font-medium">Postal Code</label>
+                                    <label class="text-sm font-medium"
+                                        >Postal Code</label
+                                    >
                                     <input
                                         type="text"
-                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                         placeholder="Postal code"
                                     />
                                 </div>
@@ -90,16 +102,35 @@ const hasItems = computed(() => cart.items.value.length > 0);
 
                     <!-- Payment Method -->
                     <div class="rounded-lg border bg-card p-6">
-                        <h2 class="mb-4 text-xl font-semibold">Payment Method</h2>
-                        
+                        <h2 class="mb-4 text-xl font-semibold">
+                            Payment Method
+                        </h2>
+
                         <div class="space-y-2">
-                            <label class="flex items-center gap-3 rounded-lg border p-4 cursor-pointer hover:bg-muted/50">
-                                <input type="radio" name="payment" value="cod" class="h-4 w-4" checked />
-                                <span class="font-medium">Cash on Delivery (COD)</span>
+                            <label
+                                class="flex cursor-pointer items-center gap-3 rounded-lg border p-4 hover:bg-muted/50"
+                            >
+                                <input
+                                    type="radio"
+                                    name="payment"
+                                    value="cod"
+                                    class="h-4 w-4"
+                                    checked
+                                />
+                                <span class="font-medium"
+                                    >Cash on Delivery (COD)</span
+                                >
                             </label>
-                            
-                            <label class="flex items-center gap-3 rounded-lg border p-4 cursor-pointer hover:bg-muted/50">
-                                <input type="radio" name="payment" value="transfer" class="h-4 w-4" />
+
+                            <label
+                                class="flex cursor-pointer items-center gap-3 rounded-lg border p-4 hover:bg-muted/50"
+                            >
+                                <input
+                                    type="radio"
+                                    name="payment"
+                                    value="transfer"
+                                    class="h-4 w-4"
+                                />
                                 <span class="font-medium">Bank Transfer</span>
                             </label>
                         </div>
@@ -109,7 +140,9 @@ const hasItems = computed(() => cart.items.value.length > 0);
                 <!-- Cart Summary (Right Side) -->
                 <div class="lg:col-span-1">
                     <div class="sticky top-4 rounded-lg border bg-card p-6">
-                        <h2 class="mb-4 text-xl font-semibold">Order Summary</h2>
+                        <h2 class="mb-4 text-xl font-semibold">
+                            Order Summary
+                        </h2>
 
                         <!-- Cart Items -->
                         <div class="mb-4 space-y-3">
@@ -118,18 +151,32 @@ const hasItems = computed(() => cart.items.value.length > 0);
                                 :key="item.id"
                                 class="flex gap-3"
                             >
-                                <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md bg-muted">
+                                <div
+                                    class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md bg-muted"
+                                >
                                     <img
-                                        :src="item.image || 'https://via.placeholder.com/150'"
+                                        :src="
+                                            item.image ||
+                                            'https://via.placeholder.com/150'
+                                        "
                                         :alt="item.name"
                                         class="h-full w-full object-cover"
                                     />
                                 </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium truncate">{{ item.name }}</p>
-                                    <p class="text-xs text-muted-foreground">Qty: {{ item.quantity }}</p>
+                                <div class="min-w-0 flex-1">
+                                    <p class="truncate text-sm font-medium">
+                                        {{ item.name }}
+                                    </p>
+                                    <p class="text-xs text-muted-foreground">
+                                        Qty: {{ item.quantity }}
+                                    </p>
                                     <p class="text-sm font-semibold">
-                                        {{ formatCurrency(Number(item.price) * item.quantity) }}
+                                        {{
+                                            formatCurrency(
+                                                Number(item.price) *
+                                                    item.quantity,
+                                            )
+                                        }}
                                     </p>
                                 </div>
                             </div>
@@ -140,11 +187,17 @@ const hasItems = computed(() => cart.items.value.length > 0);
                         <!-- Totals -->
                         <div class="space-y-2">
                             <div class="flex justify-between text-sm">
-                                <span class="text-muted-foreground">Subtotal</span>
-                                <span>{{ formatCurrency(cart.subtotal.value) }}</span>
+                                <span class="text-muted-foreground"
+                                    >Subtotal</span
+                                >
+                                <span>{{
+                                    formatCurrency(cart.subtotal.value)
+                                }}</span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-muted-foreground">Shipping</span>
+                                <span class="text-muted-foreground"
+                                    >Shipping</span
+                                >
                                 <span>Free</span>
                             </div>
                         </div>
@@ -160,7 +213,10 @@ const hasItems = computed(() => cart.items.value.length > 0);
                             Place Order
                         </Button>
 
-                        <Link :href="explore.url()" class="mt-4 block text-center text-sm text-muted-foreground hover:text-foreground">
+                        <Link
+                            :href="explore.url()"
+                            class="mt-4 block text-center text-sm text-muted-foreground hover:text-foreground"
+                        >
                             Continue Shopping
                         </Link>
                     </div>

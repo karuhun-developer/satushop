@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { index as checkout } from '@/actions/App/Http/Controllers/Main/CheckoutController';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -15,7 +16,6 @@ import { useCartStore } from '@/composables/useCartStore';
 import ShopLayout from '@/layouts/ShopLayout.vue';
 import { formatCurrency } from '@/lib/utils';
 import { explore } from '@/routes';
-import { index as checkoutIndex } from '@/routes/checkout';
 import { Head, Link } from '@inertiajs/vue3';
 import { ShoppingBag, Trash2 } from 'lucide-vue-next';
 
@@ -178,7 +178,7 @@ const {
                                 <span>{{ formatCurrency(total) }}</span>
                             </div>
 
-                            <Link :href="checkoutIndex.url()" class="w-full">
+                            <Link :href="checkout.url()" class="w-full">
                                 <Button class="mt-4 w-full" size="lg"
                                     >Proceed to Checkout</Button
                                 >
