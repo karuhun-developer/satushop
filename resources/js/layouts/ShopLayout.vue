@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { urlIsActive } from '@/lib/utils';
-import { explore, home, login, register } from '@/routes';
+import { explore, home, login, myProfile, register } from '@/routes';
 import { Link, usePage } from '@inertiajs/vue3';
-import { Compass, FileText, Home, LogIn, User } from 'lucide-vue-next';
+import { Compass, Home, LogIn, User } from 'lucide-vue-next';
 
 const page = usePage();
 </script>
@@ -91,7 +91,7 @@ const page = usePage();
                     >
                         <Link
                             v-if="page.props.auth.user"
-                            :href="home.url()"
+                            :href="myProfile.url()"
                             class="flex items-center gap-1 text-muted-foreground hover:text-primary"
                         >
                             <User class="h-5 w-5" />
@@ -206,7 +206,7 @@ const page = usePage();
             class="pb-safe fixed right-0 bottom-0 left-0 z-50 border-t bg-background md:hidden"
         >
             <div
-                class="grid h-16 grid-cols-4 items-center justify-items-center"
+                class="grid h-16 grid-cols-3 items-center justify-items-center"
             >
                 <Link
                     :href="home.url()"
@@ -228,18 +228,11 @@ const page = usePage();
                     <Compass class="h-6 w-6" />
                     <span class="text-[10px] font-medium">Explore</span>
                 </Link>
-                <Link
-                    href="#"
-                    class="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary"
-                >
-                    <FileText class="h-6 w-6" />
-                    <span class="text-[10px] font-medium">History</span>
-                </Link>
 
                 <!-- Profile / Login -->
                 <Link
                     v-if="page.props.auth.user"
-                    href="/"
+                    :href="myProfile.url()"
                     class="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary"
                 >
                     <User class="h-6 w-6" />

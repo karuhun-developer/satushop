@@ -19,7 +19,7 @@ interface PaymentMethodSelectorEmits {
 
 const page = usePage();
 const props = withDefaults(defineProps<PaymentMethodSelectorProps>(), {
-    modelValue: 'cod',
+    modelValue: 'midtrans',
 });
 
 const emit = defineEmits<PaymentMethodSelectorEmits>();

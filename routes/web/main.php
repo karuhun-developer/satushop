@@ -11,5 +11,17 @@ Route::get('/cart', [App\Http\Controllers\Main\CartController::class, 'index'])-
 Route::get('/checkout', [App\Http\Controllers\Main\CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [App\Http\Controllers\Main\CheckoutController::class, 'store'])->name('checkout.process');
 
+// User Address Management (for logged-in users)
+Route::middleware('auth')->group(function () {
+    // Profile
+    Route::get('/my-profile', [App\Http\Controllers\Main\ProfileController::class, 'index'])->name('my-profile');
+    Route::put('/my-profile', [App\Http\Controllers\Main\ProfileController::class, 'update'])->name('my-profile.update');
+
+    // User Addresses
+    Route::post('/user-addresses', [App\Http\Controllers\Main\UserAddressController::class, 'store'])->name('user-addresses.store');
+    Route::put('/user-addresses/{userAddress}', [App\Http\Controllers\Main\UserAddressController::class, 'update'])->name('user-addresses.update');
+    Route::delete('/user-addresses/{userAddress}', [App\Http\Controllers\Main\UserAddressController::class, 'destroy'])->name('user-addresses.destroy');
+});
+
 // Single Product
 Route::get('/{product}', [App\Http\Controllers\Main\ProductController::class, 'show'])->name('product.show');

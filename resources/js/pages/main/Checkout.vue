@@ -11,6 +11,24 @@ import { Form, Head } from '@inertiajs/vue3';
 import { ShoppingBag } from 'lucide-vue-next';
 import { computed } from 'vue';
 
+interface UserAddress {
+    id: number;
+    name: string;
+    phone: string;
+    address: string;
+    postcode: string;
+    rajaongkir_province_id: number;
+    rajaongkir_city_id: number;
+    rajaongkir_district_id: number;
+    is_default: boolean;
+}
+
+interface CheckoutPageProps {
+    userAddresses: UserAddress[];
+}
+
+defineProps<CheckoutPageProps>();
+
 const { toast } = useSwal();
 const cart = useCartStore();
 
@@ -41,7 +59,10 @@ const hasItems = computed(() => cart.items.value.length > 0);
             >
                 <!-- Checkout Form (Left Side) -->
                 <div class="lg:col-span-2">
-                    <CheckoutForm :errors="errors" />
+                    <CheckoutForm
+                        :errors="errors"
+                        :user-addresses="userAddresses"
+                    />
                 </div>
 
                 <!-- Order Summary (Right Side) -->

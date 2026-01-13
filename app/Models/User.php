@@ -99,4 +99,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'phone_verified_at' => $this->freshTimestamp(),
         ])->save();
     }
+
+    public function addresses()
+    {
+        return $this->hasMany(\App\Models\User\UserAddress::class);
+    }
+
+    public function defaultAddress()
+    {
+        return $this->hasOne(\App\Models\User\UserAddress::class)->where('is_default', true);
+    }
 }
