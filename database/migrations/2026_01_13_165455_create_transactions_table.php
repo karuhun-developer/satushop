@@ -13,6 +13,23 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(App\Models\User::class)->nullable()->constrained()->nullOnDelete();
+            $table->string('reference')->unique();
+            $table->unsignedBigInteger('ref_number')->unique();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->text('address')->nullable();
+            $table->string('postcode')->nullable();
+            $table->unsignedBigInteger('rajaongkir_province_id')->nullable()->index();
+            $table->unsignedBigInteger('rajaongkir_city_id')->nullable()->index();
+            $table->unsignedBigInteger('rajaongkir_district_id')->nullable()->index();
+            $table->text('notes')->nullable();
+            $table->string('payment_method')->comment('manual, midtrans, tripay, etc.');
+            $table->decimal('amount', 15, 2)->default(0);
+            $table->decimal('shipping_cost', 15, 2)->default(0);
+            $table->decimal('total_amount', 15, 2)->default(0);
+            $table->boolean('status')->default(false)->comment('payment status: paid or unpaid');
             $table->timestamps();
         });
     }
