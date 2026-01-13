@@ -19,9 +19,7 @@ import AppLogo from './AppLogo.vue';
 // Get navigation items
 const page = usePage();
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const mainNavItems: NavItem[] = page.props.auth.menus;
+const mainNavItems = page.props.auth.menus as NavItem[];
 
 const footerNavItems: NavItem[] = [
     {

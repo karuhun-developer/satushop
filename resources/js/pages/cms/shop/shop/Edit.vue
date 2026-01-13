@@ -13,6 +13,7 @@ import SelectContent from '@/components/ui/select/SelectContent.vue';
 import SelectItem from '@/components/ui/select/SelectItem.vue';
 import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
+import Textarea from '@/components/ui/textarea/Textarea.vue';
 import { useRajaongkirQuery } from '@/composables/query/useRajaongkirQuery';
 import { useSwal } from '@/composables/useSwal';
 import { ValidationEnum } from '@/enums/global.enum';
@@ -441,7 +442,7 @@ watch(selectedCity, (newValue, oldValue) => {
                     <InputDescription>
                         Default shop physical address.
                     </InputDescription>
-                    <Input
+                    <Textarea
                         id="address"
                         name="address"
                         type="text"

@@ -66,6 +66,7 @@ class HandleInertiaRequests extends Middleware
             'defaultLocale' => fn () => defaultLocale(),
             'defaultCurrency' => fn () => defaultCurrency(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'paymentGateway' => fn () => config('payment.gateway'),
             'csrfToken' => csrf_token(),
         ];
     }

@@ -12,17 +12,12 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useCartStore } from '@/composables/useCartStore';
+import { formatCurrency } from '@/lib/utils';
 import { Link } from '@inertiajs/vue3';
-import { ShoppingCart } from 'lucide-vue-next';
+import { ShoppingCart, Trash2 } from 'lucide-vue-next';
 
-const { items: cartItems, total: cartTotal } = useCartStore();
-
-const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-    }).format(price);
-};
+const cartStore = useCartStore();
+const { items: cartItems, total: cartTotal } = cartStore;
 </script>
 
 <template>
@@ -57,7 +52,7 @@ const formatPrice = (price: number) => {
                 <div
                     v-for="item in cartItems"
                     :key="item.id"
-                    class="flex gap-4"
+                    class="flex items-start gap-3"
                 >
                     <div
                         class="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md bg-muted"
@@ -74,9 +69,17 @@ const formatPrice = (price: number) => {
                         </p>
                         <p class="text-xs text-muted-foreground">
                             {{ item.quantity }} x
-                            {{ formatPrice(item.price) }}
+                            {{ formatCurrency(item.price) }}
                         </p>
                     </div>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        class="h-8 w-8 flex-shrink-0"
+                        @click="cartStore.removeItem(item.id)"
+                    >
+                        <Trash2 class="h-4 w-4" />
+                    </Button>
                 </div>
                 <div
                     v-if="cartItems.length === 0"
@@ -92,7 +95,7 @@ const formatPrice = (price: number) => {
             <div v-if="cartItems.length > 0" class="space-y-4 p-4 pt-2">
                 <div class="flex justify-between text-sm font-medium">
                     <span>Total</span>
-                    <span>{{ formatPrice(cartTotal) }}</span>
+                    <span>{{ formatCurrency(cartTotal) }}</span>
                 </div>
                 <div class="grid gap-2">
                     <DropdownMenuItem as-child>

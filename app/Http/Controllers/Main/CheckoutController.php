@@ -10,4 +10,9 @@ class CheckoutController extends Controller
     {
         return inertia('main/Checkout');
     }
+
+    public function store()
+    {
+        dd(request()->all());
+    }
 }

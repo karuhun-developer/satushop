@@ -50,6 +50,7 @@ export type AppPageProps<
     flash: any;
     defaultLocale: DefaultLocale;
     defaultCurrency: DefaultCurrency;
+    paymentGateway: string;
 };
 
 export interface DefaultLocale {
@@ -67,6 +68,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    phone: string;
     avatar?: string;
     email_verified_at: string | null;
     created_at: string;
