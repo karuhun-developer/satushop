@@ -260,10 +260,6 @@ const toggleOption = (attrCode: string, optionId: number) => {
     }
 };
 
-const clearSelection = () => {
-    selectedOptions.value = {};
-};
-
 const addToCart = () => {
     const productToAdd =
         matchingVariant.value?.variant_product || props.product;
@@ -435,21 +431,6 @@ const checkout = () => {
                                         @click="toggleOption(attr.code, opt.id)"
                                     >
                                         {{ opt.name }}
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <!-- Clear Selection Button -->
-                            <div v-if="Object.keys(selectedOptions).length > 0">
-                                <div class="flex flex-wrap gap-2">
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        size="sm"
-                                        class="min-w-[3rem]"
-                                        @click="clearSelection"
-                                    >
-                                        Clear Selection
                                     </Button>
                                 </div>
                             </div>
