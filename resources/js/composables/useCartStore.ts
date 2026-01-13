@@ -1,13 +1,14 @@
+import { ProductFlatDataItem } from '@/types/cms/catalog';
 import { useLocalStorage } from '@vueuse/core';
 import { computed } from 'vue';
 
 export interface CartItem {
     id: number;
+    shop_id: number;
     name: string;
     price: number;
     quantity: number;
     image: string;
-    // Add other product properties as needed
     options?: Record<string, any>;
     category?: string;
 }
@@ -20,7 +21,10 @@ export const useCartStore = () => {
     });
 
     const subtotal = computed(() => {
-        return items.value.reduce((acc, item) => acc + item.price * item.quantity, 0);
+        return items.value.reduce(
+            (acc, item) => acc + item.price * item.quantity,
+            0,
+        );
     });
 
     const total = computed(() => {
@@ -28,9 +32,15 @@ export const useCartStore = () => {
         return subtotal.value;
     });
 
-    const addItem = (product: any, quantity: number = 1, options: Record<string, any> = {}) => {
+    const addItem = (
+        product: ProductFlatDataItem,
+        quantity: number = 1,
+        options: Record<string, any> = {},
+    ) => {
         const existingItemIndex = items.value.findIndex(
-            (item) => item.id === product.id && JSON.stringify(item.options) === JSON.stringify(options)
+            (item) =>
+                item.id === product.id &&
+                JSON.stringify(item.options) === JSON.stringify(options),
         );
 
         if (existingItemIndex !== -1) {
@@ -38,13 +48,11 @@ export const useCartStore = () => {
         } else {
             items.value.push({
                 id: product.id,
+                shop_id: product.product?.shop_id || 0,
                 name: product.name,
-                price: typeof product.price === 'string'
-                    ? parseFloat(product.price.replace(/[^0-9.-]+/g, ''))
-                    : product.price,
+                price: Number(product?.price),
                 quantity,
-                image: Array.isArray(product.images) ? product.images[0] : product.image || '',
-                category: product.category,
+                image: product?.image_1 || '',
                 options,
             });
         }

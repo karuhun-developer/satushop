@@ -18,9 +18,6 @@ class ProductController extends Controller
             'product.attributes.attributeOption',
             'translations',
             'categories.productCategory',
-            'product.flats.media',
-            'product.flats.attributes.attribute',
-            'product.flats.attributes.attributeOption'
         );
 
         // Load product images
