@@ -7,19 +7,23 @@ A modern, full-featured e-commerce application built with **Laravel 12**, **Iner
 ### ✅ Implemented Features
 
 **Product Catalog Management**
+
 - **Product Management**: Comprehensive CRUD for products, including variant management (simple, variable, bundle types).
 - **Category Management**: Organize products into hierarchical categories.
 - **Attribute Management**: Define custom attributes (color, size, material, etc.) for products.
 - **Attribute Families**: Group attributes into reusable families for different product types.
 
 **Shop & Outlet Management**
+
 - **Shop/Outlet Management**: Manage physical or digital store locations and details.
 
 **User & Access Control**
+
 - **User Management**: Administer user accounts.
 - **Role & Permission Management**: Granular access control using Spatie Permissions. Create roles and assign specific permissions via a visual interface.
 
 **System Administration**
+
 - **Dynamic Menu Builder**: Create and reorder sidebar menus and nested sub-menus directly from the dashboard.
 - **Activity Logging**: Track detailed user activities and system changes.
 - **Localization & Currency**:
@@ -31,12 +35,14 @@ A modern, full-featured e-commerce application built with **Laravel 12**, **Iner
 ### 🚧 Work In Progress (WIP)
 
 **Frontend & Customer Experience**
-- [ ] **Homepage**: Modern, responsive landing page.
-- [ ] **Shopping Cart**: Real-time cart management.
+
+- [x] **Homepage**: Modern, responsive landing page.
+- [x] **Shopping Cart**: Real-time cart management.
 - [ ] **Checkout Flow**: Secure and streamlined checkout process.
 - [ ] **Voucher Management**: Discount codes and promotional campaigns.
 
 **Integrations**
+
 - [ ] **Payment Gateways**:
     - Midtrans
     - Tripay
