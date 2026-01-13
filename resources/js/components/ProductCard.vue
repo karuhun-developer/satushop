@@ -62,7 +62,19 @@ const addToCart = (e: Event) => {
                 >
                     {{ product.name }}
                 </h3>
-                <div class="text-base font-bold">
+                <div
+                    class="text-base font-bold"
+                    v-if="product.type == 'variable'"
+                >
+                    {{
+                        formatCurrency(
+                            Number(
+                                product.first_variant?.variant_product?.price,
+                            ),
+                        )
+                    }}
+                </div>
+                <div class="text-base font-bold" v-else>
                     {{ formatCurrency(Number(product.price)) }}
                 </div>
 

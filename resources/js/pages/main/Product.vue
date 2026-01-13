@@ -65,15 +65,15 @@ const matchingVariant = computed(() => {
         });
     });
 
-    console.log('Matching variant:', match);
-    console.log('Selected options:', selectedOptions.value);
+    // console.log('Matching variant:', match);
+    // console.log('Selected options:', selectedOptions.value);
     return match;
 });
 
 // Computed Images - Show all images from main product and all variants
 const images = computed(() => {
     const imgs: string[] = [];
-    
+
     // Always collect main product images first
     if (props.product) {
         for (let i = 1; i <= 10; i++) {
@@ -85,7 +85,7 @@ const images = computed(() => {
             }
         }
     }
-    
+
     // Add all variant images (from all variants, not just matching one)
     if (props.product?.variants) {
         props.product.variants.forEach((variant) => {
@@ -102,7 +102,7 @@ const images = computed(() => {
             }
         });
     }
-    
+
     return imgs.length > 0
         ? imgs
         : ['https://via.placeholder.com/600x600?text=No+Image'];
@@ -111,9 +111,9 @@ const images = computed(() => {
 // Computed Categories
 const categories = computed(() => {
     if (!props.product?.categories?.length) return [];
-    
+
     return props.product.categories
-        .map(cat => cat.product_category?.name)
+        .map((cat) => cat.product_category?.name)
         .filter((name): name is string => !!name);
 });
 
@@ -130,7 +130,9 @@ const groupedAttributes = computed(() => {
                 attributeOptionsMap.set(attr.attribute_id, new Set());
             }
             if (attr.attribute_option_id) {
-                attributeOptionsMap.get(attr.attribute_id)!.add(attr.attribute_option_id);
+                attributeOptionsMap
+                    .get(attr.attribute_id)!
+                    .add(attr.attribute_option_id);
             }
         });
     });
@@ -155,7 +157,11 @@ const groupedAttributes = computed(() => {
         if (!flatAttrGroup) return;
 
         const options = flatAttrGroup
-            .filter((attr) => attr.attribute_option_id && optionIds.has(attr.attribute_option_id))
+            .filter(
+                (attr) =>
+                    attr.attribute_option_id &&
+                    optionIds.has(attr.attribute_option_id),
+            )
             .map((attr) => attr.attribute_option)
             .filter((opt): opt is NonNullable<typeof opt> => !!opt);
 
@@ -186,12 +192,20 @@ const formattedPrice = computed(() => {
 
 // Product Title
 const productTitle = computed(() => {
-    return matchingVariant.value?.variant_product?.name || props.product?.name || '';
+    return (
+        matchingVariant.value?.variant_product?.name ||
+        props.product?.name ||
+        ''
+    );
 });
 
 // Product Description
 const productDescription = computed(() => {
-    return matchingVariant.value?.variant_product?.description || props.product?.description || '';
+    return (
+        matchingVariant.value?.variant_product?.description ||
+        props.product?.description ||
+        ''
+    );
 });
 
 // Watch changes to set default selections
@@ -347,10 +361,13 @@ const checkout = () => {
                     <!-- Product Info -->
                     <div class="space-y-6">
                         <div>
-                            <div v-if="categories.length > 0" class="mb-2 flex flex-wrap gap-2">
-                                <Badge 
-                                    v-for="(cat, idx) in categories" 
-                                    :key="idx" 
+                            <div
+                                v-if="categories.length > 0"
+                                class="mb-2 flex flex-wrap gap-2"
+                            >
+                                <Badge
+                                    v-for="(cat, idx) in categories"
+                                    :key="idx"
                                     variant="outline"
                                 >
                                     {{ cat }}
@@ -421,7 +438,7 @@ const checkout = () => {
                                     </Button>
                                 </div>
                             </div>
-                            
+
                             <!-- Clear Selection Button -->
                             <div v-if="Object.keys(selectedOptions).length > 0">
                                 <div class="flex flex-wrap gap-2">

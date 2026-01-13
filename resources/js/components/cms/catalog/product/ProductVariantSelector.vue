@@ -142,7 +142,7 @@ const selectedVariantIds = ref<number[]>([...props.currentVariants]);
                             :href="editModal({ product: variant.slug }).url"
                             max-width="7xl"
                         >
-                            <Button variant="ghost" size="icon">
+                            <Button variant="ghost" size="icon" type="button">
                                 <Pencil class="h-4 w-4" />
                             </Button>
                         </ModalLink>

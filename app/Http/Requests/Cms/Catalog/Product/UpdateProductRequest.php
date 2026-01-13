@@ -38,7 +38,7 @@ class UpdateProductRequest extends FormRequest
             'categories' => 'nullable|array',
             'categories.*' => 'required|exists:product_categories,id',
 
-            'variants' => 'nullable|array',
+            'variants' => 'nullable',
             'variants.*' => 'required|exists:product_flats,id',
 
             'image_1' => 'nullable|image|max:5120', // 5MB

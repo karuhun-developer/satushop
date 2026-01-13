@@ -128,35 +128,33 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     <InputError :message="errors.name" />
                 </div>
 
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div class="grid gap-2">
-                        <Label for="sku">SKU</Label>
-                        <InputDescription>
-                            Stock Keeping Unit identifier for the product.
-                        </InputDescription>
-                        <Input
-                            id="sku"
-                            name="sku"
-                            type="text"
-                            class="mt-1 block w-full"
-                            required
-                            :default-value="flat.sku"
-                        />
-                        <InputError :message="errors.sku" />
-                    </div>
+                <div class="grid gap-2">
+                    <Label for="sku">SKU</Label>
+                    <InputDescription>
+                        Stock Keeping Unit identifier for the product.
+                    </InputDescription>
+                    <Input
+                        id="sku"
+                        name="sku"
+                        type="text"
+                        class="mt-1 block w-full"
+                        required
+                        :default-value="flat.sku"
+                    />
+                    <InputError :message="errors.sku" />
+                </div>
 
-                    <div class="grid gap-2">
-                        <Label for="price">Price</Label>
-                        <InputDescription>
-                            The selling price of the product.
-                        </InputDescription>
-                        <MoneyInput
-                            id="price"
-                            name="price"
-                            :default-value="flat.price"
-                        />
-                        <InputError :message="errors.price" />
-                    </div>
+                <div class="grid gap-2">
+                    <Label for="price">Price</Label>
+                    <InputDescription>
+                        The selling price of the product.
+                    </InputDescription>
+                    <MoneyInput
+                        id="price"
+                        name="price"
+                        :default-value="flat.price"
+                    />
+                    <InputError :message="errors.price" />
                 </div>
 
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">

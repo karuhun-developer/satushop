@@ -24,7 +24,7 @@ class HomeController extends Controller
                 })
             ),
             'bestProducts' => inertia()->defer(fn () => ProductFlat::query()
-                ->with('media')
+                ->with('media', 'firstVariant.variantProduct')
                 ->where('visible_individually', true)
                 ->orderByDesc('rating')
                 ->limit(6)
@@ -37,7 +37,7 @@ class HomeController extends Controller
                 })
             ),
             'newProducts' => inertia()->defer(fn () => ProductFlat::query()
-                ->with('media')
+                ->with('media', 'firstVariant.variantProduct')
                 ->where('visible_individually', true)
                 ->orderByDesc('created_at')
                 ->limit(6)
@@ -50,7 +50,7 @@ class HomeController extends Controller
                 })
             ),
             'bestSellers' => inertia()->defer(fn () => ProductFlat::query()
-                ->with('media')
+                ->with('media', 'firstVariant.variantProduct')
                 ->where('visible_individually', true)
                 ->orderByDesc('sold_count')
                 ->limit(6)

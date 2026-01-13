@@ -6,6 +6,7 @@ use App\Enums\ProductTypeEnum;
 use App\Models\Catalog\Product;
 use App\Models\Catalog\ProductAttribute;
 use App\Models\Catalog\ProductFlat;
+use App\Models\Catalog\ProductVariant;
 use App\Traits\WithMediaCollection;
 
 class StoreProductAction
@@ -104,5 +105,21 @@ class StoreProductAction
                 ]);
             }
         }
+
+        // Set default variant for the variable product
+        $parentVariant = ProductFlat::query()
+            ->where('product_id', $product->id)
+            ->where('type', ProductTypeEnum::VARIABLE)
+            ->first();
+        $firstVariant = ProductFlat::query()
+            ->where('product_id', $product->id)
+            ->where('type', ProductTypeEnum::SIMPLE)
+            ->first();
+
+        ProductVariant::create([
+            'product_id' => $product->id,
+            'parent_product_id' => $parentVariant->id,
+            'variant_product_id' => $firstVariant->id,
+        ]);
     }
 }

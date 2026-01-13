@@ -82,6 +82,7 @@ export interface ProductFlatDataItem {
     translations?: ProductFlatTranslationDataItem[];
     attributes?: ProductAttributeDataItem[];
     flat_attributes?: Record<number, ProductAttributeDataItem[]>;
+    first_variant?: ProductVariantDataItem;
 }
 
 export interface ProductFlatTranslationDataItem {

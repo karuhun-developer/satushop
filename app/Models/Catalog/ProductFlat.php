@@ -78,6 +78,11 @@ class ProductFlat extends Model implements HasMedia
         return $this->hasMany(ProductVariant::class, 'parent_product_id');
     }
 
+    public function firstVariant()
+    {
+        return $this->hasOne(ProductVariant::class, 'parent_product_id')->oldestOfMany();
+    }
+
     public function partOfProduct()
     {
         return $this->belongsTo(ProductVariant::class, 'variant_product_id');
