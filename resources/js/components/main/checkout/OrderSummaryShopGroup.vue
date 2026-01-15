@@ -141,6 +141,16 @@ const selectedOption = computed(() => {
         <!-- Items Loop -->
         <div class="mb-4 space-y-3">
             <div v-for="item in items" :key="item.id" class="flex gap-3">
+                <input
+                    type="hidden"
+                    :name="`items[${shopId}][product_id]`"
+                    :value="item.id"
+                />
+                <input
+                    type="hidden"
+                    :name="`items[${shopId}][quantity]`"
+                    :value="item.quantity"
+                />
                 <div
                     class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md bg-muted"
                 >

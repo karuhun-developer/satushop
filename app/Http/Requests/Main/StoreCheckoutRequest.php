@@ -26,6 +26,13 @@ class StoreCheckoutRequest extends FormRequest
 
             // Payment
             'payment_method' => 'required|string',
+
+            // Items
+            'items' => 'required|array',
+            'items.*.product_id' => 'required|integer',
+            'items.*.quantity' => 'required|integer|min:1',
+
+            // Shipping
             'shipping' => 'required|array',
             'shipping.*.id' => 'required|string|max:50',
             'shipping.*.label' => 'required|string|max:50',

@@ -4,12 +4,35 @@ import ShopSearch from '@/components/ShopSearch.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useSwal } from '@/composables/useSwal';
 import { urlIsActive } from '@/lib/utils';
 import { explore, home, login, myProfile, register } from '@/routes';
-import { Link, usePage } from '@inertiajs/vue3';
-import { Compass, Home, LogIn, User } from 'lucide-vue-next';
+import { Link, router, usePage } from '@inertiajs/vue3';
+import { Compass, History, Home, LogIn, LogOut, User } from 'lucide-vue-next';
 
 const page = usePage();
+const { confirm } = useSwal();
+
+const handleLogout = () => {
+    confirm({
+        title: 'Logout',
+        text: 'Are you sure you want to logout?',
+        confirmButtonText: 'Yes, logout',
+        icon: 'warning',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.post('/logout');
+        }
+    });
+};
 </script>
 
 <template>
@@ -89,14 +112,48 @@ const page = usePage();
                     <div
                         class="ml-2 hidden items-center gap-2 border-l pl-4 md:flex"
                     >
-                        <Link
-                            v-if="page.props.auth.user"
-                            :href="myProfile.url()"
-                            class="flex items-center gap-1 text-muted-foreground hover:text-primary"
-                        >
-                            <User class="h-5 w-5" />
-                            <span class="hidden md:inline">Profile</span>
-                        </Link>
+                        <DropdownMenu v-if="page.props.auth.user">
+                            <DropdownMenuTrigger as-child>
+                                <Button
+                                    variant="ghost"
+                                    class="flex items-center gap-2 pl-0 text-muted-foreground hover:text-primary"
+                                >
+                                    <User class="h-5 w-5" />
+                                    <span class="hidden md:inline">{{
+                                        page.props.auth.user.name
+                                    }}</span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" class="w-56">
+                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem as-child>
+                                    <Link
+                                        :href="myProfile.url()"
+                                        class="cursor-pointer"
+                                    >
+                                        <User class="mr-2 h-4 w-4" />
+                                        <span>Profile</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem as-child>
+                                    <Link
+                                        :href="`${myProfile.url()}?tab=transactions`"
+                                        class="cursor-pointer"
+                                    >
+                                        <History class="mr-2 h-4 w-4" />
+                                        <span>History</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem @click="handleLogout">
+                                    <div class="flex w-full cursor-pointer items-center">
+                                        <LogOut class="mr-2 h-4 w-4" />
+                                        <span>Log out</span>
+                                    </div>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                         <Link
                             v-if="!page.props.auth.user"
                             :href="login.url()"

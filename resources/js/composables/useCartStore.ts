@@ -101,13 +101,8 @@ export const useCartStore = () => {
         }
     };
 
-    const setShippingCost = (shopId: number, cost: number) => {
-        shippingCosts.value[shopId] = cost;
-    };
-
     const clearCart = () => {
         items.value = [];
-        shippingCosts.value = {};
     };
 
     return {
@@ -120,7 +115,6 @@ export const useCartStore = () => {
         addItem,
         removeItem,
         updateQuantity,
-        setShippingCost,
         clearCart,
     };
 };

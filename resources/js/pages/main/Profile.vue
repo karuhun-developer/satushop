@@ -44,6 +44,13 @@ interface ProfilePageProps {
 defineProps<ProfilePageProps>();
 
 const activeTab = ref('profile');
+
+// Handle initial tab from query param
+const urlParams = new URLSearchParams(window.location.search);
+const tabParam = urlParams.get('tab');
+if (tabParam && ['profile', 'transactions', 'addresses'].includes(tabParam)) {
+    activeTab.value = tabParam;
+}
 </script>
 
 <template>
