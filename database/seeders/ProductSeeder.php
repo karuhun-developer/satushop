@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Actions\Cms\Catalog\Product\StoreProductAction;
 use App\Enums\ProductTypeEnum;
 use App\Models\Attribute\AttributeFamily;
-use App\Models\Catalog\ProductCategory;
 use App\Models\Shop\Shop;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;

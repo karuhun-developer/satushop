@@ -37,6 +37,10 @@ interface CheckoutFormProps {
 
 const props = defineProps<CheckoutFormProps>();
 
+const emit = defineEmits<{
+    (e: 'update:destinationDistrictId', value: number | null): void;
+}>();
+
 const { fetchProvinces, fetchCities, fetchDistricts } = useRajaongkirQuery();
 const page = usePage();
 
@@ -73,6 +77,8 @@ const handleAddressSelect = (address: UserAddress) => {
     selectedProvince.value = String(address.rajaongkir_province_id);
     selectedCity.value = String(address.rajaongkir_city_id);
     selectedDistrict.value = String(address.rajaongkir_district_id);
+
+    emit('update:destinationDistrictId', address.rajaongkir_district_id);
 };
 
 // Auto-select default address on mount
@@ -124,6 +130,11 @@ watch(selectedProvince, () => {
 
 watch(selectedCity, () => {
     selectedDistrict.value = undefined;
+});
+
+// Watch for district changes
+watch(selectedDistrict, (newVal) => {
+    emit('update:destinationDistrictId', newVal ? Number(newVal) : null);
 });
 </script>
 
@@ -189,6 +200,11 @@ watch(selectedCity, () => {
                         type="hidden"
                         name="name"
                         :value="selectedAddress.name"
+                    />
+                    <input
+                        type="hidden"
+                        name="email"
+                        :value="page.props.auth.user?.email"
                     />
                     <input
                         type="hidden"
@@ -283,11 +299,6 @@ watch(selectedCity, () => {
                                 </div>
                             </div>
                         </div>
-                        <div v-show="errors.rajaongkir_province_id">
-                            <p class="text-sm text-red-600 dark:text-red-500">
-                                Pickk a valid user address.
-                            </p>
-                        </div>
                     </div>
 
                     <!-- Empty State -->
@@ -311,6 +322,12 @@ watch(selectedCity, () => {
                             <Plus class="mr-2 h-4 w-4" />
                             Add Your First Address
                         </Button>
+                    </div>
+
+                    <div v-show="errors.rajaongkir_province_id">
+                        <p class="text-sm text-red-600 dark:text-red-500">
+                            Pickk a valid user address.
+                        </p>
                     </div>
                 </div>
             </div>

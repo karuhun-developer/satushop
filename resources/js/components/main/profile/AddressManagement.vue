@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import AddAddressForm from '@/components/main/checkout/AddAddressForm.vue';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { useSwal } from '@/composables/useSwal';
 import { router } from '@inertiajs/vue3';
-import { MapPin, Plus, Trash2, Check } from 'lucide-vue-next';
+import { Check, MapPin, Plus, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 interface UserAddress {
@@ -29,7 +29,7 @@ const { toast, confirm } = useSwal();
 const showAddAddressForm = ref(false);
 
 const handleDelete = async (addressId: number) => {
-    const result = await confirm.fire({
+    const result = await confirm({
         title: 'Delete Address?',
         text: 'Are you sure you want to delete this address?',
         icon: 'warning',
@@ -76,10 +76,14 @@ const handleDelete = async (addressId: number) => {
                 >
                     <div class="flex items-start justify-between">
                         <div class="flex items-start gap-3">
-                            <MapPin class="mt-1 h-5 w-5 text-muted-foreground" />
+                            <MapPin
+                                class="mt-1 h-5 w-5 text-muted-foreground"
+                            />
                             <div class="flex-1">
                                 <div class="flex items-center gap-2">
-                                    <p class="font-semibold">{{ address.name }}</p>
+                                    <p class="font-semibold">
+                                        {{ address.name }}
+                                    </p>
                                     <Badge
                                         v-if="address.is_default"
                                         variant="default"
@@ -92,7 +96,9 @@ const handleDelete = async (addressId: number) => {
                                 <p class="mt-1 text-sm text-muted-foreground">
                                     {{ address.phone }}
                                 </p>
-                                <p class="mt-2 text-sm">{{ address.address }}</p>
+                                <p class="mt-2 text-sm">
+                                    {{ address.address }}
+                                </p>
                                 <p
                                     v-if="address.postcode"
                                     class="mt-1 text-sm text-muted-foreground"
@@ -113,10 +119,7 @@ const handleDelete = async (addressId: number) => {
                 </div>
             </div>
 
-            <div
-                v-else
-                class="py-12 text-center text-muted-foreground"
-            >
+            <div v-else class="py-12 text-center text-muted-foreground">
                 <MapPin class="mx-auto h-12 w-12 opacity-50" />
                 <p class="mt-2">No addresses saved yet</p>
                 <Button

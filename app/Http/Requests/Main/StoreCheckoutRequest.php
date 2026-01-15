@@ -15,26 +15,25 @@ class StoreCheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // Address selection or manual input
-            'user_address_id' => [
-                'nullable',
-                Rule::exists('user_addresses', 'id')->where(function ($query) {
-                    $query->where('user_id', auth()->id());
-                }),
-            ],
-
-            // Required if user_address_id is not provided
-            'name' => 'required_without:user_address_id|string|max:255',
-            'email' => 'required_without:user_address_id|email|max:255',
-            'phone' => 'required_without:user_address_id|string|max:20',
-            'address' => 'required_without:user_address_id|string',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string',
             'postcode' => 'nullable|string|max:20',
-            'rajaongkir_province_id' => 'required_without:user_address_id|integer',
-            'rajaongkir_city_id' => 'required_without:user_address_id|integer',
-            'rajaongkir_district_id' => 'required_without:user_address_id|integer',
+            'rajaongkir_province_id' => 'required|integer',
+            'rajaongkir_city_id' => 'required|integer',
+            'rajaongkir_district_id' => 'required|integer',
 
             // Payment
             'payment_method' => 'required|string',
+            'shipping' => 'required|array',
+            'shipping.*.id' => 'required|string|max:50',
+            'shipping.*.label' => 'required|string|max:50',
+            'shipping.*.courier' => 'required|string|max:50',
+            'shipping.*.courier_name' => 'required|string|max:50',
+            'shipping.*.service' => 'required|string|max:50',
+            'shipping.*.cost' => 'required|numeric',
+            'shipping.*.etd' => 'required|string|max:50',
         ];
     }
 }

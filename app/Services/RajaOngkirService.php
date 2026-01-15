@@ -10,7 +10,7 @@ class RajaOngkirService
 {
     private string $cachePrefix = 'rajaongkir:service:';
 
-    private int $defaultCacheTtl = 1; // in minutes
+    private int $defaultCacheTtl = 60; // in minutes
 
     /**
      * Create a new service instance.
@@ -127,18 +127,16 @@ class RajaOngkirService
     public function calculateShippingCost(
         int $origin,
         int $destination,
-        string $courier,
         int $weight = 1, // in grams
-        float $height = 0,
-        float $width = 0,
-        float $length = 0,
-        float $diameter = 0
+        ?float $height = 0,
+        ?float $width = 0,
+        ?float $length = 0,
+        ?float $diameter = 0
     ): array {
         try {
-            return Cache::remember($this->cachePrefix.'shipping-cost:origin:'.$origin.':destination:'.$destination.':courier:'.$courier.':weight:'.$weight.':height:'.$height.':width:'.$width.':length:'.$length.':diameter:'.$diameter, now()->addMinutes($this->defaultCacheTtl), function () use (
+            return Cache::remember($this->cachePrefix.'shipping-cost:origin:'.$origin.':destination:'.$destination.':weight:'.$weight.':height:'.$height.':width:'.$width.':length:'.$length.':diameter:'.$diameter, now()->addMinutes($this->defaultCacheTtl), function () use (
                 $origin,
                 $destination,
-                $courier,
                 $weight,
                 $height,
                 $width,
@@ -147,15 +145,18 @@ class RajaOngkirService
             ) {
                 $response = Http::withHeaders([
                     'key' => $this->shippingCostApiKey,
-                ])->post($this->shippingCostBaseUrl.'calculate/district/domestic-cost', [
+                ])
+                ->asForm()
+                ->post($this->shippingCostBaseUrl.'calculate/district/domestic-cost', [
                     'origin' => $origin,
                     'destination' => $destination,
-                    'courier' => $courier,
+                    'courier' => 'jne:sicepat:ide:sap:jnt:ninja:tiki:lion:anteraja:pos:ncs:rex:rpx:sentral:star:wahana:dse',
                     'weight' => $weight,
                     'height' => $height,
                     'width' => $width,
                     'length' => $length,
                     'diameter' => $diameter,
+                    'price' => 'lowest',
                 ]);
 
                 // Check for successful response

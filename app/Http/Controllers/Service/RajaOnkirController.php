@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\Models\Shop\Shop;
 use App\Services\RajaOngkirService;
 use App\Traits\WithReturnResponse;
 use Illuminate\Http\Request;
@@ -46,21 +47,21 @@ class RajaOnkirController extends Controller
     public function cost(Request $request)
     {
         $request->validate([
-            'origin' => 'required|integer',
+            'shop_id' => 'required|exists:shops,id',
             'destination' => 'required|integer',
             'weight' => 'required|integer|min:1',
-            'courier' => 'required|string',
             'height' => 'nullable|numeric|min:0',
             'width' => 'nullable|numeric|min:0',
             'length' => 'nullable|numeric|min:0',
             'diameter' => 'nullable|numeric|min:0',
         ]);
 
+        $shop = Shop::find($request->shop_id);
+
         $costs = $this->rajaOngkirService->calculateShippingCost(
-            origin: $request->input('origin'),
+            origin: $shop->rajaongkir_district_id,
             destination: $request->input('destination'),
             weight: $request->input('weight'),
-            courier: $request->input('courier'),
             height: $request->input('height'),
             width: $request->input('width'),
             length: $request->input('length'),

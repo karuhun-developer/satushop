@@ -14,22 +14,24 @@ class ProductController extends Controller
             'variants',
             'variants.variantProduct.media',
             'variants.variantProduct.attributes',
+            'variants.variantProduct.product.shop',
             'product.attributes.attribute',
             'product.attributes.attributeOption',
+            'product.shop',
             'translations',
             'categories.productCategory',
         );
 
         // Load product images
         for ($i = 1; $i <= 8; $i++) {
-            $product->{'image_' . $i} = $product->getFirstMediaUrl('image_' . $i);
+            $product->{'image_'.$i} = $product->getFirstMediaUrl('image_'.$i);
         }
 
         // Load variant images
         foreach ($product->variants as $variant) {
             $variantProduct = $variant->variantProduct;
             for ($i = 1; $i <= 8; $i++) {
-                $variantProduct->{'image_' . $i} = $variantProduct->getFirstMediaUrl('image_' . $i);
+                $variantProduct->{'image_'.$i} = $variantProduct->getFirstMediaUrl('image_'.$i);
             }
         }
 

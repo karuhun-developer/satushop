@@ -26,7 +26,6 @@ class CheckoutController extends Controller
 
     public function store(StoreCheckoutRequest $request)
     {
-        // TODO: Implement checkout processing with StoreCheckoutAction
-        dd($request->validated());
+        dd($request->all());
     }
 }

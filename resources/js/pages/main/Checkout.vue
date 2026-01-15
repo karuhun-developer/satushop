@@ -9,7 +9,7 @@ import ShopLayout from '@/layouts/ShopLayout.vue';
 import { explore } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { ShoppingBag } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 interface UserAddress {
     id: number;
@@ -33,6 +33,7 @@ const { toast } = useSwal();
 const cart = useCartStore();
 
 const hasItems = computed(() => cart.items.value.length > 0);
+const destinationDistrictId = ref<number | null>(null);
 </script>
 
 <template>
@@ -62,12 +63,18 @@ const hasItems = computed(() => cart.items.value.length > 0);
                     <CheckoutForm
                         :errors="errors"
                         :user-addresses="userAddresses"
+                        @update:destinationDistrictId="
+                            destinationDistrictId = $event
+                        "
                     />
                 </div>
 
                 <!-- Order Summary (Right Side) -->
                 <div class="lg:col-span-1">
-                    <OrderSummary :processing="processing" />
+                    <OrderSummary
+                        :processing="processing"
+                        :destination-district-id="destinationDistrictId"
+                    />
                 </div>
             </Form>
 

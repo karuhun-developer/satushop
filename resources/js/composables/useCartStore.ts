@@ -1,13 +1,15 @@
 import { ProductFlatDataItem } from '@/types/cms/catalog';
 import { useLocalStorage } from '@vueuse/core';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 export interface CartItem {
     id: number;
     shop_id: number;
+    shop_name: string;
     name: string;
     price: number;
     quantity: number;
+    weight: number;
     image: string;
     options?: Record<string, any>;
     category?: string;
@@ -15,6 +17,7 @@ export interface CartItem {
 
 export const useCartStore = () => {
     const items = useLocalStorage<CartItem[]>('cart-items', []);
+    const shippingCosts = ref<Record<number, number>>({});
 
     const count = computed(() => {
         return items.value.reduce((acc, item) => acc + item.quantity, 0);
@@ -28,8 +31,28 @@ export const useCartStore = () => {
     });
 
     const total = computed(() => {
-        // Add shipping or tax logic here if needed
-        return subtotal.value;
+        const shippingTotal = Object.values(shippingCosts.value).reduce(
+            (acc, cost) => acc + cost,
+            0,
+        );
+        return subtotal.value + shippingTotal;
+    });
+
+    const groupedItems = computed(() => {
+        const groups: Record<number, { shop_name: string; items: CartItem[] }> =
+            {};
+
+        items.value.forEach((item) => {
+            if (!groups[item.shop_id]) {
+                groups[item.shop_id] = {
+                    shop_name: item.shop_name,
+                    items: [],
+                };
+            }
+            groups[item.shop_id].items.push(item);
+        });
+
+        return groups;
     });
 
     const addItem = (
@@ -49,9 +72,11 @@ export const useCartStore = () => {
             items.value.push({
                 id: product.id,
                 shop_id: product.product?.shop_id || 0,
+                shop_name: product.product?.shop?.name || 'Unknown Shop',
                 name: product.name,
                 price: Number(product?.price),
                 quantity,
+                weight: Number(product?.weight || 1000), // Default 1kg if missing
                 image: product?.image_1 || '',
                 options,
             });
@@ -76,8 +101,13 @@ export const useCartStore = () => {
         }
     };
 
+    const setShippingCost = (shopId: number, cost: number) => {
+        shippingCosts.value[shopId] = cost;
+    };
+
     const clearCart = () => {
         items.value = [];
+        shippingCosts.value = {};
     };
 
     return {
@@ -85,9 +115,12 @@ export const useCartStore = () => {
         count,
         subtotal,
         total,
+        groupedItems,
+        shippingCosts,
         addItem,
         removeItem,
         updateQuantity,
+        setShippingCost,
         clearCart,
     };
 };

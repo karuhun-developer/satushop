@@ -2,7 +2,6 @@
 
 return [
     /**
-     *
      * Midtrans as default payment gateway
      * Available options: midtrans, tripay, xendit, doku
      **/

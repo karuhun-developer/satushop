@@ -21,6 +21,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/user-addresses', [App\Http\Controllers\Main\UserAddressController::class, 'store'])->name('user-addresses.store');
     Route::put('/user-addresses/{userAddress}', [App\Http\Controllers\Main\UserAddressController::class, 'update'])->name('user-addresses.update');
     Route::delete('/user-addresses/{userAddress}', [App\Http\Controllers\Main\UserAddressController::class, 'destroy'])->name('user-addresses.destroy');
+
+    // After login redirect
+    Route::get('/after-login', function () {
+        if (auth()->user()->isUser()) {
+            return to_route('home');
+        } else {
+            return to_route('cms.dashboard');
+        }
+    });
 });
 
 // Single Product

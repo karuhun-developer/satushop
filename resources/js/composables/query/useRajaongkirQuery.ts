@@ -100,26 +100,18 @@ export function useRajaongkirQuery() {
     };
 
     const fetchShippingCosts = (
-        originId: number,
+        shopId: number,
         destinationId: number,
         weight: number,
-        courier: string,
         staleTime: number = 0,
     ): UseQueryReturnType<any, Error> => {
         return useQuery({
-            queryKey: [
-                'fetchShippingCosts',
-                originId,
-                destinationId,
-                weight,
-                courier,
-            ],
+            queryKey: ['fetchShippingCosts', shopId, destinationId, weight],
             queryFn: async () => {
                 const res = await axios.post('/service/rajaongkir/cost', {
-                    originId,
-                    destinationId,
+                    shop_id: shopId,
+                    destination: destinationId,
                     weight,
-                    courier,
                 });
 
                 if (res.status !== 200) {
@@ -128,6 +120,7 @@ export function useRajaongkirQuery() {
 
                 return res.data.data;
             },
+            enabled: computed(() => !!destinationId),
             staleTime,
         });
     };
