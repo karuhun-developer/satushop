@@ -72,6 +72,7 @@ const destinationDistrictId = ref<number | null>(null);
                 <!-- Order Summary (Right Side) -->
                 <div class="lg:col-span-1">
                     <OrderSummary
+                        :errors="errors"
                         :processing="processing"
                         :destination-district-id="destinationDistrictId"
                     />

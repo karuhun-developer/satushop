@@ -3,7 +3,7 @@ import { Landmark } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 export type MidtransPaymentType = 'qris' | 'bank_transfer';
-export type BankCode = 'bca' | 'bni' | 'bri' | 'mandiri' | 'permata';
+export type BankCode = 'bca' | 'bni' | 'bri' | 'mandiri' | 'qris';
 
 interface MidtransCorePaymentProps {
     modelValue?: {
@@ -32,7 +32,7 @@ const selectPaymentType = (type: MidtransPaymentType) => {
     selectedType.value = type;
     if (type === 'qris') {
         selectedBank.value = undefined;
-        emit('update:modelValue', { type });
+        emit('update:modelValue', { type, bank: 'qris' });
     } else {
         // Default to BCA if bank transfer selected
         selectedBank.value = selectedBank.value || 'bca';

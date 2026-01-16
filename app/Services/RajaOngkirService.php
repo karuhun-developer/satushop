@@ -146,18 +146,18 @@ class RajaOngkirService
                 $response = Http::withHeaders([
                     'key' => $this->shippingCostApiKey,
                 ])
-                ->asForm()
-                ->post($this->shippingCostBaseUrl.'calculate/district/domestic-cost', [
-                    'origin' => $origin,
-                    'destination' => $destination,
-                    'courier' => 'jne:sicepat:ide:sap:jnt:ninja:tiki:lion:anteraja:pos:ncs:rex:rpx:sentral:star:wahana:dse',
-                    'weight' => $weight,
-                    'height' => $height,
-                    'width' => $width,
-                    'length' => $length,
-                    'diameter' => $diameter,
-                    'price' => 'lowest',
-                ]);
+                    ->asForm()
+                    ->post($this->shippingCostBaseUrl.'calculate/district/domestic-cost', [
+                        'origin' => $origin,
+                        'destination' => $destination,
+                        'courier' => 'jne:sicepat:ide:sap:jnt:ninja:tiki:lion:anteraja:pos:ncs:rex:rpx:sentral:star:wahana:dse',
+                        'weight' => $weight,
+                        'height' => $height,
+                        'width' => $width,
+                        'length' => $length,
+                        'diameter' => $diameter,
+                        'price' => 'lowest',
+                    ]);
 
                 // Check for successful response
                 if ($response->failed()) {

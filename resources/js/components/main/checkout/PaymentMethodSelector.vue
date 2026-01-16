@@ -28,7 +28,7 @@ const selectedMethod = ref<PaymentMethod>(props.modelValue);
 const gateway = ref<{
     type: MidtransPaymentType;
     bank?: BankCode;
-}>({ type: 'qris' });
+}>({ type: 'qris', bank: 'qris' });
 
 const selectMethod = (method: PaymentMethod) => {
     selectedMethod.value = method;

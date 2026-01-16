@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Main;
 
+use App\Actions\Main\Checkout\StoreCheckoutAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Main\StoreCheckoutRequest;
 use App\Models\User\UserAddress;
@@ -24,8 +25,16 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function store(StoreCheckoutRequest $request)
+    public function store(StoreCheckoutRequest $request, StoreCheckoutAction $action)
     {
-        dd($request->validated());
+        try {
+            $transaction = $action->handle($request->validated());
+
+            return to_route('transaction.show', [
+                'transaction' => $transaction->id,
+            ]);
+        } catch (\Exception $e) {
+            return back()->withErrors('An error occurred while processing your checkout. Please try again.');
+        }
     }
 }

@@ -10,8 +10,8 @@ Route::get('/cart', [App\Http\Controllers\Main\CartController::class, 'index'])-
 // Checkout
 Route::get('/checkout', [App\Http\Controllers\Main\CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [App\Http\Controllers\Main\CheckoutController::class, 'store'])->name('checkout.process');
+Route::get('/transactions/{transaction}', [App\Http\Controllers\Main\TransactionController::class, 'show'])->name('transaction.show');
 
-// User Address Management (for logged-in users)
 Route::middleware('auth')->group(function () {
     // Profile
     Route::get('/my-profile', [App\Http\Controllers\Main\ProfileController::class, 'index'])->name('my-profile');

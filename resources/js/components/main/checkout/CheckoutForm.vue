@@ -19,7 +19,6 @@ import { router, usePage } from '@inertiajs/vue3';
 import { Check, MapPin, Plus } from 'lucide-vue-next';
 import { computed, onMounted, ref, watch } from 'vue';
 
-
 interface CheckoutFormProps {
     errors: Record<string, string>;
     userAddresses?: UserAddress[];
@@ -316,7 +315,7 @@ watch(selectedDistrict, (newVal) => {
 
                     <div v-show="errors.rajaongkir_province_id">
                         <p class="text-sm text-red-600 dark:text-red-500">
-                            Pickk a valid user address.
+                            Pick a valid address to calculate shipping.
                         </p>
                     </div>
                 </div>
@@ -408,7 +407,9 @@ watch(selectedDistrict, (newVal) => {
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                <template v-if="!isProvincesError && provinceData">
+                                <template
+                                    v-if="!isProvincesError && provinceData"
+                                >
                                     <SelectItem
                                         v-for="province in provinceData"
                                         :key="province.id"
@@ -492,7 +493,9 @@ watch(selectedDistrict, (newVal) => {
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                <template v-if="!isDistrictsError && districtData">
+                                <template
+                                    v-if="!isDistrictsError && districtData"
+                                >
                                     <SelectItem
                                         v-for="district in districtData"
                                         :key="district.id"

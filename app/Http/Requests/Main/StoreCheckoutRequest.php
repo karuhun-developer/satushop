@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Main;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreCheckoutRequest extends FormRequest
 {
@@ -25,12 +24,14 @@ class StoreCheckoutRequest extends FormRequest
             'rajaongkir_district_id' => 'required|integer',
 
             // Payment
-            'payment_method' => 'required|string',
+            'payment_method' => 'required|string|in:bank_transfer,midtrans',
+            'gateway_type' => 'required_if:payment_method,midtrans|string|in:qris,bank_transfer',
+            'gateway_bank' => 'required_if:payment_method,midtrans|string|in:qris,bca,bni,bri,mandiri,permata',
 
             // Items
             'items' => 'required|array',
-            'items.*.product_id' => 'required|integer',
-            'items.*.quantity' => 'required|integer|min:1',
+            // shop id, product id, quantity
+            'items.*.*.quantity' => 'required|integer|min:1',
 
             // Shipping
             'shipping' => 'required|array',

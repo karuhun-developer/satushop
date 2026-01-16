@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('channel');
             $table->dateTime('expired_at')->nullable();
             $table->dateTime('paid_at')->nullable();
-            $table->decimal('price', 12, 4);
+            $table->decimal('amount', 12, 4);
             $table->timestamps();
         });
     }

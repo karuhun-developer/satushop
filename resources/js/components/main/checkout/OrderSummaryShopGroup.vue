@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { useRajaongkirQuery } from '@/composables/query/useRajaongkirQuery';
-import { CartItem, useCartStore } from '@/composables/useCartStore';
+import { CartItem } from '@/composables/useCartStore';
 import { formatCurrency } from '@/lib/utils';
 import { computed, ref, watch } from 'vue';
 
@@ -24,7 +24,6 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const cart = useCartStore();
 const { fetchShippingCosts } = useRajaongkirQuery();
 
 const selectedOptionId = ref<string | undefined>();
@@ -143,12 +142,7 @@ const selectedOption = computed(() => {
             <div v-for="item in items" :key="item.id" class="flex gap-3">
                 <input
                     type="hidden"
-                    :name="`items[${shopId}][product_id]`"
-                    :value="item.id"
-                />
-                <input
-                    type="hidden"
-                    :name="`items[${shopId}][quantity]`"
+                    :name="`items[${shopId}][${item.id}][quantity]`"
                     :value="item.quantity"
                 />
                 <div

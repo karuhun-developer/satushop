@@ -9,6 +9,7 @@ import { computed, ref } from 'vue';
 import OrderSummaryShopGroup from './OrderSummaryShopGroup.vue';
 
 interface OrderSummaryProps {
+    errors: Record<string, string>;
     processing?: boolean;
     destinationDistrictId?: number | null;
 }
@@ -92,7 +93,11 @@ const grandTotal = computed(() => {
             >
                 {{ processing ? 'Processing...' : 'Place Order' }}
             </Button>
-
+            <div v-show="errors[0]">
+                <p class="text-sm text-red-600 dark:text-red-500">
+                    {{ errors[0] }}
+                </p>
+            </div>
             <Link
                 :href="explore.url()"
                 class="mt-4 block text-center text-sm text-muted-foreground hover:text-foreground"
