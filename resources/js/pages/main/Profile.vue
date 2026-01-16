@@ -4,28 +4,12 @@ import TransactionHistory from '@/components/main/profile/TransactionHistory.vue
 import UpdateProfileForm from '@/components/main/profile/UpdateProfileForm.vue';
 import { Button } from '@/components/ui/button';
 import ShopLayout from '@/layouts/ShopLayout.vue';
+import { User, UserAddress } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import { MapPin, ShoppingBag, User } from 'lucide-vue-next';
+import { MapPin, ShoppingBag, User as UserIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-}
 
-interface UserAddress {
-    id: number;
-    name: string;
-    phone: string;
-    address: string;
-    postcode: string;
-    rajaongkir_province_id: number;
-    rajaongkir_city_id: number;
-    rajaongkir_district_id: number;
-    is_default: boolean;
-}
 
 interface Transaction {
     id: string;
@@ -70,7 +54,7 @@ if (tabParam && ['profile', 'transactions', 'addresses'].includes(tabParam)) {
                     }"
                     class="rounded-b-none"
                 >
-                    <User class="mr-2 h-4 w-4" />
+                    <UserIcon class="mr-2 h-4 w-4" />
                     Profile
                 </Button>
                 <Button

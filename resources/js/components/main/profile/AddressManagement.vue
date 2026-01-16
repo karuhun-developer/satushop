@@ -3,21 +3,11 @@ import AddAddressForm from '@/components/main/checkout/AddAddressForm.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useSwal } from '@/composables/useSwal';
+import { UserAddress } from '@/types';
 import { router } from '@inertiajs/vue3';
-import { Check, MapPin, Plus, Trash2 } from 'lucide-vue-next';
+import { Check, MapPin, Pencil, Plus, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
 
-interface UserAddress {
-    id: number;
-    name: string;
-    phone: string;
-    address: string;
-    postcode: string;
-    rajaongkir_province_id: number;
-    rajaongkir_city_id: number;
-    rajaongkir_district_id: number;
-    is_default: boolean;
-}
 
 interface AddressManagementProps {
     addresses: UserAddress[];
@@ -27,6 +17,17 @@ defineProps<AddressManagementProps>();
 
 const { toast, confirm } = useSwal();
 const showAddAddressForm = ref(false);
+const selectedAddressToEdit = ref<UserAddress | undefined>();
+
+const openAddModal = () => {
+    selectedAddressToEdit.value = undefined;
+    showAddAddressForm.value = true;
+};
+
+const openEditModal = (address: UserAddress) => {
+    selectedAddressToEdit.value = address;
+    showAddAddressForm.value = true;
+};
 
 const handleDelete = async (addressId: number) => {
     const result = await confirm({
@@ -52,9 +53,10 @@ const handleDelete = async (addressId: number) => {
 
 <template>
     <div class="rounded-lg border bg-card">
-        <!-- Add Address Form -->
+        <!-- Add/Edit Address Form -->
         <AddAddressForm
             :open="showAddAddressForm"
+            :address="selectedAddressToEdit"
             @update:open="showAddAddressForm = $event"
             @success="router.reload({ only: ['addresses'] })"
         />
@@ -62,7 +64,7 @@ const handleDelete = async (addressId: number) => {
         <div class="p-6">
             <div class="mb-4 flex items-center justify-between">
                 <h2 class="text-xl font-semibold">My Addresses</h2>
-                <Button @click="showAddAddressForm = true" size="sm">
+                <Button @click="openAddModal" size="sm">
                     <Plus class="mr-2 h-4 w-4" />
                     Add New Address
                 </Button>
@@ -107,14 +109,24 @@ const handleDelete = async (addressId: number) => {
                                 </p>
                             </div>
                         </div>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            @click="handleDelete(address.id)"
-                            class="text-destructive hover:text-destructive"
-                        >
-                            <Trash2 class="h-4 w-4" />
-                        </Button>
+                        <div class="flex items-center gap-2">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                @click="openEditModal(address)"
+                                class="text-muted-foreground hover:text-primary"
+                            >
+                                <Pencil class="h-4 w-4" />
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                @click="handleDelete(address.id)"
+                                class="text-destructive hover:text-destructive"
+                            >
+                                <Trash2 class="h-4 w-4" />
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,7 +135,7 @@ const handleDelete = async (addressId: number) => {
                 <MapPin class="mx-auto h-12 w-12 opacity-50" />
                 <p class="mt-2">No addresses saved yet</p>
                 <Button
-                    @click="showAddAddressForm = true"
+                    @click="openAddModal"
                     variant="outline"
                     class="mt-4"
                 >

@@ -77,4 +77,16 @@ export interface User {
     roles?: string[];
 }
 
+export interface UserAddress {
+    id: number;
+    name: string;
+    phone: string;
+    address: string;
+    postcode: string;
+    rajaongkir_province_id: number;
+    rajaongkir_city_id: number;
+    rajaongkir_district_id: number;
+    is_default: boolean;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;

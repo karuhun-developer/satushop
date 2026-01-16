@@ -14,21 +14,11 @@ import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import Textarea from '@/components/ui/textarea/Textarea.vue';
 import { useRajaongkirQuery } from '@/composables/query/useRajaongkirQuery';
+import { UserAddress } from '@/types';
 import { router, usePage } from '@inertiajs/vue3';
 import { Check, MapPin, Plus } from 'lucide-vue-next';
 import { computed, onMounted, ref, watch } from 'vue';
 
-interface UserAddress {
-    id: number;
-    name: string;
-    phone: string;
-    address: string;
-    postcode: string;
-    rajaongkir_province_id: number;
-    rajaongkir_city_id: number;
-    rajaongkir_district_id: number;
-    is_default: boolean;
-}
 
 interface CheckoutFormProps {
     errors: Record<string, string>;
@@ -418,14 +408,14 @@ watch(selectedDistrict, (newVal) => {
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                <template
-                                    v-if="!isProvincesError && provinceData"
-                                    v-for="province in provinceData"
-                                    :key="province.id"
-                                >
-                                    <SelectItem :value="String(province.id)">{{
-                                        province.name
-                                    }}</SelectItem>
+                                <template v-if="!isProvincesError && provinceData">
+                                    <SelectItem
+                                        v-for="province in provinceData"
+                                        :key="province.id"
+                                        :value="String(province.id)"
+                                    >
+                                        {{ province.name }}
+                                    </SelectItem>
                                 </template>
                                 <template v-else-if="isProvincesError">
                                     <div class="p-2 text-sm text-red-600">
@@ -460,14 +450,14 @@ watch(selectedDistrict, (newVal) => {
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                <template
-                                    v-if="!isCitiesError && cityData"
-                                    v-for="city in cityData"
-                                    :key="city.id"
-                                >
-                                    <SelectItem :value="String(city.id)">{{
-                                        city.name
-                                    }}</SelectItem>
+                                <template v-if="!isCitiesError && cityData">
+                                    <SelectItem
+                                        v-for="city in cityData"
+                                        :key="city.id"
+                                        :value="String(city.id)"
+                                    >
+                                        {{ city.name }}
+                                    </SelectItem>
                                 </template>
                                 <template v-else-if="isCitiesError">
                                     <div class="p-2 text-sm text-red-600">
@@ -502,14 +492,14 @@ watch(selectedDistrict, (newVal) => {
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                <template
-                                    v-if="!isDistrictsError && districtData"
-                                    v-for="district in districtData"
-                                    :key="district.id"
-                                >
-                                    <SelectItem :value="String(district.id)">{{
-                                        district.name
-                                    }}</SelectItem>
+                                <template v-if="!isDistrictsError && districtData">
+                                    <SelectItem
+                                        v-for="district in districtData"
+                                        :key="district.id"
+                                        :value="String(district.id)"
+                                    >
+                                        {{ district.name }}
+                                    </SelectItem>
                                 </template>
                                 <template v-else-if="isDistrictsError">
                                     <div class="p-2 text-sm text-red-600">

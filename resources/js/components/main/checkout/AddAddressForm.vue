@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import InputDescription from '@/components/InputDescription.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,14 +17,18 @@ import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import Textarea from '@/components/ui/textarea/Textarea.vue';
 import { useRajaongkirQuery } from '@/composables/query/useRajaongkirQuery';
-import { router } from '@inertiajs/vue3';
-import { computed, ref, watch } from 'vue';
+import { UserAddress } from '@/types';
+import { useForm } from '@inertiajs/vue3';
+import { computed, watch } from 'vue';
+
 
 interface AddAddressFormProps {
     open: boolean;
+    address?: UserAddress;
 }
 
 const props = defineProps<AddAddressFormProps>();
+
 const emit = defineEmits<{
     'update:open': [value: boolean];
     success: [];
@@ -33,21 +36,43 @@ const emit = defineEmits<{
 
 const { fetchProvinces, fetchCities, fetchDistricts } = useRajaongkirQuery();
 
-// Form fields
-const formName = ref('');
-const formPhone = ref('');
-const formAddress = ref('');
-const formPostcode = ref('');
-const isDefault = ref(false);
+const form = useForm({
+    name: '',
+    phone: '',
+    address: '',
+    postcode: '',
+    rajaongkir_province_id: undefined as string | undefined,
+    rajaongkir_city_id: undefined as string | undefined,
+    rajaongkir_district_id: undefined as string | undefined,
+    is_default: false,
+});
 
-// Location State
-const selectedProvince = ref<string>();
-const selectedCity = ref<string>();
-const selectedDistrict = ref<string>();
-
-// Errors
-const errors = ref<Record<string, string>>({});
-const processing = ref(false);
+// Watch for address prop changes to pre-fill form
+watch(
+    () => props.address,
+    (newAddress) => {
+        if (newAddress) {
+            form.name = newAddress.name;
+            form.phone = newAddress.phone;
+            form.address = newAddress.address;
+            form.postcode = newAddress.postcode;
+            form.rajaongkir_province_id = String(
+                newAddress.rajaongkir_province_id,
+            );
+            form.rajaongkir_city_id = String(newAddress.rajaongkir_city_id);
+            form.rajaongkir_district_id = String(
+                newAddress.rajaongkir_district_id,
+            );
+            form.is_default = newAddress.is_default;
+        } else {
+            form.reset();
+            form.rajaongkir_province_id = undefined;
+            form.rajaongkir_city_id = undefined;
+            form.rajaongkir_district_id = undefined;
+        }
+    },
+    { immediate: true },
+);
 
 // Fetch provinces with caching
 const {
@@ -63,7 +88,7 @@ const {
     isFetching: isFetchingCities,
 } = fetchCities(
     computed(() =>
-        selectedProvince.value ? Number(selectedProvince.value) : 0,
+        form.rajaongkir_province_id ? Number(form.rajaongkir_province_id) : 0,
     ),
     5 * 60 * 1000,
 );
@@ -74,72 +99,79 @@ const {
     isError: isDistrictsError,
     isFetching: isFetchingDistricts,
 } = fetchDistricts(
-    computed(() => (selectedCity.value ? Number(selectedCity.value) : 0)),
+    computed(() =>
+        form.rajaongkir_city_id ? Number(form.rajaongkir_city_id) : 0,
+    ),
     5 * 60 * 1000,
 );
 
 // Reset downstream selections when upstream changes
-watch(selectedProvince, () => {
-    selectedCity.value = undefined;
-    selectedDistrict.value = undefined;
-});
+watch(
+    () => form.rajaongkir_province_id,
+    (newVal) => {
+        if (
+            props.address &&
+            String(props.address.rajaongkir_province_id) === newVal
+        )
+            return;
+        form.rajaongkir_city_id = undefined;
+        form.rajaongkir_district_id = undefined;
+    },
+);
 
-watch(selectedCity, () => {
-    selectedDistrict.value = undefined;
-});
+watch(
+    () => form.rajaongkir_city_id,
+    (newVal) => {
+        if (
+            props.address &&
+            String(props.address.rajaongkir_city_id) === newVal
+        )
+            return;
+        form.rajaongkir_district_id = undefined;
+    },
+);
 
 const handleSubmit = () => {
-    processing.value = true;
-    errors.value = {};
-
-    router.post(
-        '/user-addresses',
-        {
-            name: formName.value,
-            phone: formPhone.value,
-            address: formAddress.value,
-            postcode: formPostcode.value,
-            rajaongkir_province_id: selectedProvince.value,
-            rajaongkir_city_id: selectedCity.value,
-            rajaongkir_district_id: selectedDistrict.value,
-            is_default: isDefault.value,
-        },
-        {
+    if (props.address) {
+        form.put(`/user-addresses/${props.address.id}`, {
             onSuccess: () => {
                 emit('success');
                 emit('update:open', false);
-                resetForm();
+                form.reset();
             },
-            onError: (err) => {
-                errors.value = err;
+        });
+    } else {
+        form.post('/user-addresses', {
+            onSuccess: () => {
+                emit('success');
+                emit('update:open', false);
+                form.reset();
             },
-            onFinish: () => {
-                processing.value = false;
-            },
-        },
-    );
+        });
+    }
 };
 
-const resetForm = () => {
-    formName.value = '';
-    formPhone.value = '';
-    formAddress.value = '';
-    formPostcode.value = '';
-    selectedProvince.value = undefined;
-    selectedCity.value = undefined;
-    selectedDistrict.value = undefined;
-    isDefault.value = false;
-    errors.value = {};
-};
+const title = computed(() =>
+    props.address ? 'Edit Address' : 'Add New Address',
+);
+const description = computed(() =>
+    props.address
+        ? 'Update your shipping address details'
+        : 'Add a new shipping address to your account',
+);
+const submitText = computed(() => {
+    if (form.processing) return 'Saving...';
+    return props.address ? 'Update Address' : 'Save Address';
+});
 </script>
 
 <template>
     <Dialog :open="open" @update:open="(val) => $emit('update:open', val)">
-        <DialogContent class="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent class="max-h-[90vh] max-w-2xl overflow-y-auto">
             <DialogHeader>
-                <DialogTitle>Add New Address</DialogTitle>
+                <DialogTitle>{{ title }}</DialogTitle>
                 <DialogDescription>
-                    Add a new shipping address to your account
+                    {{ description }}
                 </DialogDescription>
             </DialogHeader>
 
@@ -148,38 +180,34 @@ const resetForm = () => {
                     <Label for="add-name">Full Name</Label>
                     <Input
                         id="add-name"
-                        v-model="formName"
+                        v-model="form.name"
                         type="text"
                         required
                     />
-                    <InputError :message="errors.name" />
+                    <InputError :message="form.errors.name" />
                 </div>
 
                 <div class="grid gap-2">
                     <Label for="add-phone">Phone Number</Label>
-                    <Input
-                        id="add-phone"
-                        v-model="formPhone"
-                        type="text"
-                    />
-                    <InputError :message="errors.phone" />
+                    <Input id="add-phone" v-model="form.phone" type="text" />
+                    <InputError :message="form.errors.phone" />
                 </div>
 
                 <div class="grid gap-2">
                     <Label for="add-address">Address</Label>
                     <Textarea
                         id="add-address"
-                        v-model="formAddress"
+                        v-model="form.address"
                         required
                     />
-                    <InputError :message="errors.address" />
+                    <InputError :message="form.errors.address" />
                 </div>
 
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                     <div class="grid gap-2">
                         <Label for="add-province">Province</Label>
                         <Select
-                            v-model="selectedProvince"
+                            v-model="form.rajaongkir_province_id"
                             :disabled="isFetchingProvinces"
                         >
                             <SelectTrigger id="add-province">
@@ -194,23 +222,29 @@ const resetForm = () => {
                             <SelectContent>
                                 <template
                                     v-if="!isProvincesError && provinceData"
-                                    v-for="province in provinceData"
-                                    :key="province.id"
                                 >
-                                    <SelectItem :value="String(province.id)">{{
-                                        province.name
-                                    }}</SelectItem>
+                                    <SelectItem
+                                        v-for="province in provinceData"
+                                        :key="province.id"
+                                        :value="String(province.id)"
+                                    >
+                                        {{ province.name }}
+                                    </SelectItem>
                                 </template>
                             </SelectContent>
                         </Select>
-                        <InputError :message="errors.rajaongkir_province_id" />
+                        <InputError
+                            :message="form.errors.rajaongkir_province_id"
+                        />
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="add-city">City</Label>
                         <Select
-                            v-model="selectedCity"
-                            :disabled="!selectedProvince || isFetchingCities"
+                            v-model="form.rajaongkir_city_id"
+                            :disabled="
+                                !form.rajaongkir_province_id || isFetchingCities
+                            "
                         >
                             <SelectTrigger id="add-city">
                                 <SelectValue
@@ -222,25 +256,27 @@ const resetForm = () => {
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                <template
-                                    v-if="!isCitiesError && cityData"
-                                    v-for="city in cityData"
-                                    :key="city.id"
-                                >
-                                    <SelectItem :value="String(city.id)">{{
-                                        city.name
-                                    }}</SelectItem>
+                                <template v-if="!isCitiesError && cityData">
+                                    <SelectItem
+                                        v-for="city in cityData"
+                                        :key="city.id"
+                                        :value="String(city.id)"
+                                    >
+                                        {{ city.name }}
+                                    </SelectItem>
                                 </template>
                             </SelectContent>
                         </Select>
-                        <InputError :message="errors.rajaongkir_city_id" />
+                        <InputError :message="form.errors.rajaongkir_city_id" />
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="add-district">District</Label>
                         <Select
-                            v-model="selectedDistrict"
-                            :disabled="!selectedCity || isFetchingDistricts"
+                            v-model="form.rajaongkir_district_id"
+                            :disabled="
+                                !form.rajaongkir_city_id || isFetchingDistricts
+                            "
                         >
                             <SelectTrigger id="add-district">
                                 <SelectValue
@@ -254,16 +290,20 @@ const resetForm = () => {
                             <SelectContent>
                                 <template
                                     v-if="!isDistrictsError && districtData"
-                                    v-for="district in districtData"
-                                    :key="district.id"
                                 >
-                                    <SelectItem :value="String(district.id)">{{
-                                        district.name
-                                    }}</SelectItem>
+                                    <SelectItem
+                                        v-for="district in districtData"
+                                        :key="district.id"
+                                        :value="String(district.id)"
+                                    >
+                                        {{ district.name }}
+                                    </SelectItem>
                                 </template>
                             </SelectContent>
                         </Select>
-                        <InputError :message="errors.rajaongkir_district_id" />
+                        <InputError
+                            :message="form.errors.rajaongkir_district_id"
+                        />
                     </div>
                 </div>
 
@@ -271,16 +311,16 @@ const resetForm = () => {
                     <Label for="add-postcode">Postal Code</Label>
                     <Input
                         id="add-postcode"
-                        v-model="formPostcode"
+                        v-model="form.postcode"
                         type="text"
                     />
-                    <InputError :message="errors.postcode" />
+                    <InputError :message="form.errors.postcode" />
                 </div>
 
                 <div class="flex items-center gap-2">
                     <input
                         id="add-is-default"
-                        v-model="isDefault"
+                        v-model="form.is_default"
                         type="checkbox"
                         class="h-4 w-4 rounded border-gray-300"
                     />
@@ -294,12 +334,12 @@ const resetForm = () => {
                         type="button"
                         variant="outline"
                         @click="$emit('update:open', false)"
-                        :disabled="processing"
+                        :disabled="form.processing"
                     >
                         Cancel
                     </Button>
-                    <Button type="submit" :disabled="processing">
-                        {{ processing ? 'Saving...' : 'Save Address' }}
+                    <Button type="submit" :disabled="form.processing">
+                        {{ submitText }}
                     </Button>
                 </div>
             </form>
