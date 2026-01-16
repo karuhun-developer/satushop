@@ -48,7 +48,11 @@ A modern, full-featured e-commerce application built with **Laravel 12**, **Iner
     - Tripay
     - Xendit
     - Doku
-- [ ] **Shipping**:
+- [ ] **Email Notifications**:
+    - Order confirmations
+    - Shipping updates
+    - Promotional emails
+- [x] **Shipping**:
     - Raja Ongkir Integration for real-time shipping rates.
 
 ---
