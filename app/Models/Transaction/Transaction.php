@@ -51,4 +51,9 @@ class Transaction extends Model implements HasMedia
     {
         return $this->hasMany(TransactionShop::class);
     }
+
+    public function transactionDetails()
+    {
+        return $this->hasManyThrough(TransactionDetail::class, TransactionShop::class);
+    }
 }

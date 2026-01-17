@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transaction\Transaction;
 use App\Models\User\UserAddress;
 
 class ProfileController extends Controller
@@ -16,30 +17,10 @@ class ProfileController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Dummy transaction data
-        $transactions = collect([
-            [
-                'id' => 'TRX-001',
-                'date' => '2026-01-10',
-                'total' => 250000,
-                'status' => 'completed',
-                'items_count' => 3,
-            ],
-            [
-                'id' => 'TRX-002',
-                'date' => '2026-01-08',
-                'total' => 150000,
-                'status' => 'processing',
-                'items_count' => 2,
-            ],
-            [
-                'id' => 'TRX-003',
-                'date' => '2026-01-05',
-                'total' => 450000,
-                'status' => 'completed',
-                'items_count' => 5,
-            ],
-        ]);
+        $transactions = Transaction::where('user_id', $user->id)
+            ->withCount('transactionDetails')
+            ->latest()
+            ->fastPaginate(15);
 
         return inertia('main/Profile', [
             'user' => $user,

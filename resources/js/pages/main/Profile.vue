@@ -5,24 +5,19 @@ import UpdateProfileForm from '@/components/main/profile/UpdateProfileForm.vue';
 import { Button } from '@/components/ui/button';
 import ShopLayout from '@/layouts/ShopLayout.vue';
 import { User, UserAddress } from '@/types';
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import { MapPin, ShoppingBag, User as UserIcon } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 
 
-interface Transaction {
-    id: string;
-    date: string;
-    total: number;
-    status: string;
-    items_count: number;
-}
+import { PaginationItem } from '@/types';
+import { Transaction } from '@/types/main/transaction';
 
 interface ProfilePageProps {
     user: User;
     addresses: UserAddress[];
-    transactions: Transaction[];
+    transactions: PaginationItem<Transaction>;
 }
 
 defineProps<ProfilePageProps>();
@@ -35,6 +30,18 @@ const tabParam = urlParams.get('tab');
 if (tabParam && ['profile', 'transactions', 'addresses'].includes(tabParam)) {
     activeTab.value = tabParam;
 }
+
+watch(activeTab, (newTab) => {
+    router.get(
+        window.location.pathname,
+        { tab: newTab },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+        },
+    );
+});
 </script>
 
 <template>

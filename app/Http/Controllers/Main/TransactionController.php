@@ -13,7 +13,7 @@ class TransactionController extends Controller
 
     public function show(Request $request, Transaction $transaction)
     {
-        if (! $request->hasValidSignature()) {
+        if (! $request->hasValidSignature() && $transaction->user_id !== auth()->id()) {
             abort(401);
         }
 

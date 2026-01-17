@@ -53,6 +53,7 @@ export interface Transaction {
     rajaongkir_city_id: number;
     rajaongkir_district_id: number;
     notes?: string;
+    transaction_details_count?: number;
     payment_method: string;
     amount: number;
     shipping_cost: number;
