@@ -21,7 +21,6 @@ import { UserAddress } from '@/types';
 import { useForm } from '@inertiajs/vue3';
 import { computed, watch } from 'vue';
 
-
 interface AddAddressFormProps {
     open: boolean;
     address?: UserAddress;
@@ -167,7 +166,7 @@ const submitText = computed(() => {
 
 <template>
     <Dialog :open="open" @update:open="(val) => $emit('update:open', val)">
-        <DialogContent class="max-h-[90vh] max-w-2xl overflow-y-auto">
+        <DialogContent class="max-h-[90vh] max-w-5xl overflow-y-auto">
             <DialogHeader>
                 <DialogTitle>{{ title }}</DialogTitle>
                 <DialogDescription>

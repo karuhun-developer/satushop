@@ -6,6 +6,7 @@ use App\Actions\Main\Checkout\StoreCheckoutAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Main\StoreCheckoutRequest;
 use App\Models\User\UserAddress;
+use Illuminate\Support\Facades\URL;
 
 class CheckoutController extends Controller
 {
@@ -30,9 +31,9 @@ class CheckoutController extends Controller
         try {
             $transaction = $action->handle($request->validated());
 
-            return to_route('transaction.show', [
+            return redirect(URL::signedRoute('transaction.show', [
                 'transaction' => $transaction->id,
-            ]);
+            ]));
         } catch (\Exception $e) {
             return back()->withErrors('An error occurred while processing your checkout. Please try again.');
         }

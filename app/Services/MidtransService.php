@@ -171,10 +171,10 @@ class MidtransService
         ];
     }
 
-    public function validateSignature(Request $request)
+    public function validateSignature(string $orderId, string $statusCode, string $grossAmount, string $signatureKey): bool
     {
-        $hashedKey = hash('sha512', $request->order_id.$request->status_code.$request->gross_amount.$this->serverKey);
+        $hashedKey = hash('sha512', $orderId.$statusCode.$grossAmount.$this->serverKey);
 
-        return $hashedKey === $request->signature_key;
+        return $hashedKey === $signatureKey;
     }
 }

@@ -22,4 +22,19 @@ class TransactionDetail extends Model
         'quantity' => 'integer',
         'total' => 'float',
     ];
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
+
+    public function transactionShop()
+    {
+        return $this->belongsTo(TransactionShop::class);
+    }
+
+    public function productFlat()
+    {
+        return $this->belongsTo(\App\Models\Catalog\ProductFlat::class);
+    }
 }

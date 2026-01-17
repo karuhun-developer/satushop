@@ -10,7 +10,10 @@ Route::get('/cart', [App\Http\Controllers\Main\CartController::class, 'index'])-
 // Checkout
 Route::get('/checkout', [App\Http\Controllers\Main\CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [App\Http\Controllers\Main\CheckoutController::class, 'store'])->name('checkout.process');
+
+// After checkout
 Route::get('/transactions/{transaction}', [App\Http\Controllers\Main\TransactionController::class, 'show'])->name('transaction.show');
+Route::put('/transactions/{transaction}', [App\Http\Controllers\Main\TransactionController::class, 'update'])->name('transaction.update');
 
 Route::middleware('auth')->group(function () {
     // Profile

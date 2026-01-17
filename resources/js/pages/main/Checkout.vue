@@ -54,6 +54,7 @@ const destinationDistrictId = ref<number | null>(null);
                             icon: 'success',
                             title: 'Order placed successfully!',
                         });
+                        cart.clearCart();
                     }
                 "
                 v-slot="{ errors, processing }"

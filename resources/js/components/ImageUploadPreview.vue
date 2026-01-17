@@ -139,13 +139,13 @@ watch(
                 >
                     Change
                 </button>
-                <button
+                <!-- <button
                     type="button"
                     @click="clearPreview"
                     class="rounded bg-destructive px-3 py-1 text-sm text-destructive-foreground transition-all hover:bg-destructive/90"
                 >
                     Remove
-                </button>
+                </button> -->
             </div>
             <div
                 class="absolute right-2 bottom-2 left-2 truncate rounded bg-black/70 px-2 py-1 text-xs text-white"

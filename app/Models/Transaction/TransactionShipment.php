@@ -19,4 +19,14 @@ class TransactionShipment extends Model
         'date' => 'datetime',
         'is_arrived' => 'boolean',
     ];
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
+
+    public function transactionShop()
+    {
+        return $this->belongsTo(TransactionShop::class);
+    }
 }

@@ -27,4 +27,24 @@ class TransactionShop extends Model
         'total_amount' => 'float',
         'shipping_status' => \App\Enums\ShippingStatusEnum::class,
     ];
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
+
+    public function shop()
+    {
+        return $this->belongsTo(\App\Models\Shop\Shop::class);
+    }
+
+    public function transactionDetails()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
+
+    public function transactionShipments()
+    {
+        return $this->hasMany(\App\Models\Transaction\TransactionShipment::class);
+    }
 }

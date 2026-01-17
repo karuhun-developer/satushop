@@ -84,4 +84,9 @@ class Shop extends Model implements HasMedia
     {
         return $this->hasOne(ShopUser::class)->where('is_owner', true);
     }
+
+    public function transactionShops()
+    {
+        return $this->hasMany(\App\Models\Transaction\TransactionShop::class);
+    }
 }

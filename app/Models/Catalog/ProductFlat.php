@@ -102,4 +102,9 @@ class ProductFlat extends Model implements HasMedia
     {
         return $this->hasMany(ProductFlatCategory::class);
     }
+
+    public function transactionDetails()
+    {
+        return $this->hasMany(\App\Models\Transaction\TransactionDetail::class);
+    }
 }

@@ -359,7 +359,7 @@ watch(selectedDistrict, (newVal) => {
                     <Input
                         id="phone"
                         name="phone"
-                        type="number"
+                        type="text"
                         class="mt-1 block w-full"
                         required
                         autofocus

@@ -12,6 +12,7 @@ use App\Models\Transaction\TransactionShop;
 use App\Services\MidtransService;
 use App\Traits\WithGenerateReference;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class StoreCheckoutAction
 {
@@ -157,6 +158,18 @@ class StoreCheckoutAction
                 $payment->account_number = $midtrans['account'];
                 $payment->account_code = $midtrans['code'] ?? null;
                 $payment->save();
+            }
+
+            // Send checkout notification
+            if (auth()->check()) {
+                auth()->user()->notify(
+                    new \App\Notifications\CheckoutNotification($transaction)
+                );
+            } else {
+                Notification::route('mail', $transaction->email)
+                    ->notify(
+                        new \App\Notifications\CheckoutNotification($transaction)
+                    );
             }
 
             return $transaction;

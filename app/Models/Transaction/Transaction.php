@@ -3,9 +3,13 @@
 namespace App\Models\Transaction;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Transaction extends Model
+class Transaction extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     protected $fillable = [
         'user_id',
         'reference',
@@ -32,4 +36,19 @@ class Transaction extends Model
         'total_amount' => 'float',
         'status' => \App\Enums\PaymentStatusEnum::class,
     ];
+
+    public function payment()
+    {
+        return $this->morphOne(\App\Models\Payment\Payment::class, 'payable');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
+    public function transactionShops()
+    {
+        return $this->hasMany(TransactionShop::class);
+    }
 }
