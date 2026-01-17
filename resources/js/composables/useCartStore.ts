@@ -102,6 +102,7 @@ export const useCartStore = () => {
     };
 
     const clearCart = () => {
+        window.localStorage.removeItem('cart-items');
         items.value = [];
     };
 
