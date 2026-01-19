@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { ProductFlatDataItem } from '@/types/cms/catalog';
 import { Link } from '@inertiajs/vue3';
-import { Star } from 'lucide-vue-next';
+import { ShoppingBag, Star } from 'lucide-vue-next';
 
 const props = defineProps<{
     product: ProductFlatDataItem;
@@ -23,11 +23,19 @@ const props = defineProps<{
         <Card class="h-full">
             <!-- Product Image -->
             <div class="relative aspect-square overflow-hidden bg-gray-100">
+                <!-- Placeholder for product image if available in product_details -->
                 <img
+                    v-if="product.image_1"
                     :src="product.image_1"
-                    :alt="product.name"
+                    :alt="product.image_1"
                     class="h-full w-full object-cover"
                 />
+                <div
+                    v-else
+                    class="flex h-full w-full items-center justify-center text-muted-foreground"
+                >
+                    <ShoppingBag class="h-15 w-15 opacity-20" />
+                </div>
             </div>
 
             <!-- Product Details -->

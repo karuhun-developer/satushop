@@ -105,7 +105,7 @@ const images = computed(() => {
 
     return imgs.length > 0
         ? imgs
-        : ['https://via.placeholder.com/600x600?text=No+Image'];
+        : ['https://placehold.co/600x600?text=No+Image'];
 });
 
 // Computed Categories
